@@ -1,0 +1,65 @@
+#Problem APEX 2.3.26
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives of logarithmic functions)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.3')
+## Problem1('26')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+$a = random(2,9,1);
+
+$context1 = Context("Numeric");
+$context1->variables->add('a'=>"Real");
+$ans1 = Formula($context1,"1/[x*ln(a)]");
+
+$context1 = Context("Numeric");
+$ans2 = Compute("1/[x*ln($a)]");
+
+BEGIN_PGML
+A property of logarithms is that [``\log_a x = \frac{\log_b x}{\log_b a} ``] for all bases [` a, b > 0, \neq 1`].
+
+When [`b = e`], this
+becomes [` \displaystyle \log_a x = \frac{\ln x}{\ln a}`].
+
+a) Using this identity, find the derivative of [` y = \log_a x.`]  
+[_]{$ans1}{20}
+
+b) Find the derivative of [` y = \log_{[$a]} x. `]  
+[_]{$ans2}{20}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+a) Begin by using the given identity.  
+[``
+  \begin{array}{rcl}
+    \displaystyle\frac{d}{dx}\left[ \log_a x \right] &=& \displaystyle
+    \frac{d}{dx}\left[ \frac{\ln x}{\ln a} \right] \\
+    &&\\
+    &=& \displaystyle\frac{1}{\ln a} \cdot
+    \frac{d}{dx}\left[ \ln x \right] \\
+    &&\\
+    &=& \displaystyle\frac{1}{\ln a}\cdot \frac{1}{x} \\
+    &&\\
+    &=& \displaystyle\frac{1}{x \ln a}
+  \end{array}
+``] 
+
+b) Using the result above with [`a = [$a]`],  
+[``
+  \displaystyle\frac{d}{dx}\left[ \log_{[$a]} x \right] 
+  = \displaystyle\frac{1}{x \ln [$a]}.
+``] 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

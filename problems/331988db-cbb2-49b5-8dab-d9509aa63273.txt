@@ -1,0 +1,68 @@
+## DESCRIPTION
+## DBsubject(Statistics)
+## DBchapter(Confidence intervals)
+## DBsection(Concepts)
+## Institution(The College of Idaho)
+## Author(R Cruz, L Danielson, J Guild)
+## Level(2)
+## MO(1)
+## TitleText1('The Basic Practice of Statistics')
+## AuthorText1('David Moore')
+## EditionText1('5e')
+## Section1('15')
+## Problem1('')
+## KEYWORDS('statistics', 'inference', 'DEI')
+## Updated: 2010/10
+## Updated by Rachael Norton, Fitchburg State University, January 2023
+
+DOCUMENT();    # This should be the first executable line in the problem.
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'answerHints.pl', 'PGcourse.pl');
+
+$sigma      = random(5,  10, 1);
+$xbar       = random(15, 35, 1);
+$marginerr  = random(2,  5,  1);
+$marginerr2 = $marginerr / 2;
+
+$n           = (1.96 * $sigma / $marginerr2)**2;
+$n_unrounded = $n;
+if ($n - int($n) > 0) { $n = int($n) + 1; }
+
+$ans_a = Real("$xbar - $marginerr")->with(
+    tolType   => 'absolute',
+    tolerance => '0.01'
+)->cmp->withPostFilter(AnswerHints(
+        sub {
+            my ($correct, $student, $anshash) = @_;
+            return abs($student - $correct) < .02;
+        } => ['Your answer is close.  Try the calculation using more accuracy.']
+));
+
+$ans_b =
+    Real($n)->with(tolType => 'absolute', tolerance => '1e-5')
+    ->cmp->withPostFilter(AnswerHints(
+        $n_unrounded =>
+        ['Your answer needs to be rounded to the next largest whole number.']
+    ));
+
+BEGIN_PGML
+
+A report in a research journal states that the average decrease in systolic
+blood pressure of people on a
+certain blood pressure medication is [$xbar] mmHg with a margin of error
+of [` \pm[$marginerr]`] mmHg with confidence level C = 95%.
+
+a)   According to this information, the mean decrease in systolic blood
+pressure of people on this medication,
+ [` \mu `], could be as low as [__]{$ans_a} mmHg.
+
+
+b)  If the study is repeated, how large should the sample size be so that
+the margin of error would be less than [$marginerr2] mmHg?
+(Assume [` \sigma =  [$sigma] `] mmHg.)
+
+    ANSWER: [__]{$ans_b}
+END_PGML
+
+ENDDOCUMENT();    # This should be the last executable line in the problem.
+

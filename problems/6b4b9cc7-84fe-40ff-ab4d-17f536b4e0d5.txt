@@ -1,0 +1,80 @@
+#DESCRIPTION
+##  Augmented Matrices
+##ENDDESCRIPTION
+
+ 
+## Author1('David Covert')
+## Author2('Jason Aubrey')
+## DBsubject(Linear algebra)
+## DBchapter(Matrices)
+## DBsection(Row operations)
+## Date(Spring 2012)
+## Institution(University of Missouri)
+## Level(2)
+## KEYWORDS('linear algebra', 'augmented', 'row operation')
+
+
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "PGcourse.pl"
+);
+
+TEXT(beginproblem());
+$showPartialCorrectAnswers = 0;
+
+Context("Matrix");
+
+$k = list_random(-10,-9-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9,10);
+$m = list_random(-10,-9-8,-7,-6,-5,-4,-3,-2,2,3,4,5,6,7,8,9,10);
+
+$M = Matrix([
+  [non_zero_random(-10,10,1),random(-10,10,1),random(-10,10,1)],
+  [random(-10,10,1),random(-10,10,1),random(-10,10,1)],
+  [random(-10,10,1),random(-10,10,1),random(-10,10,1)]
+]);
+
+# part (a): add $k times row $i to row $j
+
+($ia,$ja) = random_subset(2,(1,2,3)); 
+
+@a = ([1,0,0],[0,1,0],[0,0,1]);
+$a[$ja-1][$ia-1]=$k; # because perl array indices start with 0
+$ansA = Matrix(~~@a)*$M;
+
+# part (b): multiply row $ib by $k
+
+$ib = random(1,3,1);
+@b = ([1,0,0],[0,1,0],[0,0,1]);
+$b[$ib-1][$ib-1]=$m;
+$ansB = Matrix(~~@b)*$M;
+
+# part (c): swap row $ic with row $jc
+
+($ic,$jc) = random_subset(2,(1,2,3));
+@c = ([1,0,0],[0,1,0],[0,0,1]);
+($c[$ic-1],$c[$jc-1]) = ($c[$jc-1],$c[$ic-1]);
+$ansC = Matrix(~~@c)*$M;
+
+BEGIN_PGML
+
+Consider the matrix [`` M=[$M] ``].
+
+*(a)* On the matrix [`M`], perform the row operation [`\ [$k] R_{[$ia]} + R_{[$ja]} \to R_{[$ja]}\; `].  The result is: 
+
+    [__]*{$ansA}
+
+*(b)* On the matrix [`M`], perform the row operation [`\ [$m] R_{[$ib]} \to R_{[$ib]}\; `].  The result is:
+
+    [__]*{$ansB}
+
+*(c)* On the matrix [`M`], perform the row operation [`\ R_{[$ic]} \leftrightarrow R_{[$jc]}\; `].  The result is:
+
+    [__]*{$ansC}
+END_PGML
+
+ENDDOCUMENT();       # This should be the last executable line in the problem.

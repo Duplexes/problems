@@ -1,0 +1,63 @@
+#Problem APEX 3.1.15
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Global extrema)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(GlobalExtremes_Quadratic)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.1')
+## Problem1('15')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+Context("Numeric");
+
+$a1 = Real(random(1,  5,  1));
+$b1 = Real(random(2,  7,  1));
+$c1 = Real(random(-5, -3, 1));
+$d1 = Real(random(1,  2,  1));
+
+$function      = Compute("$a1 - $b1 x^2");
+$abs_max_value = Compute("$a1");
+$abs_min_value = Real("$a1 - $b1*$c1*$c1");
+
+$b2    = Compute("2*$b1");
+$deriv = Compute("-$b2 x");
+
+$y3 = Compute("$a1 - $b1 * ($d1)**2");
+
+BEGIN_PGML
+Find the extreme values of the function [```f(x) = [$function] ```] on
+the interval [`[[$c1], [$d1]]`]. If an extreme value does not exist, enter *DNE*.
+
+Absolute minimum value:  [_]{$abs_min_value}{10}
+
+Absolute maximum value: [_]{$abs_max_value}{10}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Set the derivative equal to zero to locate all critical numbers: [`f'(x) = [$deriv] = 0`]. The 
+only critical number is [`x = 0`]. 
+Find the value of [`f`] at this critical number and the endpoints:
+[```
+  \begin{aligned}
+  f([$c1]) &= [$abs_min_value]\\
+  f(0) &= [$abs_max_value]\\
+  f([$d1]) &= [$y3]
+  \end{aligned}
+```]
+The absolute minimum value is [`[$abs_min_value]`], 
+and the absolute maximum value is 
+[`[$abs_max_value]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

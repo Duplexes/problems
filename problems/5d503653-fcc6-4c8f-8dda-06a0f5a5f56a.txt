@@ -1,0 +1,94 @@
+#Problem APEX 5.2.16-17
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Conceptual understanding of integration)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(5)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.2')
+## Problem1('16 17')
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',  'PGML.pl',
+    'parserPopUp.pl', 'parserNumberWithUnits.pl',
+    'PGcourse.pl'
+);
+Context('Numeric');
+
+$h = random(10, 50, 2);
+$b = $h + random(11, 51, 2);
+
+$ans1 = NumberWithUnits("$b",              'ft/s');
+$ans2 = NumberWithUnits("$b",              'ft/s');
+$ans3 = NumberWithUnits("$b**2 / 64",      'ft');
+$ans4 = NumberWithUnits("$b/32",           's');
+$ans5 = NumberWithUnits("$b/16",           's');
+$ans6 = NumberWithUnits("$h + $b**2 / 64", 'ft');
+
+BEGIN_PGML
+
+An object is thrown straight up with a velocity, in
+ft/s, given by [`v(t) = -32t + [$b]`], where [`t`] is
+in seconds, from a height of [$h] feet.
+
+Include units on all answers.  [@ helpLink('units') @]*
+
+a) What is the object's initial velocity? [_]{$ans1}{20}
+
+b) What is the object's maximum velocity? [_]{$ans2}{20}
+
+c) What is the object's maximum displacement? [_]{$ans3}{20}
+
+d) When does the maximum displacement occur? [_]{$ans4}{20}
+
+e) When is the object's displacement 0? [_]{$ans5}{20}
+
+f) What is the object's maximum height? [_]{$ans6}{20}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+a) The initial velocity is [`v(0) = [$b]`] ft/s.
+
+b) The maximum velocity is the same as the initial velocity, [$b] ft/s,
+in this problem.  This is because there are no critical
+values for [`v`] (since [`v'(t) = -32`] has no zeros), and
+so the extremes must occur at endpoints.
+
+c) First determine when velocity is positive or negative.
+[```
+  -32 t + [$b] > 0 \;\Rightarrow\; t < \dfrac{[$b]}{32}.
+```]
+Thus, velocity is only positive in the interval [` [0, [$b]/32] `],
+so the maximum displacement must occur at time [`t = [$b]/32`] s.
+Find the area of the triangle formed by the graph of [`v`],
+which has base [`[$b]/32`] and height [$b].
+[```
+  \textrm{Area} = \frac{1}{2}\left(\frac{[$b]}{32}\right)([$b]) 
+  = [$ans3] \,\textrm{ft}.
+```]
+
+d) The maximum displacement occurs at [`t = [$b] / 32`]s (see above).
+
+e) The object's displacement will be 0 when the net area
+of [`v(t)`] is zero.  Since the graph of [`v(t)`] is a straight
+line, one can see that this occurs when [`t`] is
+twice the value of the [`t`]-intercept, that is,
+[```
+  t = 2\left(\frac{[$b]}{32}\right) = \frac{[$b]}{16} \,\textrm{s}.
+```]
+
+f) This is found by adding the maximum displacement to
+the initial height.
+[```
+  [$h] + [$ans3] = [$ans6]\,\textrm{ft}.
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

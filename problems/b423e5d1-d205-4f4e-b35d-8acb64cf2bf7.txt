@@ -1,0 +1,73 @@
+#Problem APEX 2.5.17-18
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives of logarithmic functions)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.5')
+## Problem1('17 18')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+'PGstandard.pl',
+'PGML.pl',
+'PGchoicemacros.pl',
+'PGcourse.pl');
+
+########################################
+# Set-up
+
+Context("Numeric");
+
+$a = random(2,9,1);
+$a1 = $a - 1;
+
+$f1 = "$a \ln x";
+$f2 = "\ln( x^{$a} )";
+
+$ans = Formula("$a/x");
+
+########################################
+# Main text
+
+BEGIN_PGML
+Compute the derivatives of the given functions.
+
+a) [`f(x) = [$f1]`]
+
+    [` f'(x) = `] [_]{$ans}{25}
+
+b) [`g(x) = [$f2]`]
+
+    [` g'(x) = `] [_]{$ans}{25}
+END_PGML
+
+########################################
+# Solution
+
+BEGIN_PGML_SOLUTION
+    a)  [``f'(x) = [$a] \cdot \frac{1}{x} = \frac{[$a]}{x}``]
+
+    b) Either using the Chain Rule,
+[```
+  g'(x) = \frac{1}{x^{[$a]}} \cdot ([$a] x^{[$a1]})
+  = \frac{[$a] x^{[$a1]}}{x^{[$a]}} = \frac{[$a]}{x},
+```]
+        or using laws of logarithms to simplify first.
+[```
+  g'(x) = \frac{d}{dx}[ \ln (x^[$a]) ] =
+  \frac{d}{dx}[ [$a] \ln (x) ] =
+  \frac{[$a]}{x}.
+```]
+The answers to (a) and (b) are the same.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    
+

@@ -1,0 +1,76 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('36')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context('Numeric');
+
+$a = random(2, 5);
+$b = random(2, 5);
+
+$f = Formula("(1 + $a x)^{$b/x}");
+
+$ans = Real("e^($a*$b)");
+
+BEGIN_PGML
+Evaluate the limit, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule. 
+  
+
+[`` \lim_{x\to 0^{+}} [$f] = \;``] [_]{$ans}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+$num = Formula("$b ln(1 + $a x)");
+$den = Formula("x");
+
+$dnum = $num->D('x');
+$dden = $den->D('x');
+
+BEGIN_PGML_SOLUTION
+First use the property [`f(x) = e^{\ln f(x)}`] and laws of logarithms to
+re-express the function as a fraction.
+
+[``` 
+   [$f] = e^{\ln [$f]} = e^{ ([$b]/x) \ln(1 + [$a] x)},
+```]
+
+and
+
+[```
+  ([$b]/x) \ln (1 + [$a] x) = \dfrac{[$b]\ln (1 + [$a] x)}{x}.
+```]
+
+Find the limit of this part (using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule).
+
+[```
+  \begin{aligned}
+  \lim_{x \to 0^{+}} \frac{[$num]}{[$den]}
+  & = \lim_{x \to 0^{+}} \frac{[$dnum]}{[$dden]} \\
+  & = \lim_{x \to 0^{+}} 
+  \dfrac{[$a*$b]}{1+[$a] x} = [$a*$b].
+  \end{aligned}
+```]
+
+Then plug this result back in to find the original limit.
+
+[```
+  \begin{aligned}
+  & = \lim_{x \to 0^{+}} [[$f]] \\
+  & = e^{\lim_{x \to 0^{+}} \ln [$f]}\\
+  & = e^{[$a*$b]}.
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,56 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Estimating limits numerically)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MO(1)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.1')
+## Problem1('8')
+
+#Problem APEX 1.1.8
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'niceTables.pl', 'PGcourse.pl');
+
+$showPartialCorrectAnswers = 0;
+
+Context("Numeric");
+
+$b = random(1, 10);
+$c = random(2, 9);
+
+$f = Formula("(x+$b)/(x^2+$c*x)");
+$F = $f->perlFunction("F");          # for faster evaluation
+
+$limi = String("DNE");
+
+BEGIN_PGML
+Approximate the given limit both numerically and graphically.
+
+[`` \lim_{x \to 0} [$f] = ``] [_]{$limi}{5}
+
+(Enter DNE if the limit doesn't exist)
+END_PGML
+
+BEGIN_PGML_SOLUTION
+One can investigate the limit by computing the values of [`f(x)=[$f]`] at points near 0.
+
+[@ DataTable ([
+        [['\(x\)',headerrow=>1] ,'\(f(x)\)','\(x\)','\(f(x)\)'],
+        [.002 , F(.002), -.002 , F(-.002) ],
+        [.001 , F(.001), -.001 , F(-.001) ],
+        [.0005 , F(.0005), -.0005 , F(-.0005) ],
+        [.0001 , F(.0001), -.0001 , F(-.0001) ]
+],horizontalrules=>1,texalignment=>"|c|c||c|c|")
+@]***
+
+The values of [`f(x)`] when [`x`] is on the left and right sides of 0 do not approach a single finite value as [`x \to 0 `], in fact as [`x\to 0`] they seem to be getting farther apart.  So it's pretty clear that [`f(x)`] does not approach a limit as [`x`] approaches 0.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

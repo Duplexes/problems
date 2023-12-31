@@ -1,0 +1,44 @@
+#Problem APEX 2.3.17
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives involving multiple rules (no product, quotient, or chain rule))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.3')
+## Problem1('17')
+# Updated July, 2023
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+$a = random(2, 20, 1) * random(-1, 1, 2);
+$b = random(2, 20, 1) * random(-1, 1, 2);
+$c = random(2, 20, 1) * random(-1, 1, 2);
+
+$ans1 = Compute("$a/x");
+$ans2 = Compute("$b/x + $c");
+
+BEGIN_PGML
+Compute the derivatives of the given functions.
+
+a) [` f(x) = [$a] \ln x `],  
+[`f'(x) = `][_]{$ans1}{15}
+
+b) [` g(x) = [$b] \ln x + [$c] x `],  
+[`g'(x) = `][_]{$ans2}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+a) The constant multiple rule tells us that [`` f'(x) = [$a] (1/x) = \frac{[$a]}{x}. ``]
+
+b) Taking the derivative of each term yields [`` g'(x) = [$b] (1/x) + [$c] = \frac{[$b]}{x} + [$c]. ``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

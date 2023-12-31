@@ -1,0 +1,71 @@
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "PGcourse.pl"
+);
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Chain rule (without trigonometric functions))
+## Institution(W.H.Freeman)
+## Author(JustAsk!)
+## Level(2)
+## TitleText1('Calculus: Early Transcendentals')
+## AuthorText1('Rogawski')
+## EditionText1('2')
+## Section1('3.7')
+## Problem1('1')
+## MO(1)
+## KEYWORDS('calculus', 'derivatives', 'chain rule')
+
+## Show partial correct answers
+$showPartialCorrectAnswers = 1;
+
+Context("Numeric");
+Context( )->variables->add("u"=>"Real");
+Context()->variables->set(x => {limits => [0.5,1.5]}, u => {limits => [0.5,1.5]});
+
+TEXT(beginproblem());
+
+$a=random(3,9,2);
+$b=$a+1;
+
+$f="u**($a/2)";
+$g="x**$b+1";
+$fg=Compute("(x**$b+1)**($a/2)");
+$derivf=Compute("$a/2*u**($a/2-1)");
+$derivfatg=Compute("$a/2*(x**$b+1)**($a/2-1)");
+$derivg=Compute("$b*x**($b-1)");
+$derivfg=Compute("$a/2*(x**$b+1)**($a/2-1)*$b*x**($b-1)");
+
+BEGIN_PGML
+
+Given the following functions: [`` f(u)=u^{[$a]/2} ``] and [`` g(x)=x^{[$b]}+1``], find:    
+ 
+[`` f(g(x))= ``] [_]{$fg}{15}   
+ 
+[`` f'(u)= ``] [_]{$derivf}{15}   
+ 
+[`` f'(g(x))= ``] [_]{$derivfatg}{15}    
+
+[`` g'(x)= ``] [_]{$derivg}{15}    
+
+[`` (f\circ g)'(x)= ``] [_]{$derivfg}{15}    
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[``f(g(x)) = (x^{[$b]}+1)^{[$a]/2}=[$fg] ``]    
+
+[``f'(u) = ([$a]/2)u^{([$a]/2-1)}=[$derivf] ``]    
+
+[``f'(g(x)) = ([$a]/2)(x^{[$b]}+1)^{([$a]/2-1)} = [$derivfatg] ``]    
+
+[``g'(x) = [$b]x^{([$b]-1)}=[$derivg] ``]    
+
+chain rule: [``\ (f\circ g)'(x) = f'(g(x))g'(x) = [$derivfg] ``]  
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

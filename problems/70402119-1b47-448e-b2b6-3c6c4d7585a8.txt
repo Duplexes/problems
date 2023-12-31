@@ -1,0 +1,190 @@
+#Problem APEX 3.4.6-7
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('6 7')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl', 'PGML.pl',
+    'PGtikz.pl',     'parserRadioButtons.pl',
+    'PGcourse.pl'
+);
+
+Context("Numeric");
+Context()->noreduce('(-x)-y', '(-x)+y');
+
+$a2 = random(3, 6, 1) * random(-1, 1, 2);
+$b  = random(2, 5, 1) * random(-1, 1, 2);
+$c  = random(1, 5, 1) * random(-1, 1, 2);
+
+$a = $a2 / 2;
+
+$f = Compute("$a*x^2 + $b*x + $c")->reduce();
+
+$df  = Compute("$a2*x + $b");
+$ddf = Formula("$a2");
+
+Context("Interval");
+
+if ($a > 0) {
+    $CU = List(Interval("(-INF, INF)"))->cmp(entry_type => "an interval");
+    $CD = List("None")->cmp(entry_type => "an interval");
+} else {
+    $CU = List("None")->cmp(entry_type => "an interval");
+    $CD = List(Interval("(-INF, INF)"))->cmp(entry_type => "an interval");
+}
+
+$problemgrid = "\tikzset{>={Stealth[scale=1.5]}}
+\huge
+\filldraw[
+    draw=LightBlue,
+    fill=white,
+    rounded corners=10pt,
+    thick,use as bounding box
+] (-10,10) rectangle (10,-10);
+\draw[->,thick] (-10,0) -- (10,0) node[above left,outer sep=3pt] {\(x\)};
+\foreach \x in {-10,...,-1,1,2,...,10}
+    \draw(\x,5pt) -- (\x,-5pt) node [below] {\(\x\)};
+\draw[->,thick] (0,-10) -- (0,10) node[below right,outer sep=3pt] {\(y\)};
+\foreach \y in {-10,...,10}
+    \draw (5pt,\y) -- (-5pt,\y) node[left] {\(\y\)};
+\draw[step=1,gray,very thin] (-10,-10) grid (10,10);
+";
+
+########################################
+## Graphs
+
+$grapha = createTikZImage();
+$grapha->tikzLibraries('arrows.meta');
+$grapha->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] plot[domain={-$b/(2*$a)-4}:{-$b/(2*$a)+4}, smooth] 
+    (\x,{$a*(\x)^2+$b*\x+$c}); 
+\draw[red,ultra thick] plot[domain=-10:10] (\x,{-($a2)}); 
+END_TIKZ
+
+$graphb = createTikZImage();
+$graphb->tikzLibraries('arrows.meta');
+$graphb->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] plot[domain={-$b/(2*$a)-4}:{-$b/(2*$a)+4}, smooth] 
+    (\x,{$a*(\x)^2+$b*\x+$c}); 
+\draw[red,ultra thick] plot[domain=-10:10] (\x,{$a2}); 
+END_TIKZ
+
+$graphc = createTikZImage();
+$graphc->tikzLibraries('arrows.meta');
+$graphc->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] plot[domain={-$b/(2*$a)-4}:{-$b/(2*$a)+4}, smooth] 
+    (\x,{$a*(\x)^2+$b*\x+$c});
+ \draw[red,ultra thick] plot[domain=-10:10] (\x,{2*($a)*\x+($b)}); 
+END_TIKZ
+
+$graphd = createTikZImage();
+$graphd->tikzLibraries('arrows.meta');
+$graphd->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] plot[domain={-$b/(2*$a)-4}:{-$b/(2*$a)+4}, smooth] 
+    (\x,{$a*(\x)^2+$b*\x+$c}); 
+\draw[red,ultra thick] plot[domain={-$b/(2*$a)-4}:{-$b/(2*$a)+4}] (\x,{-2*($a)*(\x)-($b)}); 
+END_TIKZ
+
+$altTextA =
+    "A plot with two graphs.  The first, in dashed blue is a parabola that "
+    . "opens "
+    . ($a > 0 ? 'up.' : 'down.')
+    . " The second in red is a horizontal line with "
+    . "y-intercept "
+    . (-$a2) . ".";
+
+$altTextB =
+    "A plot with two graphs.  The first, in dashed blue is a parabola that "
+    . "opens "
+    . ($a > 0 ? 'up.' : 'down.')
+    . " The second in red is a horizontal line with "
+    . "y-intercept $a2.";
+
+$altTextC =
+    "A plot with two graphs.  The first, in dashed blue is a parabola that "
+    . "opens "
+    . ($a > 0 ? 'up.' : 'down.')
+    . " The second in red is a line with "
+    . ($a > 0 ? 'positive' : 'negative')
+    . " slope and y-intercept of $b.";
+
+$altTextD =
+    "A plot with two graphs.  The first, in dashed blue is a parabola that "
+    . "opens "
+    . ($a > 0 ? 'up.' : 'down.')
+    . " The second in red is a line with "
+    . ($a > 0 ? 'negative' : 'positive')
+    . " slope and y-intercept of "
+    . (-$b) . ".";
+
+$MC = RadioButtons(
+    [ [
+        image(
+            $grapha,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextA"}
+        ),
+        image(
+            $graphb,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextB"}
+        ),
+        image(
+            $graphc,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextC"}
+        ),
+        image(
+            $graphd,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextD"}
+        ),
+    ] ],
+    1,
+    separator => "$BR$BR"
+);
+
+BEGIN_PGML
+Let [`` f(x) = [$f] ``].
+
+a) Find the first and second derivatives.
+    - [`f'(x) = `] [_]{$df}{20}
+    - [`f''(x) = `] [_]{$ddf}{20}
+b) Identify the graph that displays [`f`] in blue and [`f''`] in red.
+
+    [_]{$MC}
+c) Using the graphs of [`f`] and [`f''`], indicate where [`f`] is
+concave up and concave down.  Give your answer as a list of intervals separated by commas.  If there are no such intervals, enter "None". [@ helpLink("interval") @]*
+    - [`f`] is concave up on [_]{$CU}{20}
+    - [`f`] is concave down on [_]{$CD}{20}
+END_PGML
+
+$ineq = ($a > 0) ? ">"  : "<";
+$ud   = ($a > 0) ? "up" : "down";
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$df] `] and [`f''(x) = [$ddf]`].
+
+Since [` f''(x) [$ineq] 0 `] for all [`x`], [`f`] is concave [$ud] on [` (-\infty, \infty) `].
+END_PGML_SOLUTION
+ENDDOCUMENT();

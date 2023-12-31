@@ -1,0 +1,108 @@
+## DESCRIPTION
+## DBsubject(Statistics)
+## DBchapter(Sampling distributions)
+## DBsection(Sample mean)
+## Level(3)
+## KEYWORDS('statistics', 'sampling distributions','normal sampling distributions')
+## KEYWORDS('Sampling distribution', 'Normal distribution', 'sample mean',
+## 'sample size')
+## ENDDESCRIPTION
+## Tagged by Nelson Chen
+## Jun 9th, 2016
+##Attempts: Two.
+## Updated by Rachael Norton, Fitchburg State University, January 2023
+
+DOCUMENT();    # This should be the first executable line in the problem.
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioButtons.pl', 'PGcourse.pl');
+
+Context('Numeric');
+$showPartialCorrectAnswers = 0;
+
+$radio1 = RadioButtons(
+    [
+        'It will increase by a factor of 2.',
+        'It will increase by a factor of square root of 2.',
+        ' It will decrease by a factor of square root of 2.',
+        'It will decrease by a factor of 2.',
+        'It will remain unchanged.'
+    ],
+    2,
+    labels => 'ABC'
+);
+
+$radio2 = RadioButtons(
+    [
+        'It will increase by a factor of 2.',
+        'It will increase by a factor of square root of 2.',
+        ' It will decrease by a factor of square root of 2.',
+        'It will decrease by a factor of 2.',
+        'It will remain unchanged.'
+    ],
+    4,
+    labels => 'ABC'
+);
+
+$radio3 = RadioButtons(
+    [ [
+        'It is a correct statement, but it is not a result of the Central '
+            . 'Limit Theorem.',
+        'It is an incorrect statement. The distribution of the mean weight '
+            . 'of the sample is not Normal.',
+        'It is a correct statement, and it is a result of the Central Limit '
+            . 'Theorem.'
+    ] ],
+    0,
+    labels => 'ABC'
+);
+
+BEGIN_PGML
+The weights of cans of Ocean brand tuna are supposed to have a net weight of
+6 ounces. The manufacturer tells you that the net weight is actually a
+Normal random variable with a mean of 5.95 ounces and a standard deviation
+of 0.2 ounces. Suppose that you draw a random sample of 42 cans.
+
+*Part i)*
+
+Suppose the number of cans drawn is doubled. How will the standard deviation
+of sample mean weight change?
+
+[_]{$radio1}
+
+*Part ii)*
+
+Suppose the number of cans drawn is doubled. How will the mean of the
+sample mean weight change?
+
+[_]{$radio2}
+
+*Part iii)*
+
+Consider the statement: 'The distribution of the mean weight of the sampled
+cans of Ocean brand tuna is Normal.'
+
+[_]{$radio3}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The distribution of the weight of a single can of tuna is given
+to be Normal with mean 5.95 oz. and standard deviation 0.2 oz.
+
+(i) The sample mean weight of a sample of 42 such cans is a random
+variable that follows the Normal distribution with mean 5.95 and standard
+deviation [`0.2/\sqrt{42}`]. If we were to double the sample size to 84,
+the standard deviation of the sample mean would decrease by a factor
+of [`\sqrt{2}`].
+
+(ii) Changing the sample size does not affect the mean of the sampling
+distribution of the sample mean, which would remain at 5.95.
+
+(iii) The sample mean here is normally distributed, though there is no
+need to apply the Central Limit Theorem for this result. Instead, the
+result follows exactly since the distribution of the weights of the
+individual cans is Normal.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    # This should be the last executable line in the problem.

@@ -1,0 +1,89 @@
+#Problem APEX 2.6.34
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Implicit differentiation)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.6')
+## Problem1('34')
+## Edited July 2023
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+Context('Numeric')->variables->add(y => 'Real');
+
+$a1 = random(2, 7);
+$b1 = random(2, 7);
+$b2 = 2 * $b1;
+$c1 = random(2, 7);
+
+$f = "$a1 \sin x  + $b1 \cos y";
+$g = "$c1";
+
+$b1_s = $b1**2;
+$b1a1 = $b1 * $a1;
+
+$ans1 = Compute("$a1 cos(x) / ($b1 sin(y))")->reduce;
+$ans2 = Compute(
+    "[-$a1( sin(x)sin(y) +
+      ($a1/$b1) cos(x)^2 cot(y))]/ [$b1 sin(y)^2] "
+)->reduce;
+
+BEGIN_PGML
+
+Let
+ [``[$f] = [$g]``]. Find the following.
+
+[` \dfrac{dy}{dx} = `] [_]{$ans1}{25}
+
+[` \dfrac{d^2y}{dx^2} = `] [_]{$ans2}{25}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+[```
+\begin{aligned}
+   \dfrac{d}{dx}\big([$f]\big) &= \dfrac{d}{dx}\big([$g]\bigr)\\[4pt]
+   [$a1] \cos x - [$b1] \sin y \dfrac{dy}{dx} &= 0 \\[4pt]
+   \dfrac{dy}{dx} &= \dfrac{[$a1] \cos x}{[$b1] \sin y}
+\end{aligned}
+```]
+
+And to find [``\frac{d^2y}{dx^2} ``] differentiate again. 
+[```
+\begin{aligned}
+    \dfrac{d^2y}{dx^2} &= 
+    \dfrac{d}{dx}\left[  \dfrac{[$a1] \cos x}{[$b1] \sin y} \right] \\[4pt]
+    &= \dfrac{  [$b1] \sin y(-[$a1] \sin x) - ([$a1] \cos x)([$b1] \cos y \cdot y')}
+    {[$b1_s] \sin^2 y} \\[4pt]
+    &= \dfrac{-[$b1a1]( \sin x \sin y + \cos x \cos y \cdot y')}
+    {[$b1_s] \sin^2 y} \\[4pt]
+    &= \dfrac{-[$a1]( \sin x \sin y + \cos x \cos y \cdot y')}
+    {[$b1] \sin^2 y} \\[4pt]
+  \end{aligned}
+```]
+ 
+For the final answer, substitute 
+[`y' = \dfrac{[$a1] \cos x}{[$b1] \sin y}`].
+[```
+  \begin{aligned}
+   \frac{d^2y}{dx^2} &= \dfrac{-[$a1]\left( \sin x \sin y +
+   \cos x \cos y \cdot \dfrac{[$a1] \cos x}{[$b1] \sin y}\right)}
+    {[$b1] \sin^2 y}\\[4pt]
+    &= \dfrac{-[$a1]\left( \sin x \sin y + 
+    \frac{[$a1]}{[$b1]} \cos^2 x \cot y\right)}
+    {[$b1] \sin^2 y}\\
+  \end{aligned}
+```]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

@@ -1,0 +1,71 @@
+##DESCRIPTION
+##  Middle School problem:
+##ENDDESCRIPTION
+
+## ProblemTester('Laura Travis')
+## Publisher('Prentice Hall')
+## DBsubject(Statistics)
+## DBchapter(Exploratory data analysis/descriptive statistics)
+## DBsection(Summary statistics)
+## Date(10/02/2012)
+## Institution(Mississippi College)
+## Author(John Travis)
+## Level(2)
+## MO(1)
+## TitleText1('Pre-Algebra')
+## AuthorText1('')
+## EditionText1('')
+## Section1('.')
+## Problem1('')
+## KEYWORDS('prealgebra','common core','mean','median','mode')
+
+########################################################################
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',         'PGML.pl',
+    'PGstatisticsmacros.pl', 'niceTables.pl',
+    'PGcourse.pl'
+);
+
+Context('Numeric')->flags->set(
+    tolerance => 0.005,
+    tolType   => 'absolute',
+);
+
+$count = random(8, 11);
+push(@data, random(50, 70)) for (0 .. $count - 1);
+
+#  Not technically correct but highly likely to made the $mode the mode
+$mode = random(50, 70);
+push(@data, $mode) for (0 .. 4);
+$count = $count + 5;
+
+@data_sorted = lex_sort(@data);
+
+$displaysorted = "";
+$sum           = 0;
+$sum += $_ for (@data);
+
+$mean = $sum / $count;
+($min, $q1, $median, $q3, $max) = five_point_summary(@data);
+
+$tab = DataTable([ [@data_sorted] ]);
+
+BEGIN_PGML
+
+Your school basketball team posted the following (sorted) scores
+in [$count] recent games:
+
+[$tab]*
+
+- The average game score is [_]{Real($mean)}{10}
+- The median score is [_]{Real($median)}{10}.
+- The modal score is [_]{Real($mode)}{10}.
+
+Express answers that are not integers to two decimal places.
+
+END_PGML
+
+ENDDOCUMENT();

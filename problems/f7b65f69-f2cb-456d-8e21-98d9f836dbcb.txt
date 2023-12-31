@@ -1,0 +1,80 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Related rates)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(RelatedRate-ExpandingSpill)
+## Level(4)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('4.2')
+## Problem1('3')
+
+#Problem APEX 4.2.3
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',            'PGML.pl',
+    'parserNumberWithUnits.pl', 'PGcourse.pl'
+);
+
+Context("Numeric");
+
+$r = random(3, 20, 0.5);
+
+$x1 = NumberWithUnits("$r/(2 pi)",   'cm/s');
+$x2 = NumberWithUnits("$r/(20 pi)",  'cm/s');
+$x3 = NumberWithUnits("$r/(200 pi)", 'cm/s');
+
+###################################
+# Main text
+
+BEGIN_PGML
+Water flows onto a flat surface at a rate of
+[$r] [`\text{cm}^3/\text{s}`] forming a circular puddle
+10 [`\text{mm}`] deep.  How fast is the radius growing
+when the radius is
+
+a.  1 cm?  [___]{$x1}
+b.  10 cm?  [___]{$x2}
+c.  100 cm?  [___]{$x3}
+
+*Make sure to include units.*
+
+END_PGML
+
+###################################
+
+BEGIN_PGML_SOLUTION
+The volume of the puddle is increasing at the rate of 
+[``` \frac{dV}{dt} = 18 \text{cm}^3/\text{s} ```]
+Since the puddle is uniformly 10 mm = 1 cm deep, and the area of 
+a circle is [`A=\pi r^2`], its volume is 
+[```V = (1)(A)=\pi r^2 ```]
+cubic centimeters.  
+
+Take time-derivatives of both sides.  Then plug in
+the known information and solve.
+
+[```
+  \begin{aligned}
+  \frac{dV}{dt} &= 2\pi r \frac{dr}{dt} \\
+  [$r] &= 2\pi r \frac{dr}{dt} 
+  \end{aligned}
+```]
+
+so
+
+[```\frac{dr}{dt} = \frac{18}{2\pi r}```]
+
+a. When [`r = 1`], [``\quad \frac{dr}{dt} = \frac{[$r]}{2\pi(1)} = [$x1] ``] 
+
+b. When [`r = 10`], [``\quad \frac{dr}{dt} = \frac{[$r]}{2\pi(10)} = [$x2] ``]
+
+c. When [`r = 100`], [``\quad \frac{dr}{dt} = \frac{[$r]}{2\pi(100)} = [$x3] ``]
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

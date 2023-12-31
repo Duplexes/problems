@@ -1,0 +1,65 @@
+#Problem APEX 1.6.24
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Applications - finding all asymptotes)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.6')
+## Problem1('24')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context("Numeric");
+#####################################################################
+
+$a  = random(1, 5, 1);
+$a2 = $a**2;
+
+$ans1 = Compute(-1);
+$ans2 = Compute("DNE");
+
+###############################################################
+
+BEGIN_PGML
+Identify the horizontal and vertical asymptotes, if any,
+of the given function.
+[```
+  f(x) = \frac{x^2 - [$a2]}{-x^2 - [$a2]}
+```]
+  
+Separate multiple answers by commas.  
+Enter *DNE* if an asymptote does not exist.
+
+a) Horizontal asymptote(s):   [` y = `] [__]{$ans1}
+  
+b) Vertical asymptote(s):   [` x = `] [__]{$ans2}
+END_PGML
+
+#####################################################################
+
+BEGIN_PGML_SOLUTION
+
+To find the horizontal asymptotes, find the limits as 
+[` x \to \pm\infty `].  In this case, both limits are the same,
+[```
+  \lim_{x \to -\infty} f(x) = \lim_{x \to \infty} f(x) = 
+  -1.
+```]
+Therefore, [`y = -1 `] is the only horizontal asymptote.
+
+To find vertical asymptotes, look for infinite-valued limits.
+These can be found after factoring and simplifying.  
+[```
+  f(x) = \frac{(x - [$a])(x + [$a])}{-(x^2 + [$a2])}
+```]
+The denominator does not factor further.  Since there are no [`x`]-values where the denominator is 0, there are no vertical asymptotes.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

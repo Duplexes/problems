@@ -1,0 +1,67 @@
+##DESCRIPTION
+## Determine a confidence interval of mean winnings from the game show
+## Jeopardy
+##ENDDESCRIPTION
+
+## DBsubject(Statistics)
+## DBchapter(Confidence intervals)
+## DBsection(One sample mean - t)
+## Date(07/12/2005)
+## Institution(UVa)
+## Author(Cristina Murray-Krezan)
+## MLT(CI_1t_01)
+## MLTleader(1)
+## Level(3)
+## TitleText1('Statistics for Management and Economics')
+## AuthorText1('Keller, Warrack')
+## EditionText1('6')
+## Section1('.')
+## Problem1('')
+## KEYWORDS('statistics','Inference about a population','DEI')
+## Updated by Rachael Norton, Fitchburg State University, January 2023
+
+DOCUMENT();    # This should be the first executable line in the problem.
+
+loadMacros(
+    'PGstandard.pl', 'PGML.pl',
+    'niceTables.pl', 'PGstatisticsmacros.pl',
+    'PGcourse.pl'
+);
+
+Context('Interval');
+
+$mu      = random(20000, 40000, 1);
+$n       = 15;
+@dat     = ();
+$dat[$_] = $mu + random(-10000, 10000, 1) for (0 .. $n - 1);
+
+$xbar = stats_mean(@dat);
+$s    = stats_sd(@dat);
+
+$siglev   = random(92, 98, 2);
+$alpha    = 0.01 * (100 - $siglev);
+$tstat    = ($xbar - $mu) / ($s / sqrt($n));
+$tcrit    = tdistr($n - 1, $alpha / 2);
+$upper    = $lower = $xbar - $tcrit * ($s / sqrt($n));
+$conf_int = Interval($xbar - $tcrit * ($s / sqrt($n)),
+    $xbar + $tcrit * ($s / sqrt($n)));
+
+BEGIN_PGML
+
+How much money do winners go home with from the television
+quiz show _Jeopardy_?  To determine an answer, a random sample
+of winners was drawn and the amount of money each won was recorded
+and listed below.  Estimate with [$siglev]% confidence the mean
+winning's for all the show's players.
+
+[@ DataTable([
+[ @dat[0..4]],
+[ @dat[5..9] ],
+[ @dat[10..14] ]
+]) @]*
+
+Confidence Interval: [__]{$conf_int}
+
+END_PGML
+
+ENDDOCUMENT();

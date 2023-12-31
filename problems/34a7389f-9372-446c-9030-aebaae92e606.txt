@@ -1,0 +1,62 @@
+#Problem APEX 2.3.29
+
+
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Higher-order derivatives)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.3')
+## Problem1('29')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+$a = random(2,9,1)*random(-1,1,2);
+$b = random(2,9,1)*random(-1,1,2);
+$a2 = 2*$a;
+
+Context()->variables->are('t'=>'Real');
+Context()->noreduce('(-x)-y');
+
+$ans1 = Compute("$a2*t + $b*e^t")->reduce();
+$ans2 = Compute("$a2 + $b*e^t")->reduce();
+$ans3 = Compute("$b*e^t");
+$ans4 = Compute("$b*e^t");
+
+BEGIN_PGML
+Compute the first four derivatives of [` h(t) = [$a] t^2 + [$b] e^t `].
+
+a) [`h'(t) = `][_]{$ans1}{10}
+b) [`h''(t) = `][_]{$ans2}{10}
+c) [`h'''(t) = `][_]{$ans3}{10}
+d) [`h^{(4)}(t) = `][_]{$ans4}{10}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Remember [` \frac{d}{dx}[ e^x ] = e^x`].
+
+[``
+  \begin{array}{rcl}
+    h(t) &=& [$a] t^2 + [$b] e^t \\
+    &&\\
+    h'(t) &=& [$a2] t + [$b] e^t \\
+    &&\\
+    h''(t) &=& [$a2] + [$b] e^t \\
+    &&\\
+    h'''(t) &=& [$b] e^t \\
+    &&\\
+    h^{(4)}(t) &=& [$b] e^t \\
+    &&\\
+  \end{array}
+``] 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

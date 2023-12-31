@@ -1,0 +1,113 @@
+#Problem APEX 5.4.52
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of integration)
+## DBsection(Areas between curves)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('52')
+
+## Adapted from "Utah/Quantitative_Analysis/set10_Definite_Integrals_Techniques_of_Integration/pr_6.pg"
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGgraphmacros.pl', 'PGcourse.pl');
+
+Context("Numeric");    #->flags->set(reduceConstants => 0);
+Context()->noreduce('(-x)-y', '(-x)+y');
+
+# x-values for the intersection of f and g
+$a = random(-4, -1);
+$b = random(2,  6);
+
+# coefficients for f (2) and g (1)
+$c1 = random(-3, 3);
+$c2 = $c1 - $a * $b;
+$b1 = random(-3, 3);
+$b2 = $b1 + ($a + $b);
+
+$f       = Formula("x^2 + $b2 x + $c2")->reduce;
+$g       = Formula("2x^2 + $b1 x + $c1")->reduce;
+$b_diff  = $b1 - $b2;
+$c_diff  = $c1 - $c2;
+$fg_diff = ($f - $g)->reduce;
+$anti    = Compute("-1/3 x^3 - $b_diff/2 x^2 - $c_diff x")->reduce;
+
+$ya = $f->eval(x => $a);
+$yb = $f->eval(x => $b);
+
+$fmin = $f->eval(x => (-$b2 / 2));
+$gmin = $g->eval(x => (-$b1 / 4));
+
+$F1     = $anti->eval(x => ($b));
+$F2     = $anti->eval(x => ($a));
+$answer = $F1 - $F2;
+
+#With $bound* we ensure that the graph of the function will always be in view.
+$boundx1 = $a - 2;
+$boundy1 = min($fmin, $gmin) - 2;
+$boundx2 = $b + 2;
+$boundy2 = max($ya, $yb) + 2;
+
+#We put the functions here to keep plot_functions' entries simple
+$fun1 = FEQ("$f for x in [$boundx1,$boundx2] using color:blue and weight:2");
+$fun2 = FEQ("$g for x in [$boundx1,$boundx2] using color:red and weight:2");
+
+$graph = init_graph(
+    $boundx1, $boundy1, $boundx2, $boundy2,
+    'axes'   => [ 0, 0 ],
+    'height' => 500,
+    'width'  => 500
+);
+
+($fun1_ref, $fun2_ref) = plot_functions($graph, $fun1, $fun2);
+
+BEGIN_PGML
+Find the area of the region enclosed between 
+ [` f(x) = [$f] `] and
+ [` g(x) = [$g] `].
+ 
+>> [!A graph of two parabolas opening upwards. The two parabolas intersect once in the lower left of the image, and once in the upper right. Between the intersection points, the blue parabola is positioned above the red parabola.!]{$graph}{300}<<
+
+ Area = [_]{$answer}{20}
+
+*Note:* The graph above represents both functions
+[`f`] and [`g`] but is intentionally left unlabeled.
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The top (blue) parabola is [`f(x)`], which can be determine either from the 
+[`y`]-intercept which is greater for [`f(x)`].  Therefore, the area between curves is found using the 
+definite integral 
+[``` 
+    \int_{a}^b \left( f(x) - g(x) \right) \, dx.
+```]
+First determine the points of intersection by
+solving
+[```
+  \begin{aligned}
+  [$g] & = [$f] \\
+  [$fg_diff] & = 0 \\
+  (x-[$a])(x-[$b]) & = 0
+  \end{aligned}
+```]
+These points correspond to [`x = [$a]`] and [`x=[$b]`].
+Then 
+[```
+  \begin{aligned}
+    \textrm{Area} 
+    & = \int_{[$a]}^{[$b]} \left( ([$f]) - ([$g]) \right) \, dx\\
+    & = \int_{[$a]}^{[$b]} \left( [$fg_diff] \right) \, dx  \\
+    & = \left( [$anti] \right)\bigg|_{[$a]}^{[$b]}\\
+    & = [$F1] - \left( [$F2] \right) \\
+    & = [$answer].
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

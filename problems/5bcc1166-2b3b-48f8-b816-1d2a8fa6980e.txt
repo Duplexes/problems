@@ -1,0 +1,73 @@
+## level(4)
+## DBsubject(Statistics)
+## DBchapter(Confidence intervals)
+## DBsection(One sample mean - z)
+## Date(7/13/2012)
+## Institution(UBC)
+## Author(Djun Kim)
+## Level(3)
+## MO(1)
+## KEYWORDS('statistics', DEI', 'confidence interval for mean', 'calculation', 'interpretation')
+# Update by Rachael Norton (2023.06)
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserCheckboxList.pl', 'PGcourse.pl');
+Context('Numeric')->flags->set(
+    tolerance => 0.05,
+    tolType   => 'absolute'
+);
+
+$mean  = random(2000, 3000, 100);
+$stdev = random(100,  300,  10);
+
+$conf_int = Interval(
+    $mean - 2.576 * ($stdev / sqrt(30)),
+    $mean + 2.576 * ($stdev / sqrt(30))
+);
+
+$checks = CheckboxList(
+    [
+        [
+            "There is a 99$PERCENT chance that the mean price of all transactions "
+                . 'lies in the interval.',
+            "If we repeat the study many times, approximately 99$PERCENT of the "
+                . 'calculated confidence intervals will contain the mean '
+                . 'price of all transactions.',
+            "We can be 99$PERCENT confident that the mean price for this sample "
+                . ' of 30 transactions lies in the interval.',
+            "99$PERCENT of the cars they sell have a price that lies inside this "
+                . 'interval.',
+            "99$PERCENT of the mean sales price lies inside this interval, i.e., "
+                . " 99$PERCENT of $mean lies inside this interval.",
+            "We can be 99$PERCENT confident that all of the cars they sell have "
+                . 'a price inside this interval.'
+        ],
+        'None of the above.'
+    ],
+    [ 0, 1 ]
+);
+
+# Don't show the student which answers are correct/incorrect
+$showPartialCorrectAnswers = 0;
+
+BEGIN_PGML
+
+An online used car company sells pre-owned cars. For 30 randomly
+selected transactions, the mean price is [$mean] dollars.
+
+a) Assuming the population standard deviation for transaction
+prices is [$stdev] dollars, obtain a 99% confidence interval for
+the mean price of all transactions. Please carry at least three
+decimal places in intermediate steps. Give your final answer to
+the nearest two decimal places.
+
+    Confidence interval: [__]{$conf_int} [@ helpLink('interval') @]*
+
+b) Which of the following is a correct interpretation for your answer
+    in part (a)? Select ALL the correct answers, there may be more than one.
+
+    [__]{$checks}
+END_PGML
+
+ENDDOCUMENT();

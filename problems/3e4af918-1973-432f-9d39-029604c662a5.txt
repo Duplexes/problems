@@ -1,0 +1,76 @@
+## DESCRIPTION
+##  Statistics: Descriptive statistics
+## ENDDESCRIPTION
+
+## naw tagged this problem.
+
+## DBsubject(Statistics)
+## DBchapter(Exploratory data analysis/descriptive statistics)
+## DBsection(Classifying data)
+## Date(5/31/2005)
+## Institution(UVA)
+## Author(Nolan A. Wages)
+## Level(3)
+## TitleText1('Statistics for Management and Economics')
+## AuthorText1('Keller, Warrack')
+## EditionText1('6')
+## Section1('.')
+## Problem1('')
+## KEYWORDS('statistics', 'descriptive statistics', 'DEI')
+
+# Updated by Peter Staab and Rachel Norton (2022.06.20)
+
+DOCUMENT();
+loadMacros(
+    'PGstandard.pl',     'PGML.pl',
+    'PGchoicemacros.pl', 'parserPopUp.pl',
+    'PGcourse.pl'
+);
+
+$showPartialCorrectAnswers = 0;
+
+@questions = (
+    'How many vacations have you taken prior to this one?',
+    'Do you feel that the stay in New York was sufficiently long?',
+    'Which of the following features of the hotel in New York did you find most '
+        . 'attractive: location, facilities, room size, or price?',
+    'What is the maximum number of hours per day that you would like to spend '
+        . 'travelling?',
+    'Would your overall rating of this tour be excellent, good, fair, or poor?',
+    'What is your political party affiliation?',
+    'What grade would you like to earn in Statistics this semester; A, B, C, D, or F?',
+    'What is the current temperature outside?',
+);
+
+@answers = (
+    'Interval', 'Nominal', 'Nominal', 'Interval',
+    'Ordinal',  'Nominal', 'Ordinal', 'Interval',
+);
+
+# Select subset of questions and answers:
+@subset     = random_subset(4, 0 .. $#questions);
+@q_subset   = @questions[@subset];
+@ans_subset = @answers[@subset];
+
+@dropdowns =
+    map { DropDown([ 'Ordinal', 'Nominal', 'Interval' ], $ans_subset[$_]) }
+    (0 .. 3);
+
+BEGIN_PGML
+
+Determine whether the following possible responses should be classified as
+interval, nominal or ordinal data.
+
+END_PGML
+
+for $i (0 .. 3) {
+
+BEGIN_PGML
+- [$q_subset[$i]] [_]{$dropdowns[$i]}
+END_PGML
+}
+
+COMMENT(
+    'Questions selected randomly from a larger set.  See source for full question list.'
+);
+ENDDOCUMENT();    # This should be the last executable line in the problem.

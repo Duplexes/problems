@@ -1,0 +1,120 @@
+## DESCRIPTION
+##   Graph of Multivariable Function
+## ENDDESCRIPTION
+
+## Tagged by nhamblet
+
+## DBsubject(Calculus - multivariable)
+## DBchapter(Integration of multivariable functions)
+## DBsection(Triple integrals)
+## Institution(Alfred University)
+## Author(Cook)
+## Level(4)
+## TitleText1('Calculus: Early Transcendentals')
+## AuthorText1('Anton')
+## EditionText1('8')
+## Section1('15.5')
+## Problem1('')
+## KEYWORDS('Multivariable', 'Graph')
+## RESOURCES('sphere.gif','capped_cylinder.gif','ellipsoid.gif','plane_slicing_cylinder.gif','paraboloid_intersection.gif')
+
+DOCUMENT();
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "PGauxiliaryFunctions.pl",  # for random_subset
+  "niceTables.pl",
+  "PGcourse.pl"
+);
+ 
+
+## Do NOT show partial correct answers
+$showPartialCorrectAnswers = 0;
+
+Context("Numeric");
+Context()->strings->add(A => {}, B => {}, C => {}, D => {}, E => {} );
+
+@integral = (
+	"\int_{-1}^1\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\int_{-\sqrt{1-x^2-y^2}-1}^{\sqrt{1-x^2-y^2}+1}dzdydx",
+	"\int_{-\sqrt{2}}^{\sqrt{2}}\int_{-\sqrt{1-\frac{x^2}{2}}}^{\sqrt{1-\frac{x^2}{2}}}\int_{-\sqrt{1-\frac{x^2}{2}-y^2}}^{\sqrt{1-\frac{x^2}{2}-y^2}}dzdydx",
+	"\int_{-\sqrt{2}}^{\sqrt{2}}\int_{-\sqrt{2-x^2}}^{\sqrt{2-x^2}}\int_{x^2+y^2}^{4-x^2-y^2}dzdydx",
+	"\int_{-1}^1\int_{-\sqrt{1-x^2}}^{\sqrt{1-x^2}}\int_{0}^{6-x-3y}dzdydx",
+	"\int_{-1}^1\int_{-\sqrt{1-{x^2}}}^{\sqrt{1-{x^2}}}\int_{-\sqrt{1-{x^2}-y^2}}^{\sqrt{1-{x^2}-y^2}}dzdydx"
+               );
+
+# figures
+
+@fig = (
+            "capped_cylinder.gif",
+            "ellipsoid.gif",
+            "paraboloid_intersection.gif",
+            "plane_slicing_cylinder.gif",
+            "sphere.gif" 
+            );
+
+@width = (100,110,100,80,110);
+@tex_size = (135,140,120,100,135);
+
+@alt_tag = (
+  "Bounded vertical cylinder with a hemispherical cap on each end.",
+  "Ellipsoid.",
+  "Region between two intersecting paraboloids, one pointing up, the other pointing down." ,
+  "Vertical cylinder bounded below by horizontal plane and bounded above by sloping plane.",
+  "Sphere"
+);
+
+$numfigs = 5;
+
+# permute the integrals and figures together,
+# so they remain matched: $integral[0] -> $fig[0] etc. after the permutation
+
+@perm1 = random_subset($numfigs,(0..$numfigs-1));
+
+@integral = @integral[@perm1];
+@fig = @fig[@perm1];
+@width = @width[@perm1];
+@tex_size = @tex_size[@perm1];
+@alt_tag = @alt_tag[@perm1];
+
+# permute the integrals and the answers so they are matched 
+# after the permutation: $integral[0] -> $answer[0], etc.
+
+@perm2 = random_subset($numfigs,(0..$numfigs-1));
+
+@integral = @integral[@perm2];
+@caption = @ALPHABET[0..$numfigs-1];
+@answer = @caption[@perm2];
+
+$figTable = LayoutTable([
+  [ "A.",  image($fig[0], width => $width[0], tex_size => $tex_size[0], extra_html_tags => $alt_tag[0]), 
+    "B.",  image($fig[1], width => $width[1], tex_size => $tex_size[1], extra_html_tags => $alt_tag[1]),
+    "C.",  image($fig[2], width => $width[2], tex_size => $tex_size[2], extra_html_tags => $alt_tag[2]),
+  ],
+  [ "D.",  image($fig[3], width => $width[3], tex_size => $tex_size[3], extra_html_tags => $alt_tag[3]), 
+    "E.",  image($fig[4], width => $width[4], tex_size => $tex_size[4], extra_html_tags => $alt_tag[4])
+  ]
+], center=> 0);
+
+
+BEGIN_PGML
+Each triple integral calculates the volume of one of the solids pictured below.  Match each integral with the label A - E of its corresponding solid.  As always, you may click on the thumbnail image to produce a larger image in a new window.  Just take your time; a process of elimination will help with matches that are not obvious.
+
+    1. [_]{String($answer[0])} [``[$integral[0]]``]  
+
+    2. [_]{String($answer[1])} [``[$integral[1]]``]  
+
+    3. [_]{String($answer[2])} [``[$integral[2]]``]  
+
+    4. [_]{String($answer[3])} [``[$integral[3]]``]  
+
+    5. [_]{String($answer[4])} [``[$integral[4]]``]  
+
+[@ $figTable @]*
+END_PGML
+
+ENDDOCUMENT();
+
+
+
+

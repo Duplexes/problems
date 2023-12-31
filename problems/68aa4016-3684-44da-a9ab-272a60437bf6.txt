@@ -1,0 +1,74 @@
+#Problem APEX 6.1.59
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Techniques of integration)
+## DBsection(Substitution (without trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.1')
+## Problem1('59')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',                'PGML.pl',
+    'parserFormulaUpToConstant.pl', 'answerHints.pl',
+    'PGcourse.pl'
+);
+
+## (a) ##
+$e1 = random(-9, -1);
+$e2 = random(1,  9);
+
+$b1 = -$e1 - $e2;
+$c1 = $e1 * $e2;
+
+$u1  = Formula("x^2 + $b1 x + $c1")->reduce;
+$du1 = Formula("2x + $b1")->reduce;
+
+$f1 = Formula("$du1/$u1");
+
+#### Answers ####
+$limits = [ $e1 - 2, $e2 + 2 ];
+Context('Numeric')->variables->are(x => [ 'Real', limits => $limits ]);
+
+$F1 = FormulaUpToConstant("ln|$u1|")
+    ->with(test_at => [ [ $e1 - 1 ], [0], [ $e2 + 1 ] ]);
+$F1_partial = FormulaUpToConstant("ln($u1)");
+@hints      = AnswerHints(
+    $F1_partial => [
+        "Make sure to remember absolute values when integrating \(\displaystyle \int \frac{1}{u}\,du\)",
+        score => 0.5
+    ]
+);
+#################
+
+BEGIN_PGML
+Evaluate the indefinite integral. (Use [`C`]
+for the constant of integration.)
+
+[` \displaystyle \int [$f1] \, dx = `]
+[_]{$F1->cmp->withPostFilter(@hints)}{40}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Substitute [`u = [$u1]`].  Then [`du = [$du1] \,dx`].
+
+[```
+  \begin{array}{rcl}
+    \displaystyle  \int [$f1] \, dx &=&
+    \displaystyle \int \dfrac{du}{u} \\
+    &=& \ln u + C\\
+    &=& \ln|[$u1]| + C.
+  \end{array}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

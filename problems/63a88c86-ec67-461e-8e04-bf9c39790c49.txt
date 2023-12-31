@@ -1,0 +1,59 @@
+##DESCRIPTION
+## Scientific Notation
+## 
+##ENDDESCRIPTION
+## DBsubject(Algebra)
+## DBchapter(Algebra of real numbers and simplifying expressions)
+## DBsection(Scientific notation)
+## Institution(The College of Idaho)
+## Author(RA Cruz)
+## MLT(Decimal_to_scientific)
+## Level(1)
+## MO(1)
+## TitleText1('Essentials of Intermediate Algebra')
+## AuthorText1('Blitzer')
+## EditionText1('1')
+## Section1('1.7')
+## Problem1('')
+## KEYWORDS('Scientific Notation')
+## Date: 2007/09
+
+DOCUMENT();
+loadMacros(
+  "PGstandard.pl",
+  "PGML.pl",
+  "contextScientificNotation.pl",
+  "contextLimitedNumeric.pl",
+  "PGcourse.pl"
+);
+
+######################################
+#  Setup
+
+$num = random(-9,-1.1,.0001);
+$exp = random(3,10,1);
+$a = $num * 10**$exp;
+
+Context(ScientificNotation);
+$sna = ScientificNotation($a);
+
+Context("LimitedNumeric");
+$ans = Real($a);
+
+######################################
+#  Main text
+
+BEGIN_PGML
+Write in decimal notation without the use of exponents:
+
+     [``[$sna] = ``] [_]{$ans}{20}
+END_PGML
+
+######################################
+# Solution
+
+BEGIN_PGML_SOLUTION
+In decimal notation, [``[$sna] = [$a]``].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

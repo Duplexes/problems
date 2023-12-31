@@ -1,0 +1,95 @@
+#Problem APEX 1.6.16
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Infinite limits and vertical asymptotes)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.6')
+## Problem1('16')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'niceTables.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+#####################################################################
+
+$c = random(1, 8, 1);
+
+$a = random(1, 8, 1);
+$k = random(1, 8, 1);
+$h = random(1, 8, 1);
+
+$p1 = $k + $h;
+$p0 = $k * $h;
+$q2 = $a - 2 * $c;
+$q1 = $c**2 - 2 * $a * $c;
+$q0 = $a * ($c**2);
+
+$f = Formula("(x**2 + $p1*x + $p0)/(x**3 + $q2*(x**2) + $q1*x + $q0)")->reduce;
+
+$ans = Compute("INF");
+
+$solution_table = DataTable(
+    [
+        [ '\(x\)', '\(f(x)\)', '\(x\)', '\(f(x)\)' ],
+        [
+            $c + 0.1,
+            round($f->eval(x => $c + 0.1)),
+            $c - 0.1,
+            round($f->eval(x => $c - 0.1))
+        ],
+        [
+            $c + 0.01,
+            round($f->eval(x => $c + 0.01)),
+            $c - 0.01,
+            round($f->eval(x => $c - 0.01))
+        ],
+        [
+            $c + 0.001,
+            round($f->eval(x => $c + 0.001)),
+            $c - 0.001,
+            round($f->eval(x => $c - 0.001))
+        ],
+    ],
+    horizontalrules => 1,
+    textalignment   => '|c|c|c|c|'
+);
+
+###############################################################
+
+BEGIN_PGML
+A function is given below.  Evaluate the indicated limits numerically.
+[```
+  f(x) = [$f]
+```]
+  
+a) [`\displaystyle \lim_{x \to [$c]^-} f(x)`] = [__]{$ans}
+  
+b) [`\displaystyle \lim_{x \to [$c]^+} f(x)`] = [__]{$ans}
+  
+c) [`\displaystyle \lim_{x \to [$c]} f(x)`] = [__]{$ans}
+
+See [@ helpLink("limit") @]*
+END_PGML
+
+#####################################################################
+
+BEGIN_PGML_SOLUTION
+(Values in the table have been rounded to whole numbers.)
+  
+[@ $solution_table @]*
+
+The values as [`x \to [$c] `] from either left
+or right grow without bound.  This provides numerical evidence
+that the limits are [`\infty`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

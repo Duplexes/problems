@@ -1,0 +1,94 @@
+#Problem APEX 5.4.36-38
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of integration)
+## DBsection(Average value of a function)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('33')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl',, 'PGcourse.pl');
+
+Context("Numeric");
+
+## Common:
+$a1   = random(1, 5);
+$tmp1 = random(3, 8);
+$b1   = Compute("$a1 + $tmp1");
+$ab1  = Compute("$b1 - $a1");
+
+## a)
+$num1 = Compute("$b1**2 - $a1**2");
+$den1 = Compute("2*$ab1");
+$ans1 = Compute("$num1 / $den1");
+
+## b)
+$num2 = Compute("$b1**3 - $a1**3");
+$den2 = Compute("3 * $ab1");
+$ans2 = Compute("$num2 / $den2");
+
+## c)
+$num3 = Compute("$b1**4 - $a1**4");
+$den3 = Compute("4 * $ab1");
+$ans3 = Compute("$num3 / $den3");
+
+BEGIN_PGML
+Find the average value of the functions
+on the given interval.
+
+a) The average value of [`f(x)=x`] on [` [[$a1], [$b1]] `] is  [_]{$ans1}{15}  
+
+b) The average value of [`f(x)=x^2`] on [` [[$a1], [$b1]] `] is  [_]{$ans2}{15}  
+
+c) The average value of [`f(x)=x^3`] on [` [[$a1], [$b1]] `] is  [_]{$ans3}{15}  
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Remember that the average value of a function [`f`] on an interval [`[a, b]`]
+is equal to 
+[``` 
+    \textrm{average value}
+    = \frac{1}{b-a}\int_{a}^b f(x) \, dx.
+```]
+
+a) [`\;`]
+[```
+  \begin{aligned}
+     \frac{1}{[$b1] - [$a1]}\int_{[$a1]}^{[$b1]} x \, dx 
+     & = \frac{1}{[$ab1]} \frac{x^2}{2} \bigg|_{[$a1]}^{[$b1]}
+     \\
+    & = \frac{[$num1]}{[$den1]}\\
+    & = [$ans1].
+  \end{aligned}
+```]
+
+b) [`\;`]
+[```
+  \begin{aligned}
+    \frac{1}{[$b1] - [$a1]}\int_{[$a1]}^{[$b1]} x^2 \, dx 
+    & = \frac{1}{[$ab1]} \frac{x^3}{3}\bigg|_{[$a1]}^{[$b1]}
+    \\
+    & = \frac{[$num2]}{[$den2]}\\
+    & = [$ans2].
+  \end{aligned}
+```]
+
+c) [`\;`]
+[```
+  \begin{aligned}
+    \frac{1}{[$b1] - [$a1]}\int_{[$a1]}^{[$b1]} x^3 \, dx 
+    & = \frac{1}{[$ab1]} \frac{x^4}{4}\bigg|_{[$a1]}^{[$b1]}
+    \\
+    & = \frac{[$num3]}{[$den3]}\\
+    & = [$ans3].
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

@@ -1,0 +1,74 @@
+#Problem APEX 1.6.9
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Infinite limits and vertical asymptotes)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.6')
+## Problem1('9')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGgraphmacros.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+#####################################################################
+
+$c    = random(1, 5, 1) * random(-1, 1, 2);
+$xmin = $c - 6;
+$xmax = $c + 6;
+
+$c_l = $c - 0.1;
+$c_r = $c + 0.1;
+
+$w  = 400;    # graph size
+$tw = 500;    # graph size in TeX
+
+$graph1 = init_graph(
+    $xmin, -2, $xmax, 6,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 12,  8 ],
+    'grid'  => [ 12,  8 ],
+    'size'  => [ 500, 500 ]
+);
+
+plot_functions(
+    $graph1,
+    "1/(x - $c)^2 for x in [$xmin,$c_l] using color:blue weight:2",
+    "1/(x - $c)^2 for x in [$c_r,$xmax] using color:blue weight:2"
+);
+
+$ans = Compute('Infinity');
+
+###############################################################
+
+BEGIN_PGML
+>> [!A graph of f(x), defined below!]{$graph1}{$w} <<
+
+---
+Evaluate the given limits using the graph of 
+the function [` f(x) = \displaystyle \frac{1}{(x - [$c])^2}`] shown above.
+  
+a) [`\displaystyle \lim_{x \to [$c]^-} f(x)`] = [__]{$ans} 
+  
+b) [`\displaystyle \lim_{x \to [$c]^+} f(x)`] = [__]{$ans}
+  
+c) [`\displaystyle \lim_{x \to [$c]} f(x)`] = [__]{$ans}
+
+[@ helpLink("limit") @]*
+END_PGML
+
+#####################################################################
+
+BEGIN_PGML_SOLUTION
+There is a vertical asymptote at [`x = [$c]`], and the limits from either side are [` \infty`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

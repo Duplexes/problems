@@ -1,0 +1,106 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Definitions and existence (conceptual))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.2')
+## Problem1('5')
+
+#Problem APEX 1.2.5
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+  "PGstandard.pl",
+  "PGML.pl",
+  "parserPopUp.pl",
+  "PGcourse.pl"
+);
+
+$showPartialCorrectAnswers = 0;
+
+Context("Numeric");
+
+#$solutionexits=1;
+
+$a=Real(random(1,10));
+$c=Real(random(-10,10));
+$L = $a - $c;
+
+$eps = DropDown(["epsilon", "delta"], "epsilon");
+$del = DropDown(["epsilon", "delta"], "delta");
+
+$m = Real(1);
+
+BEGIN_PGML
+Fill in each blank to construct an [`\epsilon`]-[`\delta`] proof showing that 
+[```
+  \lim_{x \to [$c]}\; ([$a] - x) = [$L].
+```]
+Where it asks for [`\delta`], give the largest value that will work.
+
+
+*Proof.* Let [_]{$eps} [` > 0`] be given.  Let [`\delta`] be the product 
+[`\delta = \Big(`][_]{$m}[`\Big)\Big(\epsilon\Big).`]
+
+If 
+
+>>[`\Big|x - `] [_]{$c} [`\Big| < `] [_]{$del}<<
+
+then after some algebra we arrive at
+
+>>[`\Big|([$a]-x) - `] [_]{$L} [`\Big| < `] [_]{$eps}<<
+
+which is what we wanted to prove.
+END_PGML
+
+BEGIN_PGML_SOLUTION
+*Solution:*
+
+
+First, we should do some scratch work
+
+With [`f(x) = [$a] - x `], and limiting value \`[$L]`\, we must solve the
+inequality:
+
+>>[`|f(x) - [$L]| < \epsilon`]<<
+
+>>[` |([$a] - x) - [$L]| < \epsilon`] <<
+
+>>[` |[$c] - x| < \epsilon`]<<
+
+>>[` -\epsilon < [$c] - x < \epsilon`]<<
+
+>>[` -\epsilon < x - ([$c]) < \epsilon`]<<
+
+
+This implies we can let [`\delta = \epsilon`].  Now reverse
+the steps to construct the proof.
+
+
+*Proof of the limit:*
+
+Let [`\epsilon > 0`] be given.  Then with [`\delta = \epsilon`],
+and with [`x`] satisfying [`|x - ([$c])| < \delta`],
+
+>>[`|x - ([$c])| < \delta = \epsilon`]<<
+
+>>[`-\epsilon < x - ([$c]) < \epsilon`]<<
+
+>>[` -\epsilon < [$c] - x < \epsilon`]<<
+
+>>[`-\epsilon < ([$a] - x) - [$L] < \epsilon`]<<
+
+>>[`|([$a] - x) - [$L] | < \epsilon`]<<
+
+The last line shows [` |f(x) - [$L]| < \epsilon`], which is what we wanted to prove.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

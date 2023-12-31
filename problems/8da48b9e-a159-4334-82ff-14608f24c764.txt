@@ -1,0 +1,70 @@
+#Problem APEX 3.1.20
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Global extrema)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(GlobalExtremes_RationalQuads)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.1')
+## Problem1('20')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+Context("Numeric");
+Context()->strings->add(none => {}, EmptySet => { alias => "DNE" });
+
+$a = random(1, 5, 1);
+
+$a2 = Compute("$a^2");
+
+$ans1 = Compute("-1");
+$ans2 = Compute("(25-$a2)/(25+$a2)");
+
+$f = "\dfrac{x^2-$a2}{x^2+$a2}";
+
+$a4    = Compute("4*$a2");
+$deriv = "\dfrac{$a4 x}{(x^2 + $a2)^2}";
+
+BEGIN_PGML
+Find the extreme values of the function 
+[```
+    f(x) = [$f]
+```]
+on the interval [`[-5, 5]`].
+If an extreme value does not exist, enter *DNE*.
+
+Absolute minimum value: [_]{$ans1}{10}
+
+Absolute maximum value: [_]{$ans2}{10}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Set the derivative 
+[```
+  f'(x) = [$deriv]
+```]
+equal to zero to locate all critical numbers. (Don't forget to use Quotient Rule in computing this!) The derivative is zero when [`[$a4] x = 0`], and so 
+the only critical number is [`x = 0`].
+
+Next we find the value of [`f`] at this critical number and the endpoints:
+[```
+  \begin{aligned}
+  f(-5) &= [$ans2]\\
+  f(0) &= [$ans1]\\
+  f(5) &= [$ans2]\\
+  \end{aligned}
+```]
+Therefore the absolute minimum value is [`[$ans1]`], 
+and the absolute maximum value is 
+[`[$ans2]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

@@ -1,0 +1,148 @@
+#Problem APEX 3.4.14-15
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('14 15')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',    'PGML.pl',
+    'PGgraphmacros.pl', 'parserRadioButtons.pl',
+    'PGcourse.pl'
+);
+
+COMMENT('There is no alt-text defined for the images in this problem');
+
+Context('Numeric');
+$n = random(1, 5, 1);
+
+$f_gr = "1/x^($n)";
+
+$f = Compute("1/x^($n)")->reduce();
+
+$n1 = $n + 1;
+
+$df    = "\dfrac{-$n}{x^{$n1}}";
+$df    = Compute("(-$n)/x^($n1)");
+$df_gr = "(-$n)/(x^($n1))";
+
+$n2  = $n + 2;
+$num = $n * $n1;
+
+$ddf    = Compute("$num/x^($n2)");
+$ddf_gr = "$num/(x^($n2))";
+
+$crit = 0;
+
+Context('Interval');
+if (($n / 2) == int($n / 2)) {
+    ## Even $n
+    $CU = List("(-INF, 0) , (0, INF)")->cmp(entry_type => "an interval");
+    $CD = List("None")->cmp(entry_type => "an interval");
+} else {
+    ## Odd $n
+    $CU = List("(0, INF)")->cmp(entry_type => "an interval");
+    $CD = List("(-INF, 0)")->cmp(entry_type => "an interval");
+}
+
+########################################
+## Graphs
+
+$w  = 300;    # graph size
+$tw = 300;    # graph size in TeX
+
+$x1 = -4;
+$x2 = 4;
+$xt = 8;
+
+$graph1 = init_graph(
+    $x1, -4, $x2, 4,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ $xt, 10 ],
+    'size'  => [ 300, 300 ]
+);
+$graph2 = init_graph(
+    $x1, -4, $x2, 4,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ $xt, 10 ],
+    'size'  => [ 300, 300 ]
+);
+$graph3 = init_graph(
+    $x1, -4, $x2, 4,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ $xt, 10 ],
+    'size'  => [ 300, 300 ]
+);
+$graph4 = init_graph(
+    $x1, -4, $x2, 4,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ $xt, 10 ],
+    'size'  => [ 300, 300 ]
+);
+
+$p1 = FEQ("$f_gr for x in [$x1,$x2] using color:blue weight:2");
+$d1 = FEQ("-($ddf_gr) for x in [$x1,$x2] using color:red weight:2");
+
+$p2 = FEQ("$f_gr for x in [$x1,$x2] using color:blue weight:2");
+$d2 = FEQ("$ddf_gr for x in [$x1,$x2] using color:red weight:2");
+
+$p3 = FEQ("$f_gr for x in [$x1,$x2] using color:blue weight:2");
+$d3 = FEQ("-($df_gr) for x in [$x1,$x2] using color:red weight:2");
+
+$p4 = FEQ("$f_gr for x in [$x1,$x2] using color:blue weight:2");
+$d4 = FEQ("$df_gr for x in [$x1,$x2] using color:red weight:2");
+
+plot_functions($graph1, $p1, $d1);
+plot_functions($graph2, $p2, $d2);
+plot_functions($graph3, $p3, $d3);
+plot_functions($graph4, $p4, $d4);
+
+$MC = RadioButtons(
+    [ [
+        image($graph1, width => $w, tex_size => $tw),
+        image($graph2, width => $w, tex_size => $tw),
+        image($graph3, width => $w, tex_size => $tw),
+        image($graph4, width => $w, tex_size => $tw)
+    ] ],
+    1,
+    separator => "$BR$BR"
+);
+
+BEGIN_PGML
+Let [`` f(x) = [$f]``]
+
+a) Find the first and second derivatives.
+    - [`f'(x) = `] [_]{$df}{20}
+    - [`f''(x) = `] [_]{$ddf}{20}
+
+b) Identify the graph that displays [`f`] in blue and [`f''`] in red.
+
+    [_]{$MC}
+
+c) Using the graphs of [`f`] and [`f''`], indicate where [`f`] is concave up and concave down.
+Give your answer as a list of intervals separated by commas.  If there are no such intervals, enter "None". [@helpLink('interval')@]*
+
+    - [`f`] is concave up on [_]{$CU}{20}
+    - [`f`] is concave down on [_]{$CD}{20}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$df] `] and [`f''(x) = [$ddf] `].
+
+Use the graph of [`f''`] to help find where [`f`] is concave up and concave down.
+Note, [`f`] is undefined at [`x = 0`].
+- When [`f''(x) > 0`], [`f`] is concave up.
+- When [`f''(x) < 0`], [`f`] is concave down.
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

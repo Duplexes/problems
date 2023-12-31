@@ -1,0 +1,80 @@
+#Problem APEX 5.4.11
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Definite integrals (without trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(atothex)
+## MLTleader(1)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('11')
+
+## Also handles problem 14
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Numeric");
+## Set-up for part (a)
+$a = random(2, 5);
+
+$a1 = random(-3, -1);
+$b1 = random(1,  4);
+
+$f = "$a^x";
+
+$fI    = Formula("($a^x)/ln($a)");
+$ans1  = $fI->eval(x => $b1) - $fI->eval(x => $a1); 
+
+## Set-up for part (b)
+$b = random(2, 15) * random(-1, 1, 2);
+
+$a2 = random(-3, -1);
+$b2 = random(1,  4);
+
+$g = "$b e^x";
+$gI    = Formula("$b e^x");
+$ans2  = $gI->eval(x => $b2)-$gI->eval(x => $a2);
+
+BEGIN_PGML
+Evaluate the definite integrals
+
+a) [``\int_{[$a1]}^{[$b1]} [$f] \, dx = ``]
+[_]{$ans1}{15}
+
+b) [``\int_{[$a2]}^{[$b2]} [$g] \, dx = ``]
+[_]{$ans2}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Use the Fundamental Theorem of Calculus.
+
+a) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a1]}^{[$b1]} [$f] \, dx 
+    & = \left(\dfrac{[$a]^x}{\ln [$a]} \right) \bigg|_{[$a1]}^{[$b1]}
+    \\
+    & = \frac{[$a]^{[$b1]} - [$a]^{[$a1]}}{\ln [$a]}
+    \\
+    & \approx [$ans1].
+  \end{aligned}
+```]
+
+b) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a2]}^{[$b2]} [$g] \, dx
+    & = \left( [$g] \right) \Big|_{[$a2]}^{[$b2]}\\
+    & = [$b] (e^{[$b2]} - e^{[$a2]})\\
+    &\approx [$ans2].
+  \end{aligned}
+```]
+
+END_PGML_SOLUTION
+ENDDOCUMENT();

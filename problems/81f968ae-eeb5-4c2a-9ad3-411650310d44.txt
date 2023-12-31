@@ -1,0 +1,101 @@
+#Problem APEX 4.3.17
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Optimization - general)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(Optimization_Inscribe2D_general)
+## Level(5)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('4.3')
+## Problem1('13')
+## RESOURCES('APEX_4dot3_17_fig1.jpg','APEX_4dot3_17_fig2.jpg')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+$r   = random(2, 10, 1);
+$rs  = $r**2;
+$rs2 = 2 * $rs;
+$rs4 = 4 * $rs;
+
+$ans1 = Compute("$r*sqrt(2)");
+$ans2 = Compute("$r*sqrt(2)");
+$ans3 = Compute($rs2);
+
+###################################
+# Main text
+
+BEGIN_PGML
+>> [! Diagram of a rectangle inside a circle !]{'./APEX_4dot3_17_fig1.jpg'}{200} <<
+
+What are the dimensions of the rectangle with largest area
+that can be drawn inside a circle of radius [$r] ?
+
+- Width: [_]{$ans1}{10}
+- Height: [_]{$ans2}{10}
+- Area: [_]{$ans3}{10}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Let the width of the rectangle be [`x`] and its height be [`y`].
+The fundamental equation (to be maximized) is the area of the rectangle, [`A = xy`].
+
+[@ image("./APEX_4dot3_17_fig2.jpg", height=>200, width=> 400) @]*
+
+Using a little geometry, we find an equation relating
+the radius to [`x`] and [`y`] (See figure):
+
+[``
+  \left( \dfrac{x}{2} \right)^2 + 
+  \left( \dfrac{y}{2} \right)^2 = r^2 = [$rs]
+``]
+
+Solve for one of the variables, with the assumption that
+[`x, y > 0`].
+
+[``
+  \begin{array}{rcl}
+    \dfrac{x^2}{4} + \dfrac{y^2}{4} &=& [$rs] \\
+    \\
+    y^2 &=& 4\left( [$rs] - \dfrac{x^2}{4} \right)\\
+    \\
+    y &=& \sqrt{[$rs4] - x^2}
+  \end{array}
+``]
+
+Substitute this into the fundamental equation and
+find the critical number(s).
+
+[``
+  \begin{array}{rcl}
+    A &=& xy = x\sqrt{[$rs4] - x^2}\\
+    \\
+    A' &=& \dfrac{-x^2}{\sqrt{[$rs4] - x^2}} + \sqrt{[$rs4] - x^2}\\
+    \\
+    \dfrac{-x^2}{\sqrt{[$rs4] - x^2}} + \sqrt{[$rs4] - x^2} &=& 0\\
+    \\
+    \dfrac{x^2}{\sqrt{[$rs4] - x^2}} &=& \sqrt{[$rs4] - x^2} \\
+    \\
+    x^2 &=& [$rs4] - x^2 \\
+    2x^2 &=& [$rs4] \\
+    x &=& \sqrt{[$rs2]} = [$r]\sqrt{2}
+  \end{array}
+``]
+
+Next, find [`y`]:
+
+[``
+  y = \sqrt{ [$rs4] - x^2} = \sqrt{[$rs4] - ([$r]\sqrt{2})^2} = [$r]\sqrt{2}.
+``]
+
+It turns out that the optimal rectangle is in fact a square
+with width = height = [`[$r] \sqrt{2}`] and area
+[`A = ([$r] \sqrt{2})^2 = [$rs2]`].
+END_PGML_SOLUTION
+ENDDOCUMENT();

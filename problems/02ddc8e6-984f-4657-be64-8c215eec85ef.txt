@@ -1,0 +1,137 @@
+#Problem APEX 2.7.5
+
+## DBsubject(Algebra)
+## DBchapter(Inverse functions)
+## DBsection(Finding the inverse function)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(Compositions_thenInverseQuestion)
+## MLTleader(1)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.7')
+## Problem1('5')
+## Edited July 2023
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserPopUp.pl', 'PGcourse.pl');
+Context('Numeric');
+
+$a = random(2, 20);
+do {
+    $b = random(2, 20);
+} until (gcd($a, $b) == 1);
+$ab = $a * $b;
+
+$f1 = "$a x + $b";
+$f2 = "\frac{x}{$a} - $b";
+$f3 = "\frac{x}{$a} - \frac{$b}{$a}";
+$f4 = "$a x + $ab";
+
+$num2 = $b - $ab;
+
+$ans1    = Compute("x - $ab + $b");
+$ans2    = Compute("x + $b/$a - $b");
+$choice1 = DropDown([ "are", "are not" ], "are not");
+$ans3    = Formula("x");
+$ans4    = Formula("x");
+$choice2 = DropDown([ "are", "are not" ], "are");
+$ans5    = Formula("x");
+$ans6    = Formula("x");
+$choice3 = DropDown([ "are", "are not" ], "are");
+
+BEGIN_PGML
+
+Four functions are given below.  Perform the indicated
+compositions to determine which functions are inverse
+to each other.  Be sure to simplify the results.
+
+[```
+  \begin{array}{rcl}
+    f(x) &=& [$f1]\\
+    g(x) &=& [$f2]\\
+    h(x) &=& [$f3]\\
+    j(x) &=& [$f4]\\
+    &&
+  \end{array}
+```]
+
+
+[` f(g(x)) = `] [_]{$ans1}{10}
+
+[` g(f(x)) = `] [_]{$ans2}{10}
+ 
+Conclusion: [`f`] and [`g`] [_]{$choice1} inverses.
+---
+
+[` f(h(x)) = `] [_]{$ans3}{10}
+
+[` h(f(x)) = `] [_]{$ans4}{10}
+ 
+Conclusion: [`f`] and [`h`] [_]{$choice2}  inverses.
+---
+
+[` j(g(x)) = `] [_]{$ans5}{10}
+
+[` g(j(x)) = `] [_]{$ans6}{10}
+ 
+Conclusion: [`g`] and [`j`] [_]{$choice3}  inverses.
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+We have,
+
+[```
+  f(g(x)) = [$a]\left(\frac{x}{[$a]} - [$b]\right) + [$b] = x - [$ab] + [$b]
+  = x + [$num2].
+```]
+
+[```
+  g(f(x)) = \frac{[$a] x + [$b]}{[$a]} - [$b] = x + \frac{[$b]}{[$a]} - [$b]
+  = x + \frac{[$num2]}{[$a]}
+```]
+
+Since [` f(g(x)) \neq x `] (or [`g(f(x)) \neq x`] ), [`f`] and [`g`]
+**[$choice1->correct_ans] ** inverses of one another.
+
+Next,
+
+[```
+  f(h(x)) = [$a]\left(\frac{x}{[$a]} - \frac{[$b]}{[$a]}\right) + [$b] 
+  = x - [$b] + [$b]
+  = x
+```]
+
+[```
+  h(f(x)) = \frac{[$a] x + [$b]}{[$a]} - \frac{[$b]}{[$a]} = 
+  x + \frac{[$b]}{[$a]} - \frac{[$b]}{[$a]}
+  = x 
+```]
+
+Since [` f(h(x)) = x `] and [`h(f(x)) =  x`], [`f`] and [`h`]
+**[$choice2->correct_ans] ** inverses of one another.
+
+Finally,
+
+[```
+  j(g(x)) = [$a]\left(\frac{x}{[$a]} - [$b]\right) + [$ab] 
+  = x - [$ab] + [$ab]
+  = x
+```]
+
+[```
+  g(j(x)) = \frac{[$a] x + [$ab]}{[$a]} - [$b] = 
+  x + [$b] - [$b]
+  = x 
+```]
+
+Since [` j(g(x)) = x `] and [`g(j(x)) =  x`], [`g`] and [`j`]
+**[$choice3->correct_ans] ** inverses of one another.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

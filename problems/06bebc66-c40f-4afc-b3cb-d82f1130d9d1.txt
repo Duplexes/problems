@@ -1,0 +1,182 @@
+#Problem APEX 3.4.5
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('5')
+# Updated July, 2023
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl', 'PGML.pl',
+    'PGtikz.pl',     'parserRadioButtons.pl',
+    'PGcourse.pl'
+);
+
+Context("Numeric")->noreduce('(-x)-y');
+
+$m      = random(2, 5) * random(-1, 1, 2);
+$b      = random(1, 5) * random(-1, 1, 2);
+$minusm = -$m;
+
+$f   = Compute("$m*x + $b")->reduce();
+$df  = Formula("$m");
+$ddf = Formula("0");
+
+$xmin = (-10 - $b) / $m;
+$xmax = (10 - $b) / $m;
+
+$xminwrong = (10 + $b) / $m;
+$xmaxwrong = ($b - 10) / $m;
+
+$problemgrid = "\tikzset{>={Stealth[scale=1.5]}}
+\huge
+\filldraw[
+    draw=LightBlue,
+    fill=white,
+    rounded corners=10pt,
+    thick,use as bounding box
+] (-10,10) rectangle (10,-10);
+\draw[->,thick] (-10,0) -- (10,0) node[above left,outer sep=3pt] {\(x\)};
+\foreach \x in {-10,...,-1,1,2,...,10}
+    \draw(\x,5pt) -- (\x,-5pt) node [below] {\(\x\)};
+\draw[->,thick] (0,-10) -- (0,10) node[below right,outer sep=3pt] {\(y\)};
+\foreach \y in {-10,...,10}
+    \draw (5pt,\y) -- (-5pt,\y) node[left] {\(\y\)};
+\draw[step=1,gray,very thin] (-10,-10) grid (10,10);
+";
+
+########################################
+## Graphs
+
+$grapha = createTikZImage();
+$grapha->tikzLibraries('arrows.meta');
+$grapha->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] ($xmin,-10) -- ($xmax,10);
+\draw[red,ultra thick] (-10,$m) -- (9.9,$m);
+END_TIKZ
+
+$graphb = createTikZImage();
+$graphb->tikzLibraries('arrows.meta');
+$graphb->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] ($xmin,-10) -- ($xmax,10);
+\draw[red,ultra thick] (-10,0) -- (9.9,0);
+END_TIKZ
+
+$graphc = createTikZImage();
+$graphc->tikzLibraries('arrows.meta');
+$graphc->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] ($xmin,-10) -- ($xmax,10);
+\draw[red,ultra thick] (-10,$minusm) -- (9.9,$minusm);
+END_TIKZ
+
+$graphd = createTikZImage();
+$graphd->tikzLibraries('arrows.meta');
+$graphd->BEGIN_TIKZ
+$problemgrid
+\draw[blue,ultra thick, dashed] ($xmin,-10) -- ($xmax,10);
+\draw[red,ultra thick] ($xminwrong,-10) -- ($xmaxwrong,10);
+END_TIKZ
+
+$altTextA =
+    "A plot with two lines.  The blue line has "
+    . (($m > 0) ? 'positive' : 'negative')
+    . " slope and "
+    . "y-intercept of $b. The red line is horizontal with y-intercept of $m";
+
+$altTextB =
+    "A plot with two lines.  The blue line has "
+    . (($m > 0) ? 'positive' : 'negative')
+    . " slope and "
+    . "y-intercept of $b. The red line is horizontal with y-intercept of 0";
+
+$altTextC =
+    "A plot with two lines.  The blue line has "
+    . (($m > 0) ? 'positive' : 'negative')
+    . " slope and "
+    . "y-intercept of $b. The red line is horizontal with y-intercept of $minusm";
+
+$altTextD =
+    "A plot with two lines.  The blue line has "
+    . (($m > 0) ? 'positive' : 'negative')
+    . " slope and "
+    . "y-intercept of $b. The red line has "
+    . (($m > 0) ? 'negative' : 'positive')
+    . " slope and y-intercept of $b";
+
+$MC = RadioButtons(
+    [ [
+        image(
+            $grapha,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextA"}
+        ),
+        image(
+            $graphb,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextB"}
+        ),
+        image(
+            $graphc,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextC"}
+        ),
+        image(
+            $graphd,
+            width           => 200,
+            tex_size        => 600,
+            extra_html_tags => qq{alt="$altTextD"}
+        )
+    ] ],
+    1,
+    separator => "$BR$BR"
+);
+
+Context("Interval");
+$CU = List("None");
+$CD = List("None");
+
+BEGIN_PGML
+Let [`` f(x) = [$f] ``].
+
+a) Find the first and second derivatives.
+
+    [`f'(x) = `] [_]{$df}{10}
+
+    [`f''(x) = `] [_]{$ddf}{10}
+
+b) Identify the graph that displays [`f`] in blue and dashed and [`f''`] in red.
+
+    [_]{$MC}
+
+c) Using the graphs of [`f`] and [`f''`], indicate where [`f`] is
+concave up and concave down.  Give your answer in the form of an interval.  If there is more than one interval separate them with commas.  If there are no intervals enter "None".
+
+    [`f`] is concave up on [_]{$CU}{20}
+
+    [`f`] is concave down on [_]{$CD}{20}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$df] `] and [`f''(x) = [$ddf]`].  Since the second
+derivative is 0 everywhere,
+the graph is never concave up nor concave down.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

@@ -1,0 +1,73 @@
+## DESCRIPTION
+##  Statistics: Descriptive statistics
+## ENDDESCRIPTION
+
+## KEYWORDS('statistics', 'descriptive statistics', 'interval', 'nominal', 'ordinal')
+## naw tagged this problem.
+
+## DBsubject('Statistics')
+## DBchapter(Exploratory data analysis/descriptive statistics)
+## DBsection(Classifying data)
+## Date('5/31/2005')
+## Author('Nolan A. Wages')
+## Institution('UVA')
+## TitleText1('Statistics for Management and Economics')
+## EditionText1('6')
+## AuthorText1('Keller, Warrack')
+## Section1()
+## Problem1()
+
+# Updated by Peter Staab and Rachel Norton (2022.06.20)
+
+DOCUMENT();
+loadMacros(
+    'PGstandard.pl',     'PGML.pl',
+    'PGchoicemacros.pl', 'parserPopUp.pl',
+    'PGcourse.pl'
+);
+
+$showPartialCorrectAnswers = 0;
+
+@questions = (
+    "The letter grades received by students in a computer science class",
+    "The number of students in a statistics course",
+    "The starting salaries of new Ph.D. graduates from a statistics program",
+    "The size of fries (small, medium, large) ordered by a sample of Burger King customers",
+    "The college (Arts and Science, Business, etc.) you are enrolled in",
+    "Your hometown",
+    "The type of car you currently drive",
+    "The age of each of your classmates",
+);
+
+@answers = (
+    "Ordinal", "Ratio",   "Ratio",   "Ordinal",
+    "Nominal", "Nominal", "Nominal", "Ratio",
+);
+
+# Select subset of questions and answers:
+@subset     = random_subset(4, 0 .. $#questions);
+@q_subset   = @questions[@subset];
+@ans_subset = @answers[@subset];
+
+@dropdowns =
+    map { DropDown([ 'Ordinal', 'Nominal', 'Ratio' ], $ans_subset[$_]) }
+    (0 .. 3);
+
+BEGIN_PGML
+
+Determine whether the following possible responses should be classified as
+ratio, interval, nominal or ordinal data.
+
+END_PGML
+
+for $i (0 .. 3) {
+
+BEGIN_PGML
+- [$q_subset[$i]] [_]{$dropdowns[$i]}
+END_PGML
+}
+
+COMMENT('Questions selected randomly from a larger set.  See source '
+        . 'for full question list.');
+
+ENDDOCUMENT();    # This should be the last executable line in the problem.

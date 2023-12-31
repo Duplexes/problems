@@ -1,0 +1,80 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Implicit differentiation)
+## Institution(UCSB)
+## MLT(derivative_2_ways)
+## MLTleader(1)
+## Level(2)
+## TitleText1('Calculus: Early Transcendentals')
+## AuthorText1('Stewart')
+## EditionText1('5')
+## Section1('3.6')
+## Problem1('1')
+## KEYWORDS('Differentiation','Product','Quotient')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserAssignment.pl', 'PGcourse.pl');
+
+Context()->variables->are(x => 'Real', y => 'Real');
+$a = non_zero_random(-10, 10);
+$b = non_zero_random(-10, 10);
+$c = random(1, 10);
+
+$eqn = Formula("xy + $a x + $b x^2")->reduce;
+
+$ans1 = Formula("(-y-2*$b*x-$a)/x")->reduce;
+$ans2 = Formula("-1*$b-$c/x^2")->reduce;
+
+BEGIN_PGML
+
+Given [`[$eqn]=[$c]`]:
+
+(a) Find [`y`] by implicit differentiation (leave your answer in terms of [`x`] and [`y`]).
+
+(b) Solve the equation for [`y`] and differentiate to get [`y'`] in terms of [`x`].
+(The answers should be consistent!)
+
+(a) [`y'=`] [____]{$ans1}{15}
+
+(b) [`y'=`] [____]{$ans2}{15}
+END_PGML
+
+$num      = Formula("-$a x -$b x^2 + $c")->reduce;
+$numminus = (-1 * $num)->reduce;
+$y        = Formula("-$a -$b x + $c/x")->reduce;
+$dydx     = Formula("-$b x - $c/x^2")->reduce;
+
+BEGIN_PGML_SOLUTION
+
+
+(a) Using implicit differentiation, we differentiate both sides of the equation with respect to [`x`]:
+[```\begin{aligned} \frac{d}{dx} \left[ [$eqn] \right] &= \frac{d}{dx} [[$c]]\\
+y + x\, \frac{dy}{dx} + [$a]+ [@2*$b@] x &= 0\\
+x\, \frac{dy}{dx} &= -y - [@2*$b@]x - [$a] \\[5pt]
+\frac{dy}{dx} &= \frac{-y-[@2*$b@]x - [$a]}{x}
+\end{aligned}```]
+
+(b) Solving the equation for [`y`] gives
+[```\begin{aligned}
+xy &= [$num]\\
+y &= \frac{[$num]}{x}\\
+&= [$y]
+\end{aligned}```]
+
+Differentiating gives
+[```\frac{dy}{dx} = [$dydx]```]
+
+This solution looks different to the one in (a), but they are the same! Substituting [``y = \frac{[$num]}{x}``] into the answer in (a) gives
+[```\begin{aligned}
+\frac{dy}{dx} &= \frac{-\left(\frac{[$num]}{x}\right)-[@2*$b@]x - [$a]}{x}\\
+&= \left( \frac{[$numminus]}{x} - [@2*$b@]x - [$a]\right) \cdot \frac{1}{x}\\
+&= \left( [$a] + [$b]x - \frac{[$c]}{x} - [@2*$b@]x - [$a]\right) \cdot \frac{1}{x}\\
+&= \left( [$a] + [$b]x - \frac{[$c]}{x} - [@2*$b@]x - [$a]\right) \cdot \frac{1}{x}\\
+&=[$dydx]
+\end{aligned}```]
+which is the answer we found in (b).
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

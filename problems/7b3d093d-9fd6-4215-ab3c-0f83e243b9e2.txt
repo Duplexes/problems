@@ -1,0 +1,82 @@
+## DESCRIPTION
+## DBsubject(Statistics)
+## DBchapter(Experimental design)
+## DBsection(Concepts)
+## Institution(The College of Idaho)
+## Author(R Cruz, L Danielson, J Guild)
+## Level(2)
+## TitleText1('The Basic Practice of Statistics')
+## AuthorText1('David Moore')
+## EditionText1('5e')
+## Section1('9')
+## Problem1('')
+## KEYWORDS('statistic', 'producing data', 'experiments')
+
+# updated by Peter Staab and Rachael Norton (2022.06.15)
+
+DOCUMENT();    # This should be the first executable line in the problem.
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioButtons.pl', 'PGcourse.pl');
+
+$showPartialCorrectAnswers = 0;
+
+@questions = (
+    "A lurking variable in this experiment is ",
+    "The response variable in this experiment is ",
+    "The explanatory variable in this experiment is "
+);
+
+# The first response in each is the correct answer.
+@responses = (
+    [ [
+        "the time the movie was shown. ",
+        "the number of crackers eaten. ",
+        "the different kinds of movies. ",
+        "the bowls. "
+    ] ],
+    [ [
+        "the number of crackers eaten. ",
+        "the different kinds of movies. ",
+        "the time the movie was shown. ",
+        "the bowls. "
+    ] ],
+    [
+        [ "the type of movie", "type of chip.", "hunger level." ],
+        "None of the above."
+    ]
+);
+
+@radios = map {
+    RadioButtons($responses[$_], $responses[$_]->[0][0], labels => 'ABC')
+} (0 .. $#responses);
+
+# This will shuffle the problem order.
+@order = random_subset(3, 0 .. 2);
+
+BEGIN_PGML
+A study of human development showed two types of movies to a group of
+children. Crackers were available in a bowl,
+and the investigators compared the number of crackers eaten by
+the children while watching the different kinds of movies.
+One kind was shown at 8 A.M. and another at 11 A.M.
+It was found that during the movie shown at 11 A.M.,
+more crackers were eaten than during the movie shown at 8 A.M.
+The investigators concluded that the different types of movies had
+an effect on appetite.
+
+1) [$questions[$order[0]]]
+
+     [_]{$radios[$order[0]]}
+
+2) [$questions[$order[1]]]
+
+     [_]{$radios[$order[1]]}
+
+3) [$questions[$order[2]]]
+
+     [_]{$radios[$order[2]]}
+
+END_PGML
+
+ENDDOCUMENT();    # This should be the last executable line in the problem.
+

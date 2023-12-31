@@ -1,0 +1,78 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Continuity - concept of)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.5')
+## Problem1('16')
+
+#Problem APEX 1.5.16
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',    'PGML.pl',
+    'PGgraphmacros.pl', 'parserPopUp.pl',
+    'PGcourse.pl'
+);
+
+Context("Numeric");
+
+$a = random(1,  3,      1);
+$b = random(0,  $a - 1, 1);
+$c = random(-2, $b,     1);
+
+$w  = 400;    # graph size
+$tw = 500;    # graph size in TeX
+
+$graph = init_graph(
+    -3, -3, 7, 7,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 10,  10 ],
+    'grid'  => [ 10,  10 ],
+    'size'  => [ 500, 500 ]
+);
+
+$p1 = FEQ("((x-1)^2)+$a for x in [-3,0] using color:blue weight:2");
+$p2 = FEQ("-2*cos(pi*x/2)+$b for x in (0,2) using color:blue weight:2");
+$p3 = FEQ("((x-2)^2)/8+$c for x in (2,7] using color:blue weight:2");
+$p4 = FEQ("$b+1 for x in [2,2] using color:blue weight:2");
+
+plot_functions($graph, $p1, $p2, $p3, $p4);
+
+$ans1 = DropDown([ "is", "is not" ], "is not");
+$ans2 = DropDown([ "is", "is not" ], "is");
+$ans3 = DropDown([ "is", "is not" ], "is not");
+
+###############################################################
+
+BEGIN_PGML
+>> [!Alt-text needed!]{$graph}{$w} <<
+-----
+Answer the questions based on the graph of [`y = f(x)`] shown above.
+ 
+If you are having a hard time seeing the picture clearly, click
+on the picture.  It will expand to a larger picture on its own page so
+that you can inspect it more clearly.
+
+a)  [`f`] [__]{$ans1}   continuous at [`0`].
+
+b)  [`f`] [__]{$ans2}   continuous at [`1`].
+
+c)  [`f`] [__]{$ans3}   continuous at [`2`].
+
+END_PGML
+
+#####################################################################
+
+BEGIN_PGML_SOLUTION
+
+There are discontinuities at [`x = 0, 2`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

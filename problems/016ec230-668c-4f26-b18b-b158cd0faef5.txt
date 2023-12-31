@@ -1,0 +1,53 @@
+#Problem APEX 2.4.40
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives of trigonometric functions)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('40')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+Context("Numeric");
+Context()->noreduce('(-x)-y', '(-x)+y');
+
+$a         = random(2, 9) * random(-1, 1, 2);
+@functions = (Formula("$a sec(x)"), Formula("$a csc(x)"));
+$r         = random(0, 1);
+$f         = $functions[$r];
+$df        = $f->D('x');
+$d2f_raw   = $df->D('x');
+$d2f_simplified =
+    $r
+    ? Compute("$a(csc(x) * cot(x)^2 + csc(x)^3)")
+    : Compute("$a(sec(x) * tan(x)^2 + sec(x)^3)");
+
+BEGIN_PGML
+Let [` f(x) = [$f] `].  Find the requested derivatives.
+
+[` f'(x) = `][_]{$df}
+
+[` f''(x) = `][_]{$d2f_simplified}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+[``
+  \begin{array}{rcl}
+   f'(x) &=& [$df] \\
+   f''(x) &=& [$d2f_raw] \\
+   &=& [$d2f_simplified]
+  \end{array}
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

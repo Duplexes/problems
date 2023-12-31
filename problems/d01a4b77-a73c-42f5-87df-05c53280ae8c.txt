@@ -1,0 +1,62 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Implicit differentiation)
+## Institution(UCSB)
+## MLT(trig_only)
+## MLTleader(1)
+## Level(3)
+## Static(1)
+## TitleText1('Calculus: Early Transcendentals')
+## AuthorText1('Stewart')
+## EditionText1('5')
+## Section1('3.6')
+## Problem1('20')
+## KEYWORDS('Differentiation','Product','Quotient')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserAssignment.pl', 'PGcourse.pl');
+
+TEXT(&beginproblem);
+$showPartialCorrectAnswers = 1;
+Context()->variables->are(x => 'Real', y => 'Real');
+do {
+    $a = random(2, 10);
+    $b = random(2, 10);
+} until ($a != $b);
+
+$ans =
+    Formula("($a cos($a x) (cos($b y) - 1)) / ($b sin($b y) (sin ($a x) - 1))")
+    ->reduce;
+
+BEGIN_PGML
+
+Find [``\frac{dy}{dx}``] by implicit differentiation.
+
+[```\sin([$a]x)+\cos([$b]y)=\sin([$a]x)\cos([$b]y)```]
+
+[``\frac{dy}{dx}=``] [____]{$ans}{20}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+Differentiating the left side gives
+[```\frac{d}{dx} (\sin([$a]x) + \cos([$b]y)) = [$a] \cos([$a]x) - [$b]\sin([$b]y) \frac{dy}{dx}```]
+
+Differentiating the right side gives
+[```\frac{d}{dx} \, \sin([$a]x)\cos([$b]y) = [$a] \cos([$a] x) \cos([$b] y) - [$b] \sin([$a]x)\sin([$b]y) \frac{dy}{dx}```]
+
+
+Equating both sides and solving for [``\frac{dy}{dx}``] gives
+[```\begin{aligned}
+[$a] \cos([$a]x) - [$b]\sin([$b]y) \frac{dy}{dx} &= [$a] \cos([$a] x) \cos([$b] y) - [$b] \sin([$a]x)\sin([$b]y) \frac{dy}{dx}\\
+\left[ [$b] \sin([$a]x)\sin([$b]y) - [$b]\sin([$b]y) \right] \frac{dy}{dx} &= [$a] \cos([$a] x) \cos([$b] y) - [$a] \cos([$a]x)\\[5pt]
+\frac{dy}{dx} &= \frac{[$a] \cos([$a] x) \cos([$b] y) - [$a] \cos([$a]x)}{[$b] \sin([$a]x)\sin([$b]y) - [$b]\sin([$b]y)}\\[5pt]
+&= [$ans]
+\end{aligned}```]
+
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,83 @@
+#Problem APEX 5.4.40
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of integration)
+## DBsection(Distance, velocity, acceleration)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('40')
+
+DOCUMENT();
+loadMacros(
+    'PGstandard.pl',            'PGML.pl',
+    'parserNumberWithUnits.pl', 'PGcourse.pl'
+);
+
+Context("Numeric");
+
+$m = random(-64, -16, 2);
+$b = random(10,  200, 10);
+
+$mh  = Compute("$m / 2");
+$pos = Formula("$mh x^2 + $b x");
+
+## a)
+$a1   = random(1, 5, 1);
+$tmp1 = random(3, 8, 1);
+$b1   = Compute("$a1 + $tmp1");
+
+$ans1 = NumberWithUnits($pos->eval(x => $b1) - $pos->eval(x => $a1), 'ft');
+
+## b)
+$a2 = Compute("0");
+$b2 = random(10, 30, 5);
+
+$ans2 = NumberWithUnits($pos->eval(x => $b2) - $pos->eval(x => $a2), 'ft');
+
+BEGIN_PGML
+The velocity (in ft/s) of an object moving along a straight
+line is given by
+[```
+  v(t) = [$m] t + [$b].
+```]
+Find the displacement of the object over the given time
+intervals. Choose the correct units.
+
+a) Displacement on [` [[$a1], [$b1]] `]:  [_]{$ans1}{15}
+
+b) Displacement on  [` [[$a2], [$b2]] `]:  [_]{$ans2}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The displacement on an interval [` [a, b] `] is
+found by a definite integral,
+ [` \int_{a}^b v(t) \, dt`].   
+
+a) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a1]}^{[$b1]} \left( [$m] t + [$b] \right) \, dt 
+    & = \left([$mh] t^2 + [$b] t\right) \bigg|_{[$a1]}^{[$b1]}
+    \\
+    & = [$ans1]
+  \end{aligned}
+```]
+
+b) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a2]}^{[$b2]} \left( [$m] t + [$b] \right) \, dt 
+    & = \left([$mh] t^2 + [$b] t\right) \bigg|_{[$a2]}^{[$b2]}
+    \\
+    & = [$ans2]
+  \end{aligned}
+```]
+
+The units for displacement are distance units, which in this case is feet.
+END_PGML_SOLUTION
+ENDDOCUMENT();

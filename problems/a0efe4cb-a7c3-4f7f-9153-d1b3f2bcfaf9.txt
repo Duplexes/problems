@@ -1,0 +1,49 @@
+#DESCRIPTION
+##  Interpret the slope of a linear regression line.
+##ENDDESCRIPTION
+
+## Tagged by Jonathan Baik
+## 2014-04-01
+
+## DBsubject(Statistics)
+## DBchapter(Simple linear regression)
+## DBsection(Regression)
+## Date(05/04/2012)
+## Institution(University of BC)
+## Author(Lance R)
+## Level(2)
+## KEYWORDS('statistics', 'multiple choice', 'regression', 'DEI')
+# Update by Rachael Norton for DEI/Accessibility
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioButtons.pl', 'PGcourse.pl');
+
+$radio = RadioButtons(
+    [ [
+        'For each 1 cm increase in height, you would expect the weight to '
+            . 'increase by 0.99 kg',
+        'For each 1 kg increase in weight, you would expect the height to '
+            . 'increase by 0.99 cm',
+        'For each 1 cm increase in height, you would expect the weight to '
+            . 'decrease by 101.24 kg',
+        'For each 1 kg increase in weight, you would expect the height to '
+            . 'decrease by 101.24 cm',
+    ] ],
+    0,
+    labels => 'ABC'
+);
+
+BEGIN_PGML
+Data were collected from all 10 year olds in a soccer league. Based on this
+dataset, a least squares regression model was fitted to predict weight
+[`Y`] (in kg) from height [`X`] (in cm). The model fitted was
+
+[```Y = 0.99X - 101.24```]
+
+The interpretation of the *slope* of the regression line would be,
+
+[_]{$radio}
+END_PGML
+
+ENDDOCUMENT();

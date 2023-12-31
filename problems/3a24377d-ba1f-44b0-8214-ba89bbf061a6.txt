@@ -1,0 +1,65 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(UCSB)
+## MLT(Indeterminate-RationalToX)
+## Level(3)
+## TitleText1('Calculus: Early Transcendentals')
+## AuthorText1('Stewart')
+## EditionText1('5')
+## Section1('4.4')
+## Problem1('62')
+## KEYWORDS('L'Hospital','Indeterminate','Limit')
+
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "PGcourse.pl"
+);
+
+$showPartialCorrectAnswers = 1;
+$a=random(1,10,1);
+$b=random(1,10,1);
+$c=random(1,10,1);
+$d=-($a+$b);
+
+$ans = Compute("e^$d");
+
+BEGIN_PGML
+Find the limit. Use l'Hospital's Rule if appropriate. Enter Infinity if the limit [`+\infty`], -Infinity if it is [`-\infty`], or DNE if the limit does not exist. 
+
+    [``\lim_{x\to \infty} \left(\frac {2x-[$a]}{2x+[$b]}\right)^{2x+[$c]} =\ ``][_]{$ans}{15}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Let 
+
+    [``L = \lim_{x\to \infty} \left(\frac {2x-[$a]}{2x+[$b]}\right)^{2x+[$c]}``]
+
+Then
+
+    [``\begin{aligned}\ln(L) 
+       &= \lim_{x\to \infty} \ln\left[\left(\frac {2x-[$a]}{2x+[$b]}\right)^{2x+[$c]}\right] \\ 
+       &= \lim_{x\to \infty} (2x+[$c])\ln\left(\frac {2x-[$a]}{2x+[$b]}\right) \\ 
+       &= \lim_{x\to \infty} \frac{\ln\big[(2x-[$a])/(2x+[$b])\big]}{1/(2x+[$c])} \\ 
+       &= \lim_{x\to \infty} \frac{\ln(2x-[$a])-\ln(2x+[$b])}{1/(2x+[$c])} \end{aligned}``]
+
+As [`x\to \infty`] the numerator and denominator in the last line approach zero, so one can apply L'Hospital's rule and obtain
+
+    [``\begin{aligned} \ln(L) 
+       &= \lim_{x\to\infty} \frac{2/(2x-[$a])-2/(2x+[$b])}{-2/(2x+[$c])^2} \\ 
+       &=\lim_{x\to\infty}\left(\frac{2(2x+[$b])-2(2x-[$a])}{(2x+[$b])(2x-[$a])}\right)\left(\frac{(2x+[$c])^2}{-2}\right) \\ 
+       &= [$d] \end{aligned}``]
+
+Thus
+
+    [``L = e^{[$d]} ``]
+
+ 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

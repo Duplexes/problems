@@ -1,0 +1,59 @@
+#Problem APEX 2.3.28
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Higher-order derivatives)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.3')
+## Problem1('28')
+# Updated July, 2023
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+
+$a = random(2,9,1)*random(-1,1,2);
+$minusa = -$a;
+
+$ans1 = Compute("$minusa*sin(x)");
+$ans2 = Compute("$minusa*cos(x)");
+$ans3 = Compute("$a*sin(x)");
+$ans4 = Compute("$a*cos(x)");
+
+BEGIN_PGML
+Compute the first four derivatives of [` g(x) = [$a] \cos x `].
+
+a) [`g'(x) = `][_]{$ans1}{10}
+b) [`g''(x) = `][_]{$ans2}{10}
+c) [`g'''(x) = `][_]{$ans3}{10}
+d) [`g^{(4)}(x) = `][_]{$ans4}{10}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Use the rules [` \frac{d}{dx}[ \sin x ] = \cos x`] and
+[` \frac{d}{dx}[ \cos x ] = -\sin x`].
+
+[``
+  \begin{array}{rcl}
+    g(x) &=& [$a] \cos x \\
+    &&\\
+    g'(x) &=& -[$a] \sin x \\
+    &&\\
+    g''(x) &=& -[$a] \cos x \\
+    &&\\
+    g'''(x) &=& [$a] \sin x \\
+    &&\\
+    g^{(4)}(x) &=& [$a] \cos x \\
+    &&\\
+  \end{array}
+``] 
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

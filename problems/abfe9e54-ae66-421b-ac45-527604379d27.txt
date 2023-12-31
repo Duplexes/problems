@@ -1,0 +1,52 @@
+#Problem APEX 2.4.36
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Quotient rule (without trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('36')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+$a = random(1, 6, 1) * random(-1, 1, 2);
+$b = $a * random(2, 7, 1);
+$c = random(1, 15, 1) * random(-1, 1, 2);
+
+$k   = $a * $b;
+$num = "$k x";
+$den = "$b x + $c";
+
+$num1 = $a * $b * $c;
+
+$ans = List(Compute("DNE"));
+
+BEGIN_PGML
+Let [`  f(x) = \displaystyle \frac{[$num]}{[$den]}  `].
+
+Find the [`x`]-value(s) where the graph of [`y=f(x)`] has a horizontal tangent line.  
+Separate multiple answers with commas.  
+Enter *DNE* if there are no such [`x`].
+
+[@ $ans->{entry_type} @]
+
+[`x = `][_]{$ans->cmp(typeMatch=>Real(0))}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+It is impossible for [`\displaystyle
+f'(x) =  \frac{[$k] \cdot ([$den]) - ([$k] x) \cdot ([$b])}{([$den])^2}
+       =  \frac{[$num1]}{([$den])^2}  `]
+to be zero.
+
+Since the derivative is never zero, no line tangent to the graph of [` f `] can ever be horizontal.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,183 @@
+#Problem APEX 3.4.12
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('12')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',    'PGML.pl',
+    'PGgraphmacros.pl', 'parserRadioButtons.pl',
+    'PGcourse.pl'
+);
+
+COMMENT('There is no alt-text defined for the images in this problem.');
+
+Context("Numeric");
+
+$a = random(2, 3, 1) * random(-1, 1, 2);
+
+$f = Compute("$a*tan x");
+
+$df  = Compute("$a*sec^2(x)")->reduce();
+$ddf = Compute("2*$a*sec^2(x) * tan(x)")->reduce();
+
+Context('Interval');
+
+if ($a > 0) {
+    $ConcaveUp =
+        Compute("(-(pi), -pi/2) , (0, pi/2)")->cmp(entry_type => "an interval");
+    $ConcaveDown =
+        Compute("(-pi/2, 0) , (pi/2, pi)")->cmp(entry_type => "an interval");
+    $sol_str1 = "[`\left(-\pi, -\dfrac{\pi}{2}\right)
+    , \left(0, \dfrac{\pi}{2}\right)`]";
+    $sol_str2 = "[`\left(-\dfrac{\pi}{2}, 0\right)
+    , \left(\dfrac{\pi}{2}, \pi\right)`]";
+} else {
+    $ConcaveUp =
+        Compute("(-pi/2, 0) , (pi/2, pi)")->cmp(entry_type => "an interval");
+    $ConcaveDown =
+        Compute("(-(pi), -pi/2) , (0, pi/2)")->cmp(entry_type => "an interval");
+    $sol_str1 = "[`\left(-\dfrac{\pi}{2}, 0\right)
+    , \left(\dfrac{\pi}{2}, \pi\right)`]";
+    $sol_str2 = "[`\left(-\pi, -\dfrac{\pi}{2}\right)
+    , \left(0, \dfrac{\pi}{2}\right)`]";
+}
+
+$eps = 0.1;
+
+########################################
+## Graphs
+
+$w  = 300;    # graph size
+$tw = 300;    # graph size in TeX
+
+$x1 = -(pi);
+$x2 = pi;
+
+$ca = -(pi) / 2 - $eps;
+$cb = -(pi) / 2 + $eps;
+$cc = (pi) / 2 - $eps;
+$cd = (pi) / 2 + $eps;
+
+$graph1 = init_graph(
+    $x1, -5, $x2, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 8,   10 ],
+    'size'  => [ 300, 300 ]
+);
+$graph2 = init_graph(
+    $x1, -5, $x2, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 8,   10 ],
+    'size'  => [ 300, 300 ]
+);
+$graph3 = init_graph(
+    $x1, -5, $x2, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 8,   10 ],
+    'size'  => [ 300, 300 ]
+);
+$graph4 = init_graph(
+    $x1, -5, $x2, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 8,   10 ],
+    'size'  => [ 300, 300 ]
+);
+
+$p1a = FEQ("$a tan(x) for x in [$x1,$ca] using color:blue weight:2");
+$p1b = FEQ("$a tan(x) for x in [$cb,$cc] using color:blue weight:2");
+$p1c = FEQ("$a tan(x) for x in [$cd,$x2] using color:blue weight:2");
+$d1a = FEQ("-$ddf for x in [$x1,$ca] using color:red weight:2");
+$d1b = FEQ("-$ddf for x in [$cb,$cc] using color:red weight:2");
+$d1c = FEQ("-$ddf for x in [$cd,$x2] using color:red weight:2");
+
+$p2a = FEQ("$a tan(x) for x in [$x1,$ca] using color:blue weight:2");
+$p2b = FEQ("$a tan(x) for x in [$cb,$cc] using color:blue weight:2");
+$p2c = FEQ("$a tan(x) for x in [$cd,$x2] using color:blue weight:2");
+$d2a = FEQ("$ddf for x in [$x1,$ca] using color:red weight:2");
+$d2b = FEQ("$ddf for x in [$cb,$cc] using color:red weight:2");
+$d2c = FEQ("$ddf for x in [$cd,$x2] using color:red weight:2");
+
+$p3a = FEQ("$a tan(x) for x in [$x1,$ca] using color:blue weight:2");
+$p3b = FEQ("$a tan(x) for x in [$cb,$cc] using color:blue weight:2");
+$p3c = FEQ("$a tan(x) for x in [$cd,$x2] using color:blue weight:2");
+$d3a = FEQ("$df for x in [$x1,$ca] using color:red weight:2");
+$d3b = FEQ("$df for x in [$cb,$cc] using color:red weight:2");
+$d3c = FEQ("$df for x in [$cd,$x2] using color:red weight:2");
+
+$p4a = FEQ("$a tan(x) for x in [$x1,$ca] using color:blue weight:2");
+$p4b = FEQ("$a tan(x) for x in [$cb,$cc] using color:blue weight:2");
+$p4c = FEQ("$a tan(x) for x in [$cd,$x2] using color:blue weight:2");
+$d4a = FEQ("-$df for x in [$x1,$ca] using color:red weight:2");
+$d4b = FEQ("-$df for x in [$cb,$cc] using color:red weight:2");
+$d4c = FEQ("-$df for x in [$cd,$x2] using color:red weight:2");
+
+plot_functions($graph1, $p1a, $p1b, $p1c, $d1a, $d1b, $d1c);
+plot_functions($graph2, $p2a, $p2b, $p2c, $d2a, $d2b, $d2c);
+plot_functions($graph3, $p3a, $p3b, $p3c, $d3a, $d3b, $d3c);
+plot_functions($graph4, $p4a, $p4b, $p4c, $d4a, $d4b, $d4c);
+
+$MC = RadioButtons(
+    [ [
+        image($graph1, width => $w, tex_size => $tw),
+        image($graph2, width => $w, tex_size => $tw),
+        image($graph3, width => $w, tex_size => $tw),
+        image($graph4, width => $w, tex_size => $tw)
+    ] ],
+    1,
+    separator => "$BR$BR"
+);
+
+BEGIN_PGML
+Consider the function [`` f(x) = [$f]``] on the interval [`` (-\pi, \pi) ``].
+
+a) Find the first and second derivatives.
+    - [`f'(x) = `] [_]{$df}{20}
+    - [`f''(x) = `] [_]{$ddf}{20}
+
+b) Identify the graph that displays [`f`] in blue and [`f''`] in red.
+
+    [_]{$MC}
+
+c) Using the graphs of [`f`] and [`f''`], indicate where [`f`] is concave up and concave down.
+Give your answer as a list of intervals separated by commas.  If there are no such intervals, type "None". [@helpLink("interval")@]*
+
+    - [`f`] is concave up on [_]{$ConcaveUp}{20}
+    - [`f`] is concave down on [_]{$ConcaveDown}{20}
+END_PGML
+
+$a2 = 2 * $a;
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$a] \sec^2 x `] and [`f''(x) = [$a2] \sec^2 x \tan x`].
+
+Set [`f''(x) = 0`] and solve.
+
+[``
+  \begin{array}{rcl}
+    [$a2] \sec^2 x \tan x &=& 0 \\
+    \tan x &=& 0 \quad \textrm{since}\; \sec x \neq 0 \; \textrm{for all}
+    \; x \\
+    x &=&  0 \quad \textrm{is the only solution in the interval }(-\pi,\pi).
+  \end{array}
+``]
+
+Note, [`f`] is undefined when [` x= \pm \dfrac{\pi}{2} `].
+
+Use the graph of [`f''`] to help find where [`f`] is concave up and concave down.
+
+- When [`f''(x) > 0`], [`f`] is concave up.  This happens on [$sol_str1]**.
+- When [`f''(x) < 0`], [`f`] is concave down.  This happens on [$sol_str2]**.
+END_PGML_SOLUTION
+ENDDOCUMENT();

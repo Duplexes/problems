@@ -1,0 +1,91 @@
+#Problem APEX 1.4.12
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Finding limits using graphs)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.4')
+## Problem1('12')
+## Updated July 2023
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGgraphmacros.pl', 'PGcourse.pl');
+
+Context("Numeric")->variables->add(a => 'Real');
+
+$a = random(1, 3);
+
+$graph1 = init_graph(
+    -5, -5, 5, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 10,  10 ],
+    'grid'  => [ 10,  10 ],
+    'size'  => [ 500, 500 ]
+);
+
+$p1 = FEQ("-4 for x in [-4,-3) using color:blue weight:2");
+$p2 = FEQ("-3 for x in [-3,-2) using color:blue weight:2");
+$p3 = FEQ("-2 for x in [-2,-1) using color:blue weight:2");
+$p4 = FEQ("-1 for x in [-1,0) using color:blue weight:2");
+$p5 = FEQ("0 for x in [0,1) using color:blue weight:2");
+$p6 = FEQ("1 for x in [1,2) using color:blue weight:2");
+$p7 = FEQ("2 for x in [2,3) using color:blue weight:2");
+$p8 = FEQ("3 for x in [3,4) using color:blue weight:2");
+
+plot_functions($graph1, $p1, $p2, $p3, $p4, $p5, $p6, $p7, $p8);
+
+$alttext =
+    'A graph of f(x), which consists of horizontal line segments.  '
+    . 'On [-4,3) the value is -4, on [-3, 2) the value is -3 and so on until '
+    . 'on [3,4), the value is 3.';
+
+$ans1 = Compute("$a-1");
+$ans2 = Compute("$a");
+$ans3 = Compute("DNE");
+$ans4 = Compute("-$a-1");
+$ans5 = Compute("-$a");
+$ans6 = Compute("DNE");
+$ans7 = "a - 1";
+$ans8 = "a";
+$ans9 = Compute("DNE");
+
+BEGIN_PGML
+
+Evaluate each expression using the given graph of [`f(x)`].
+
+Enter *DNE* if the limit or value does not exist.
+
+If you are having a hard time seeing the picture clearly, click on the picture. It will expand to a larger picture on its own page so that you can inspect it more clearly.
+
+>> [![$alttext]!]{$graph1}{400} <<
+
+---
+a) [`\displaystyle \lim_{x \to [$a]^{-}}f(x) = `] [_]{$ans1}{20}
+
+b) [`\displaystyle \lim_{x \to [$a]^{+}}f(x) = `] [_]{$ans2}{20}
+
+c) [`\displaystyle \lim_{x \to [$a]}f(x) = `] [_]{$ans3}{20}
+
+d) [`\displaystyle \lim_{x \to -[$a]^{-}}f(x) = `] [_]{$ans4}{20}
+
+e) [`\displaystyle \lim_{x \to -[$a]^{+}}f(x) = `] [_]{$ans5}{20}
+
+f)  [`\displaystyle \lim_{x \to -[$a]}f(x) = `] [_]{$ans6}{20}
+
+    In problems g-i, assume [`a`] is an *integer* such that 
+[`-3 \leq a \leq 3`].
+
+g) [`\displaystyle \lim_{x \to a^{-}}f(x) = `] [_]{$ans7}{20}
+
+h) [`\displaystyle \lim_{x \to a^{+}}f(x) = `] [_]{$ans8}{20}
+
+i)  [`\displaystyle \lim_{x \to a}f(x) = `] [_]{$ans9}{20}
+END_PGML
+
+ENDDOCUMENT();

@@ -1,0 +1,86 @@
+## DESCRIPTION
+## DBsubject(Statistics)
+## DBchapter(Hypothesis tests)
+## DBsection(Concepts)
+## Institution(The College of Idaho)
+## Author(R Cruz, L Danielson, J Guild)
+## Level(3)
+## TitleText1('The Basic Practice of Statistics')
+## AuthorText1('David Moore')
+## EditionText1('5e')
+## Section1('14')
+## Problem1('')
+## KEYWORDS('statistics', 'inference', 'confidence interval', 'DEI')
+## Updated: 2010/10
+# Adapted by Rachael Norton for DEI and accessibility
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',           'PGML.pl',
+    'randomPerson.pl',         'contextCurrency.pl',
+    'parserLinearRelation.pl', 'PGcourse.pl'
+);
+
+Context('Currency');
+
+$sigma1 = random(0.1, 0.2, 0.01);
+$mu1    = random(2.5, 6.5, 0.1);
+$xbar1  = $mu1 + random(-1, 1, 2) * random(0.05, 0.15, 0.01);
+$n1     = random(8, 20);
+
+$sigma2 = random(0.50,  2.50,  0.01);
+$mu2    = random(15.05, 25.05, .1);
+$xbar2  = $mu2 + random(0.55, 3.00, 0.01) * (-1)**random(1, 2, 1);
+$n2     = random(3, 5, 1);
+
+@direction = ('lower', 'higher');
+$choose    = random(0, 1);
+
+$display_mu2    = Currency($mu2);
+$display_sigma2 = Currency($sigma2);
+$display_xbar2  = Currency($xbar2);
+
+Context('LinearRelation')->variables->are(mu => 'Real');
+
+$ans_a1 = LinearRelation("mu = $mu1");
+$ans_a2 = LinearRelation("mu != $mu1");
+
+$ans_b1 = LinearRelation("mu = $mu2");
+$ans_b2 = $choose ? LinearRelation("mu > $mu2") : LinearRelation("mu < $mu2");
+
+$p = randomPerson();
+
+BEGIN_PGML
+For each situation, state the null and alternative hypotheses:
+(Type 'mu' for the symbol [` \mu `] ,
+ e.g.  *mu [` > `] 1* for the mean is greater than 1,
+ *mu [` < `] 1* for the mean is
+less than 1, *mu != 1* for the mean is not equal to 1.
+Please do not include units such as 'mm' or "$" in your answer.)
+
+(a) The diameter of a spindle in a small motor is supposed to be
+[$mu1] millimeters (mm) with a standard deviation of [$sigma1] mm.  If
+the spindle is either too small or too large, the motor will not work
+properly.  The manufacturer measures the diameter in a sample of [$n1]
+spindles to determine whether the mean diameter has moved away from the
+required measurement. Suppose the sample has an average diameter of [$xbar1] mm.
+
+[` H_0`] : [_]{$ans_a1}{15}
+
+ [`  H_a`] : [_]{$ans_a2}{15}
+
+(b) [$p] [$p->verb('think')] that prices in
+Springfield are [$direction[$choose]] than the rest of the country.
+[$p->They] [$p->verb('read')] that the nationwide average price of a
+certain brand of laundry detergent is [$display_mu2]  with standard deviation
+[$display_sigma2].  [$p->They] [$p->verb('take')] a sample from [$n2]
+local Springfield stores and find the average price for this same
+brand of detergent is [$display_xbar2].
+
+  [`H_0`] : [_]{$ans_b1}{15}
+
+  [`H_a`] : [_]{$ans_b2}{15}
+END_PGML
+
+ENDDOCUMENT();    # This should be the last executable line in the problem.

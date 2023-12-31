@@ -1,0 +1,98 @@
+## DBsubject(Statistics)
+## DBchapter(Exploratory data analysis/descriptive statistics)
+## DBsection(Graphical representations)
+## Level(2)
+
+# updated by Peter Staab (2023.06.01)
+
+DOCUMENT();
+loadMacros(
+    'PGstandard.pl',     'PGML.pl',
+    'PGchoicemacros.pl', 'parserRadioButtons.pl',
+    'PGtikz.pl',         'randomPerson.pl',
+    'niceTables.pl',     'PGcourse.pl',
+);
+
+# make sure we're in the context we want
+Context('Numeric');
+
+($p1, $p2) = randomLastName(n => 2);
+
+$graph_image = createTikZImage();
+$graph_image->tikzLibraries('arrows.meta');
+$graph_image->tikzOptions('xscale=0.25, yscale=2, every node/.style={scale=2}');
+
+$x[0] = random(20, 30, 5);
+for $i (1 .. 3) {
+    $x[$i] = $x[ $i - 1 ] + random(5, 20, 5);
+}
+@y = (4, 3, 2, 1);
+
+$graph_image->BEGIN_TIKZ
+\filldraw[
+    draw=LightBlue,
+    fill=white,
+    rounded corners=10pt,
+    very thick,use as bounding box
+] (-10,-0.75) rectangle (115,5.5);
+\draw[->,thick] (-1,0) -- (110,0);
+\draw[->,thick] (0,0) -- (0,5);
+\foreach \x in {20,40,...,100} \draw[thick] (\x,0.2) -- (\x,-0.2) node[below] {\x \%};
+\draw (1,1) -- (-1,1) node[left]{Oct.};
+\draw (1,2) -- (-1,2) node[left]{Sept.};
+\draw (1,3) -- (-1,3) node[left]{Aug.};
+\draw (1,4) -- (-1,4) node[left]{July};
+
+\filldraw ($x[0],$y[0]) circle[x radius=0.5,y radius=0.05] --
+($x[1],$y[1]) circle[x radius=0.5,y radius=0.05] --
+($x[2],$y[2]) circle[x radius=0.5,y radius=0.05] --
+($x[3],$y[3]) circle[x radius=0.5,y radius=0.05];
+
+\draw (50,5) node {\large Voters supporting candidate $p1};
+END_TIKZ
+
+$alt_text =
+    "alt='Line chart of the data in the above table. The vertical "
+    . "axis has four equally spaced tick marks. From lowest to highest, they "
+    . "are labeled October, September, August, July. The horizontal axis goes "
+    . "from 0% to 100%.  The first point is at $x[0]% at height July.  The "
+    . "second point is at $x[1]% at height August. The third point is at "
+    . "$x[2]% at height September.  The fourth point is at $x[3]% at height "
+    . "October.'";
+
+$radio = RadioButtons(
+    [ [
+        "The graph gives the impression that $p1's popularity is decreasing ",
+        'The graph does not show the number of voters polled each month. ',
+        "The graph does not show the percent of voters who chose $p1. ",
+        "The graph gives the impression that $p1's popularity is changing at "
+            . 'a constant rate.  '
+    ] ],
+    0
+);
+
+BEGIN_PGML
+
+This table shows the results of polls taken during the four months
+preceding an election between two candidates - [$p1] and [$p2].
+
+[@ DataTable([['July', 'Aug.', 'Sept.', 'Oct.'],\@x],
+  caption => "Percentage of Voters Choosing $p1",
+  tablecss => 'width:50%;'); @]*
+
+[$p2] published this graph in a newspaper.
+
+[@ image($graph_image, width => 600, tex_size => 1000, extra_html_tags=>"$alt_text") @]*
+
+[_]{$radio}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+While all of the choices state facts that are correct, the one unusual thing that would not
+be expected by the readers is that a line with negative slope would indicate increasing popularity.
+A person who did not look carefully would assume that a negative slope would indicate decreasing
+popularity. That is : the graph gives the impression that [$p1]'s popularity is decreasing.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

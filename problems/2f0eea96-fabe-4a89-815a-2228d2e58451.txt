@@ -1,0 +1,74 @@
+## DESCRIPTION
+## Calculus
+## ENDDESCRIPTION
+
+## Tagged by cmd6a 5/29/06
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Definition of the derivative)
+## Institution(OSU)
+## Level(3)
+## MO(1)
+## KEYWORDS('calculus','derivative','limit')
+
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "PGcourse.pl"
+);
+
+TEXT(beginproblem());
+$showPartialCorrectAnswers = 1;
+
+$a = random(2,9,1);
+$b = random(2,7,1);
+$c = random(3,8,1);
+$d = random(2,5,1);
+
+Context('Numeric');
+Context()->noreduce(
+	'(-x)-y',
+	'(-x)+y'
+);
+Context()->strings->add(
+	'undefined'
+);
+$undefined = String('undefined');
+
+$fl = Formula("-$a*x^2 + $b*x")->reduce;
+$fr = Formula("$c*x^2  - $d")->reduce;
+
+$nql = Formula("($fl + $d)/x")->reduce;
+$nqr = Formula("$c*x");
+
+BEGIN_PGML
+Let
+[```
+f(x)= \begin{cases}
+[$fl] & \text{for } x < 0, \\
+[$fr] & \text{for } x \geqslant 0.
+\end{cases}
+```]
+
+According to the definition of the derivative,
+to compute [`f'(0)`], we need to compute
+the left-hand limit 
+
+[`` \lim_{x \to 0^-} \ ``][_]{$nql}{25}, which is [_]{$undefined}{10}
+
+and the right-hand limit
+
+[`` \lim_{x \to 0^+} \ ``][_]{$nqr}{25}, which is [_]{Real(0)}{10}
+
+We conclude that
+[` f'(0) `] is [_]{$undefined}{10}.
+
+*Note:* If a limit or derivative is undefined,
+enter *undefined* as your answer.
+END_PGML
+
+ENDDOCUMENT();

@@ -1,0 +1,81 @@
+#Problem APEX 5.4.13
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Definite integrals (with trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(DefSumTrig)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('13')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl',, 'PGcourse.pl');
+
+Context("Numeric");
+
+## Set-up for part (a)
+$a = random(2, 25);
+
+$a1 = Compute("0");
+$b1 = Compute("pi");
+
+$f = "\left($a \cos \theta - $a \sin \theta\right)";
+
+$fI   = Formula("$a(sin(x) + cos(x))");
+$ans1 = $fI->eval(x => $b1) - $fI->eval(x => $a1);
+
+## b)
+$b = random(2, 15) * random(-1, 1, 2);
+
+$a2 = pi / 2;
+$b2 = 3 * pi / 2;
+
+$g    = $f;
+$gI   = $fI;
+$ans2 = $gI->eval(x => $b2) - $gI->eval(x => $a2);
+
+BEGIN_PGML
+Evaluate the definite integrals
+
+a) [``\int_{[$a1]}^{\pi} [$f] \, d\theta = ``]
+[_]{$ans1}{15}
+
+b) [``\int_{\pi/2}^{3\pi/2} [$g] \, d\theta = ``]
+[_]{$ans2}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Use the Fundamental Theorem of Calculus.
+
+a) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a1]}^{\pi} [$f] \, d\theta
+    & = \left([$a] \sin \theta + [$a] \cos \theta \right) \bigg|_{[$a1]}^{\pi}
+    \\
+    & = \big(0 + [$a](-1)\big) 
+    - \big(0 + [$a](1)\big)
+    \\
+    & = [$ans1].
+  \end{aligned}
+```]
+
+b) [`\;`]
+[```
+  \begin{aligned}
+    \int_{\pi/2}^{3\pi/2} [$g] \, d\theta
+    & = \left([$a] \sin \theta + [$a] \cos \theta \right)
+    \bigg|_{\pi/2}^{3\pi/2}
+    \\
+    & = \big([$a](-1) + 0\big) - \big([$a](1) + 0\big)
+    \\
+    & = [$ans2].
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

@@ -1,0 +1,151 @@
+#Problem APEX 1.3.6-13
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Rules of limits - basic)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(lotsalimrules)
+## MLTleader(1)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.3')
+## Problem1('6 13')
+## TitleText2('Calculus: Early Transcendentals')
+## AuthorText2('Stewart')
+## EditionText2('5e')
+## Section2('2.3')
+## Problem2('')
+## TitleText3('Calculus: Early Transcendentals')
+## AuthorText3('Stewart')
+## EditionText3('6')
+## Section3('2.3')
+## Problem3('')
+## TitleText4('Mathematical Applications')
+## AuthorText4('Ronal J. Harshbarger and James J. Reynolds')
+## EditionText4('8')
+## Section4('.')
+## Problem4('')
+## KEYWORDS('calculus','limits', 'rules')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context("Numeric");
+
+@f = random_subset(3, "f(x)", "g(x)", "h(x)");
+@values =
+    random_subset(3, non_zero_random(-10, 10), non_zero_random(-10, 10), 0);
+
+@expressions = (
+    "\lim_{x \to a} \left($f[0]+$f[1]\right)",
+    "\lim_{x \to a} \left($f[0]-$f[1]\right)",
+    "\lim_{x \to a} \left($f[0] \cdot $f[2]\right)",
+    "\lim_{x \to a} \frac{$f[0]}{$f[1]}",
+    "\lim_{x \to a} \frac{$f[0]}{$f[2]}",
+    "\lim_{x \to a} \frac{$f[2]}{$f[0]}",
+    "\lim_{x \to a} ($f[1])^2",
+    "\lim_{x \to a} \frac{1}{$f[1]}",
+    "\lim_{x \to a} \frac{1}{$f[1]-$f[2]}",
+);
+
+@answers = (
+    Compute($values[0] + $values[1]),
+    Compute($values[0] - $values[1]),
+    Compute($values[0] * $values[2]),
+    Compute($values[1] == 0 ? 'DNE' : $values[0] / $values[1]),
+    Compute($values[2] == 0 ? 'DNE' : $values[0] / $values[2]),
+    Compute($values[0] == 0 ? 'DNE' : $values[2] / $values[0]),
+    Compute(($values[1])**2),
+    Compute($values[1] == 0 ? 'DNE' : 1 / $values[1]),
+    Compute(
+        $values[1] == $values[2] ? 'DNE' : 1 / ($values[1] - $values[2])
+    )
+);
+
+@solutions = (
+    "\lim_{x \to a} \left($f[0]+$f[1]\right)"
+        . "= \lim_{x\to a} $f[0] + \lim_{x\to a} $f[1]"
+        . "= $values[0] + $values[1] = $answers[0]",
+    "\lim_{x \to a} \left($f[0]-$f[1]\right)"
+        . "= \lim_{x\to a} $f[0] - \lim_{x\to a} $f[1]"
+        . "= $values[0] - $values[1] = $answers[1]",
+    "\lim_{x \to a} \left($f[0] \cdot $f[2]\right)"
+        . "= \lim_{x\to a} $f[0] \cdot \lim_{x\to a} $f[2]"
+        . "= $values[0] \cdot $values[2] = $answers[2]",
+    "\lim_{x \to a} \frac{$f[0]}{$f[1]}"
+        . (
+            $values[1] == 0
+            ? "\quad\text{Does not exist as } \lim_{x\to a} $f[1] = 0"
+            : "= \frac{\lim_{x\to a} $f[0]}{\lim_{x\to a} $f[1]}"
+            . "= \frac{$values[0]}{$values[1]} = $answers[3]"
+        ),
+    "\lim_{x \to a} \frac{$f[0]}{$f[2]}"
+        . (
+            $values[2] == 0
+            ? "\quad\text{ Does not exist as } \lim_{x\to a} $f[2] = 0"
+            : "= \frac{\lim_{x\to a} $f[0]}{\lim_{x\to a} $f[2]}"
+            . "= \frac{$values[0]}{$values[2]} = $answers[4]"
+        ),
+    "\lim_{x \to a} \frac{$f[2]}{$f[0]}"
+        . (
+            $values[0] == 0
+            ? "\quad\text{ Does not exist as } \lim_{x\to a} $f[0] = 0"
+            : "= \frac{\lim_{x\to a} $f[2]}{\lim_{x\to a} $f[0]}"
+            . "= \frac{$values[2]}{$values[0]} = $answers[5]"
+        ),
+    "\lim_{x \to a} \left($f[1]\right)^2"
+        . "= \left(\lim_{x\to a} $f[1]\right)^2"
+        . "= \left($values[1]\right)^2 = $answers[6]",
+    "\lim_{x \to a} \frac{1}{$f[1]}"
+        . (
+            $values[1] == 0
+            ? "\quad\text{ Does not exist as } \lim_{x\to a} $f[1] = 0"
+            : "= \frac{1}{\lim_{x\to a} $f[1]}"
+            . "= \frac{1}{$values[1]} = $answers[7]"
+        ),
+    "\lim_{x \to a} \frac{1}{$f[1]-$f[2]}"
+        . (
+            $values[1] == $values[2]
+            ? "\quad\text{ Does not exist as } \lim_{x\to a}\left($f[1]-$f[2]\)"
+            . "= \lim_{x\to a} $f[1] - \lim_{x\to a} $f[2]\) = 0"
+            : "= \frac{1}{\lim\limits_{x \to a} $f[1] - \lim\limits_{x\to a} $f[2]}"
+            . "= \frac{1}{$values[1] - $values[2]} = $answers[8]"
+        )
+);
+
+@random_order = random_subset(scalar(@expressions), 0 .. $#expressions);
+
+BEGIN_PGML
+Suppose [`f(x)`], [`g(x)`], and [`h(x)`] are functions, and
+[```\lim_{x\to a} [$f[0]] = [$values[0]],
+\qquad
+\lim_{x\to a} [$f[1]] = [$values[1]],\quad \text{and}\quad
+\lim_{x\to a} [$f[2]] = [$values[2]].```]
+Find following limits if they exist.  Enter "DNE" if the limit does not exist.
+
+See [@ helpLink('limits') @]*.
+
+[@ join(
+    "\n\n",
+    map {
+        '*' . ($_ + 1) . '.* [``[$expressions[$random_order[' . $_ . ']]]=``] '
+			. '[_]{$answers[$random_order[' . $_ . ']]}{5}'
+    } 0 .. $#answers
+) @]**
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Most of these are applications of limit laws:
+
+[@ join(
+    "\n\n",
+    map {
+        '*' . ($_ + 1) . '.* [``[$solutions[$random_order[' . $_ . ']]] ``]'
+    } 0 .. $#solutions
+) @]**
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

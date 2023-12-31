@@ -1,0 +1,48 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Continuity - concept of)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.5')
+## Problem1('28 29')
+
+#Problem APEX 1.5.28-29
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Interval");
+
+$a = random(1, 10, 1);
+$k = random(2, 8,  1);
+
+$domain = Interval("($a,Infinity)");
+
+BEGIN_PGML
+Let
+[``` 
+   f(x) = e^{[$k] x} - \ln(x - [$a])
+```]
+
+Give the interval(s) on which the function is continuous. [_]{$domain}{60}
+
+[@ helpLink("interval","Help with interval notation") @]*
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The exponential function [` e^{[$k] x} `] is continuous on its domain, [`\mathbb{R}`].
+
+The logarithmic function, [`\ln(x - [$a])`] is also continuous on its domain, [```x - [$a] > 0 \;\Rightarrow\; x \in ([$a],\infty)```]
+
+[`f(x)`] is the difference of these two functions and is therefore continuous on the intersection: [```\mathbb{R} \cap ([$a],\infty) = ([$a],\infty)```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

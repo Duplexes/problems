@@ -1,0 +1,79 @@
+#Problem APEX 3.2.12
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Mean value theorem)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.2')
+## Problem1('12')
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'PGcourse.pl'
+);
+
+$a = random(2, 15) * random(-1, 1, 2);
+$b = random(2, 15) * random(-1, 1, 2);
+$c = random(1, 15) * random(-1, 1, 2);
+
+$p1 = random(-20, 10);
+$p2 = $p1 + random(1, 10);
+
+$f = "$a x^2 + $b x + $c";
+
+$crit = Formula(($p1 + $p2) / 2);
+
+$RMA = RadioMultiAnswer(
+    [
+        [
+            'The Mean Value Theorem can be applied, and \(c=\) %s. '
+                . '(Enter all values separated by commas)',
+            List($crit)
+        ],
+        ["The Mean Value Theorem Theorem can not be applied."]
+    ],
+    0,
+    checkTypes => 0
+);
+
+BEGIN_PGML
+A function [`f(x)`] and interval [`[a, b]`] are given.
+Check if the Mean Value Theorem can be applied to [`f`] on [`[a, b]`].
+If so, find all values [`c`] in [`[a, b]`] guaranteed by the Mean Value Theorem.
+
+[```f(x) = [$f] \quad \textrm{on} \quad [[$p1], [$p2]]```]
+
+[_]{$RMA}
+END_PGML
+
+$a2  = 2 * $a;
+$num = ($a * ($p2)**2 + $b * ($p2)) - ($a * ($p1)**2 + $b * ($p1));
+$den = $p2 - $p1;
+
+BEGIN_PGML_SOLUTION
+[`f(x) = [$f]`] is a polynomial, therefore it is continuous
+and differentiable on every interval.  Thus the Mean Value
+Theorem applies.
+
+Set [`f'(c) = \dfrac{f(b) - f(a)}{b-a}`] and solve for [`c`].
+
+[``
+    \begin{aligned}
+        [$a2] c + [$b] &= \dfrac{[[$a]([$p2])^2 + [$b]([$p2]) + [$c]] -
+            [[$a]([$p1])^2 + [$b]([$p1]) + [$c]]}{[$p2] - [$p1]}\\
+		\\
+        [$a2] c + [$b] &= \frac{[$num]}{[$den]} \\
+		\\
+        c &= [$crit]
+    \end{aligned}
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,46 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Continuity - concept of)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.5')
+## Problem1('31')
+
+#Problem APEX 1.5.31
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Interval");
+
+$a      = random(1, 10, 1);
+$domain = Compute("(-Infinity,ln($a)]");
+
+BEGIN_PGML
+Let [`` f(x) = \sqrt{[$a] - e^{x}} ``]
+
+Give the interval(s) on which the function is continuous. [__]{$domain}
+
+[@ helpLink("interval","Help with intervals") @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Because of the radical, it is required that
+[```
+  \begin{aligned}
+  [$a] - e^x \geq 0 \; &\Rightarrow [$a] \; \geq e^x \\
+  &\Rightarrow \; \ln([$a]) \geq x \\
+  &\Rightarrow \; x \in \left(-\infty,\ln([$a])\right]
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

@@ -1,0 +1,75 @@
+## DESCRIPTION
+##  Statistics
+## ENDDESCRIPTION
+
+## Tagged by dgt5v
+
+## DBsubject(Statistics)
+## DBchapter(Hypothesis tests)
+## DBsection(Type I/type II errors and power)
+## Institution(ASU)
+## Level(1)
+## KEYWORDS('Statistics','Hypothesis Testing', 'DEI')
+# Adapted from local/Library/ASU-topics/setStat/di12.pg by Rachael Norton
+
+# First comes some stuff that appears at the beginning of every problem
+#
+
+DOCUMENT();    # This should be the first executable line in the problem.
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserRadioButtons.pl', 'PGcourse.pl');
+
+@questions = (
+    '_The mean body temperature for humans in fact differs from 98.6 '
+        . 'degrees Farenheit, and the result of the sampling leads to that '
+        . 'conclusion_ is a',
+    '_The mean body temperature for humans in fact is 98.6 degrees Farenheit, '
+        . 'and the result of the sampling does not lead to the rejection of the '
+        . 'fact that the mean body temprature is 98.6 degrees Farenheit_ is a',
+    '_The mean body temperature for humans in fact differs from 98.6 degrees '
+        . 'Farenheit, but the result of the sampling fails to lead to that '
+        . 'conclusion_ is a',
+    '_The mean body temperature for humans in fact is 98.6 degrees Farenheit, '
+        . 'but the result of the sampling leads to the conclusion that the mean '
+        . 'body temprature for humans differs from 98.6 degrees Farenheit_ is a '
+);
+
+my $options = [ 'Type I error', 'Type II error', 'correct decision' ];
+
+@radios = (
+    RadioButtons($options, 1, labels => 'ABC'),
+    RadioButtons($options, 2, labels => 'ABC'),
+    RadioButtons($options, 0, labels => 'ABC'),
+    RadioButtons($options, 2, labels => 'ABC'),
+);
+
+@order = random_subset(4, 0 .. 3);
+
+BEGIN_PGML
+Consider the following hypothesis test. The null hypothesis is
+_The mean body temperature for humans is 98.6 degrees Farenheit,_
+and the alternative hypothesis is _The mean body temperature for humans
+differs from 98.6 degrees Farenheit._
+
+Answer the following questions.
+
+a. [$questions[$order[0]]]**
+
+    [_]{$radios[$order[0]]}
+
+b. [$questions[$order[1]]]**
+
+    [_]{$radios[$order[1]]}
+
+c. [$questions[$order[2]]]**
+
+    [_]{$radios[$order[2]]}
+
+c. [$questions[$order[3]]]**
+
+    [_]{$radios[$order[3]]}
+
+END_PGML
+
+ENDDOCUMENT();
+

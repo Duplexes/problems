@@ -1,0 +1,124 @@
+#Problem APEX 3.4.26
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('26')
+## Also handles problem 39.
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context('Numeric');
+
+$a = random(1, 4, 2);
+
+$f   = Compute("$a*x^2*e^x")->reduce();
+$df  = Compute("$a*(x^2 + 2*x)*e^x")->reduce();
+$ddf = Compute("$a*(x^2+4*x+2)*e^x")->reduce();
+
+$c1    = '-2 - sqrt(2)';
+$c1tex = '-2-\sqrt{2}';
+$c2    = '-2 + sqrt(2)';
+$c2tex = '-2+\sqrt{2}';
+
+$y1 = Compute("$a*($c1)**2 * exp($c1)");
+$y2 = Compute("$a*($c2)**2 * exp($c2)");
+
+$max = List("-2");
+$min = List("0");
+
+Context('Interval');
+$ans_cu = Compute("(-INF, $c1) , ($c2, INF)")->cmp(entry_type => "an interval");
+$ans_cd = List("($c1, $c2)")->cmp(
+    entry_type               => "an interval",
+    correct_ans_latex_string => "($c1tex,$c2tex)"
+);
+
+Context('Point');
+$infl = Compute("($c1, $y1), ($c2, $y2)")->cmp(entry_type => "a point");
+
+BEGIN_PGML
+*Note:* For any questions that asks you to enter all values, enter a list separated by commas. If there are no such values, enter “None”.
+
+Let [`` f(x) = [$f] ``]
+
+a) Determine the intervals on which [`f`] is concave up and concave down. [@helpLink('interval')@]*
+
+    - [`f`] is concave up on: [_]{$ans_cu}{30}
+    - [`f`] is concave down on: [_]{$ans_cd}{30}
+
+b) Based on your answer to part a, determine the
+inflection points of [`f`].
+Each point should be entered as an *ordered pair*
+(that is, in the form [` (x, y) `]).
+
+    The inflection points are [_]{$infl}{25}
+
+c) Find the critical numbers of [`f`] and use the Second
+Derivative Test, when possible, to determine the relative
+extrema.  List only the [`x`]-coordinates.
+    - Relative maxima at [`x=`] [_]{$max}{20}
+    - Relative minima at [`x=`] [_]{$min}{20}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$df] `] and [`f''(x) = [$ddf] `].
+
+Set [`f''(x) = 0`] and solve.
+
+[``
+  \begin{array}{rcl}
+    [$ddf] &=& 0 \\
+    x^2 + 4x + 2 &=& 0 \\  
+    \\
+    x &=& -2 \pm \sqrt{2}.
+  \end{array}
+``]
+
+Thus, concavity could change at [`x = [$c1tex]`] and [`x = [$c2tex]`].
+
+By testing sample points in each interval, we find [`f'' > 0`]
+([`f`] is concave up)
+on [` (-\infty, [$c1tex]) , ([$c2tex], \infty) `] and [`f'' < 0`]
+([`f`] is concave down)
+on [` ([$c1tex], [$c2tex]) `].
+
+Therefore, there are inflection points at [`x = [$c1tex], [$c2tex]`].
+Plug these [`x`] values into the original function to find 
+the corresponding
+[`y`]-values:
+
+[``
+  f([$c1tex]) = [$y1], \quad f([$c2tex]) = [$y2].
+``]
+
+The inflection points occur at [` ([$c1tex], [$y1]) `] and
+[` ([$c2tex], [$y2]) `].
+
+Find critical numbers by setting [`f'(x) = 0`]
+
+[``
+  \begin{array}{rcl}
+    [$df] &=& 0 \\
+    x^2 + 2x &=& 0 \\  
+    x(x + 2) &=& 0 \\  
+    \\
+    x &=& -2, 0.
+  \end{array}
+``]
+- Since [`f''(-2) < 0`], there is a local maximum at [`x = -2`].
+- Since [`f''(0) > 0`], there is a local minimum at [`x = 0`].
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

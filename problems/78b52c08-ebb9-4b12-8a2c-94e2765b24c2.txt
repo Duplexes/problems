@@ -1,0 +1,63 @@
+#Problem APEX 6.1.54
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Techniques of integration)
+## DBsection(Substitution (with trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.1')
+## Problem1('54')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',                'PGML.pl',
+    'parserFormulaUpToConstant.pl', 'PGcourse.pl'
+);
+
+Context("Numeric")->flags->set(reduceConstants => 0);
+
+## (a) ##
+$a1 = non_zero_random(-9, 9);
+$e1 = random(3, 9);
+$ee = $e1 - 1;
+
+$u1 = Formula("x^{$e1} + $a1")->reduce;
+
+$f1 = Formula("x^{$ee} csc^2($u1)")->reduce;
+
+#### Answers ####
+$F1 = FormulaUpToConstant("(-1/$e1) cot($u1) ");
+
+#################
+
+BEGIN_PGML
+Evaluate the indefinite integral. (Use [`C`]
+for the constant of integration.)
+
+[` \displaystyle \int [$f1] \, dx = `]
+[_]{$F1}{40}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Substitute [`u = [$u1]`].  Then [`du = [$e1] x^{[$ee]} \,dx`].
+
+[```
+  \begin{array}{rcl}
+    \displaystyle  \int [$f1] \, dx &=&
+    \displaystyle \dfrac{1}{[$e1]} \int \csc^2 u \, du \\
+    &=& -\dfrac{1}{[$e1]} \cot u + C\\
+    &=& -\dfrac{1}{[$e1]} \cot([$u1]) + C.
+  \end{array}
+```]
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

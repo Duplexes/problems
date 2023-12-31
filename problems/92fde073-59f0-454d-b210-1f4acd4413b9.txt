@@ -1,0 +1,66 @@
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('49')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+Context('Numeric');
+
+$b = random(2, 15);
+$c = random(2, 5);
+$a = 2 * $b * ($c**2);
+
+$f = Formula("$a/(x^2-($c^2)) - $b x /(x-$c)");
+
+$num = Formula("$b x^2 - ($b*$c) x+ $a");
+$den = Formula("x^2-($c^2)");
+
+$dnum = $num->D('x');
+$dden = $den->D('x');
+
+Context('Fraction');
+
+$ans = Fraction($dnum->eval(x => $c), $dden->eval(x => $c));
+
+BEGIN_PGML
+Evaluate the limit. 
+  
+[`` \lim_{x\to [$c]} \left([$f]\right) = \; ``] [_]{$ans}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+This is an indeterminate form, [` \infty - \infty`].  First
+combine the fractions.
+
+[``` 
+\begin{aligned}
+  [$f] & = \dfrac{[$a]}{x^2 - [$c**2]} - \dfrac{[$b] x(x + [$c])}{x^2 - [$c**2]} \\
+  & = \dfrac{-[$b] x^2 - [$b*$c] x + [$a]}{x^2 - [$c**2]}
+    \end{aligned}
+```]
+
+In the fractional form, it is indeterminate of
+the form [`\frac{0}{0}`].  Use L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule.
+
+[```
+\begin{aligned}
+  \lim_{x \to [$c]} [$f] & = \lim_{x \to [$c]} \frac{[$num]}{[$den]} \\
+  & = \lim_{x \to [$c]} \dfrac{[$dnum]}{[$dden]} \\
+  & = [$ans]
+    \end{aligned}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,131 @@
+# DESCRIPTION
+# Problem from Calculus, multi-variable, Hughes-Hallett et al.,
+# originally from 5ed (with updates)
+# WeBWorK problem written by Gavin LaRose, <glarose@umich.edu>
+# ENDDESCRIPTION
+
+## Tagged by glr 06/17/10
+
+
+## DBsubject(Calculus - multivariable)
+## DBchapter(Concepts for multivariable functions)
+## DBsection(Parameterized surfaces)
+## Institution(University of Michigan)
+## Author(Gavin LaRose)
+## MLT(ps_planes)
+## MLTleader(1)
+## Level(3)
+## MO(1)
+## TitleText1('Calculus')
+## AuthorText1('Hughes-Hallett')
+## EditionText1('5')
+## Section1('17.5')
+## Problem1('15')
+## TitleText2('Calculus')
+## AuthorText2('Hughes-Hallett')
+## EditionText2('6')
+## Section2('21.Review')
+## Problem2('8')
+## KEYWORDS('parametric surfaces', 'parametric equations', 'multivariable', 'functions')
+
+## Textbook tags
+## HHChapter1('Parameterization and Vector Fields')
+
+DOCUMENT();
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "PGcourse.pl"
+);
+
+Context("Vector");
+Context()->variables->are( t=>'Real', s=>'Real' );
+
+$showPartialCorrectAnswers = 1;
+
+# Three points that determine a plane
+
+do {$P = Vector( non_zero_random(-5,5,1), non_zero_random(-5,5,1),
+       non_zero_random(-5,5,1) );
+    $Q = Vector( non_zero_random(-12,12,2), non_zero_random(-12,12,2),
+       non_zero_random(-12,12,2) );
+    $R = Vector( random(0,50,5), random(0,50,5), random(0,50,5) );
+    $PQ = $Q-$P;
+    $PR = $R-$P;
+    $N = $PQ->cross($PR);
+} until (!($N->isZero));
+
+# extract the components so we can put the formula for the 
+# parametrization in the desired form
+
+@p = $P->value;
+@pq = $PQ->value;
+@pr = $PR->value;
+
+# the parametrization
+
+$rparam_red = Vector(Compute("$p[0]+s*$pq[0]+t*$pr[0]")->reduce,
+                     Compute("$p[1]+s*$pq[1]+t*$pr[1]")->reduce,
+                     Compute("$p[2]+s*$pq[2]+t*$pr[2]")->reduce );
+
+#check that the student's parametrization gives the same plane
+
+$rparam = ($rparam_red)->cmp(
+  checker => sub{
+    my ($correct,$student,$ansHash) = @_; 
+    # check that the coordinates of the student's answer 
+    # are affine functions of s and t
+    if ( !($student -> D('s','s')->isZero) or 
+         !($student -> D('s','t')->isZero) or
+         !($student -> D('t','t')->isZero) 
+       ){
+      Value->Error('Components should be functions of the form a+bs+ct where a,b,c are real numbers.'); 
+    }
+    my $stuP = $student->eval(s=>0,t=>0);
+    my $stuPQ = ($student->eval(s=>1,t=>0)) - $stuP;
+    my $stuPR = ($student->eval(s=>0,t=>1)) - $stuP;   
+    my $stuN = $stuPQ->cross($stuPR);
+    if ( $stuN->isZero ){
+      Value->Error('You have parametrized a line or a point, not a plane.');
+    }
+    if ( !($N->isParallel($stuN)) ){ 
+      Value->Error('Your plane is not parallel to the given plane');
+    }
+    my $stuP = $student -> eval(s=>0,t=>0);
+    if ( ($P . $N) == ($stuP . $N) ){
+      return 1;
+    } 
+    else { 
+      Value->Error('The point \(\vec{r}(0,0)\) does not lie on the given plane');
+    }
+  });
+
+BEGIN_PGML
+
+Parameterize the plane that contains the three points
+
+    [@ Point($P) @], [@ Point($Q) @], [@ Point($R) @].
+
+Use s and t for the parameters in your
+parameterization and enter your formula as a single vector, 
+with angle brackets, for example,  [``\langle 1 + s + t, s - t, 3 - t \rangle``].  Each component should be a function of the form a+bs+ct where a,b,c are appropriate real numbers. 
+
+[`\vec{r}(s,t)`] = [_]{$rparam}{20}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Let    
+    [``P=[$P]``], [``Q=[$Q]``], [``R=[$R]``]    
+be vectors representing the three given points.
+
+The displacement vectors  
+    [``\overrightarrow{PQ} = Q-P = [$PQ] ``] and   
+    [``\overrightarrow{PR} = R-P = [$PR] ``]    
+are parallel to the given plane so    
+    [``\vec{r}(s,t) = [$P]+s[$PQ]+t[$PR] = [$rparam_red]``]    
+is one way to parametrize the plane.  There are many other ways, of course.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

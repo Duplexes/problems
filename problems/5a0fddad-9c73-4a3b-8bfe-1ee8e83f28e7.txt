@@ -1,0 +1,57 @@
+#Problem APEX 2.4.22
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives of polynomials and power functions)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('22')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+$a2 = random(2, 5) * random(-1, 1, 2);
+$a1 = random(2, 8) * random(-1, 1, 2);
+$a0 = random(1, 10) * random(-1, 1, 2);
+$b1 = random(2, 15) * random(-1, 1, 2);
+$b0 = non_zero_random(-20, 20);
+$c  = non_zero_random(-10, 10);
+
+$f_simplified = Formula("$b1 x - $c")->reduce;
+$ans          = Formula("$b1");
+
+$g         = Formula("$a2 x^2 + $a1 x + $a0")->reduce;
+$f_display = $g * ($f_simplified / $g);
+
+BEGIN_PGML
+Compute the derivative of the given function.
+
+[```
+  f(x) = [$f_display]
+```]
+
+[` f'(x) = `][_]{$ans}.
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Always look to reduce the function before taking any derivatives.
+
+[```
+  \begin{aligned}
+    f(x) &= [$f_display] \\
+    &= [$f_simplified]
+  \end{aligned}
+```]
+
+So [` f'(x) = [$ans]`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

@@ -1,0 +1,74 @@
+#Problem APEX 2.4.38-39
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Higher-order derivatives)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('38 39')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+Context("Numeric");
+Context()->noreduce('(-x)-y', '(-x)+y');
+
+$a = random(2, 9) * random(-1, 1, 2);
+$u = Formula("$a x");
+
+@functions = (Formula("sin(x)"), Formula("cos(x)"));
+$r         = random(0, 1);
+$v         = $functions[$r];
+$dv        = $v->D('x');
+$d2v       = $dv->D('x');
+$d3v       = $d2v->D('x');
+$d4v       = $d3v->D('x');
+
+# separate objects are required for combining like terms
+$f             = $u * $v;
+$f1_raw        = $f->D('x');
+$f2_raw        = $f1_raw->D('x');
+$f2_simplified = Compute("2*$a*$dv + $u*$d2v")->reduce;
+$f3_raw        = $f2_simplified->D('x');
+$f3_simplified = Compute("3*$a*$d2v + $u*$d3v")->reduce;
+$f4_raw        = $f3_simplified->D('x');
+$f4_simplified = Compute("4*$a*$d3v + $u*$d4v")->reduce;
+
+BEGIN_PGML
+Let [`  f(x) = [$f]  `].  Find the requested
+derivatives.
+
+[` f'(x) = `][_]{$f1_raw}
+
+[` f''(x) = `][_]{$f2_simplified}
+
+[` f'''(x) = `][_]{$f3_simplified}
+
+[` f^{(4)}(x) = `][_]{$f4_simplified}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+Use the Product Rule and combine like terms for each derivative.
+
+[```
+  \begin{aligned}
+   f'(x) &= [$f1_raw] \\
+   f''(x) &= [$f2_raw] \\
+   &= [$f2_simplified] \\
+   f'''(x) &= [$f3_raw] \\
+   &= [$f3_simplified] \\
+   f^{(4)}(x) &= [$f4_raw] \\
+   &= [$f4_simplified] \\
+    \end{aligned}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

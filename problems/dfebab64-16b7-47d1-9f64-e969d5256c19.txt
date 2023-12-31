@@ -1,0 +1,150 @@
+#Problem APEX 5.4.18-24
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Definite integrals (without trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('18 24')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl',, 'PGcourse.pl');
+Context("Numeric");
+
+## Part (a)
+$a1 = Compute("1");
+$b1 = random(2, 9);
+
+$f    = "\frac{1}{x}";
+$fI   = Formula("ln(x)");
+$ans1 = $fI->eval(x => $b1) - $fI->eval(x => $a1);
+
+## Part (b)
+$a2 = Compute("1");
+$b2 = random(2, 9);
+
+$g    = "\frac{1}{x^2}";
+$gI   = Formula("-1/x");
+$ans2 = $gI->eval(x => $b2) - $gI->eval(x => $a2);
+
+## Part (c)
+$a3 = Compute("1");
+$b3 = random(2, 9);
+
+$e3 = random(3, 6);
+
+$h    = "\frac{1}{x^{$e3}}";
+$hI   = Formula("(x^(1-$e3))/(1-$e3)");
+$ans3 = $hI->eval(x => $b3) - $hI->eval(x => $a3);
+
+## Part (d)
+$a4 = Compute("0");
+$b4 = random(1, 9);
+
+$F    = "x^2";
+$FI   = Formula("(x^3)/3");
+$ans4 = $FI->eval(x => $b4) - $FI->eval(x => $a4);
+
+## Part (e)
+$a5 = Compute("0");
+$b5 = Compute("1");
+
+$e5   = random(10, 100, 5);
+$G    = "x^{$e5}";
+$GI   = Formula("(x^{$e5 + 1})/($e5 + 1)");
+$ans5 = $GI->eval(x => $b5) - $GI->eval(x => $a5);
+
+BEGIN_PGML
+
+Evaluate the definite integrals
+
+a) [``\int_{[$a1]}^{[$b1]} [$f] \, dx = ``]
+[_]{$ans1}{15}
+
+
+b) [``\int_{[$a2]}^{[$b2]} [$g] \, dx = ``]
+[_]{$ans2}{15}
+
+
+c) [``\int_{[$a3]}^{[$b3]} [$h] \, dx = ``]
+[_]{$ans3}{15}
+
+
+d) [``\int_{[$a4]}^{[$b4]} [$F] \, dx = ``]
+[_]{$ans4}{15}
+
+
+e) [``\int_{[$a5]}^{[$b5]} [$G] \, dx = ``]
+[_]{$ans5}{15}
+END_PGML
+
+$bb2 = Compute("$b2 - 1");
+$ee  = Compute("$e3 - 1");
+$eee = Compute("$e5 + 1");
+
+BEGIN_PGML_SOLUTION
+Use the Fundamental Theorem of Calculus.
+
+a) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a1]}^{[$b1]} [$f] \, dx
+    & = \left(\ln |x| \right) \bigg|_{[$a1]}^{[$b1]}
+    \\
+    & = \ln([$b1]) - \ln([$a1]) \\
+    & = \ln([$b1]).
+  \end{aligned}
+```]
+
+b) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a2]}^{[$b2]} [$g] \, dx
+    & = -\frac{1}{x} \bigg|_{[$a2]}^{[$b2]}\\
+    & = -\frac{1}{[$b2]} + 1 \\
+    & = \frac{[$bb2]}{[$b2]} \approx [$ans2].
+  \end{aligned}
+```]
+
+c) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a3]}^{[$b3]} [$h] \, dx 
+    & =-\frac{x^{-[$ee]}}{[$ee]} \Bigg|_{[$a3]}^{[$b3]}\\
+    & = -\frac{([$b3])^{-[$ee]}}{[$ee]} + \dfrac{1}{[$ee]} 
+    \\
+    & = [$ans3].
+  \end{aligned}
+```]
+
+d) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a4]}^{[$b4]} [$F] \, dx
+    & = \frac{x^3}{3} \Bigg|_{[$a4]}^{[$b4]}
+    \\
+    & = \dfrac{([$b4])^3}{3} - 0
+    \\
+    & = [$ans4].
+  \end{aligned}
+```]
+
+e) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a5]}^{[$b5]} [$G] \, dx
+    & = \frac{x^{[$eee]}}{[$eee]} \Bigg|_{[$a5]}^{[$b5]}
+    \\
+    & = \frac{([$b5])^{[$eee]}}{[$eee]} - 0
+    \\
+    & = \frac{1}{[$eee]}.
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

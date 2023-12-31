@@ -1,0 +1,60 @@
+#Problem APEX 4.4.30
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl',, 'PGcourse.pl');
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Linear approximation and differentials)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(LinearApprox_Sphere)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('4.4')
+## Problem1('30')
+
+Context("Numeric");
+
+$d = random(1, 20, 1);
+$e = random(1, 3,  1);
+
+$r   = Compute("$d/2");
+$ecm = Compute("$e/10");
+$e2  = Compute("$ecm/2");
+
+$ans = Compute("4*pi*($r**2)*$e2");
+
+BEGIN_PGML
+
+A set of plastic spheres are to be made with a diameter of [$d] cm.
+If the manufacturing process is accurate to [$e] mm, what is the
+propagated error in volume of the spheres?
+
+Error = [`\pm`][_]{$ans}{20} [`\textrm{cm}^3`]   
+END_PGML
+
+BEGIN_PGML_SOLUTION
+First find the differential of the volume equation for a sphere
+[```
+    V = \frac{4}{3} \pi r^3.
+```]
+Then plug in the ideal radius, [`r = [$d] / 2 = [$r]\ \textrm{cm}`] and the
+error (converted from mm to cm) 
+[`dr \approx \pm [$ecm] / 2 = \pm [$e2]\ \textrm{cm} `]. We get 
+[```
+  \begin{aligned}
+    dV 
+    & = 4\pi r^2 \; dr\\
+    & = 4\pi ([$r]\ \textrm{cm})^2 (\pm [$e2]\ \textrm{cm})\\
+    & = \pm [$ans]\ \textrm{cm}^3.
+  \end{aligned}
+```]
+Notice that the error for the radius is half the error for the diameter.
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

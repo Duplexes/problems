@@ -1,0 +1,34 @@
+## DESCRIPTION
+## Differential Equations: Laplace Transforms
+## ENDDESCRIPTION
+
+## Tagged by cmd6a 3/10/06
+
+## DBsubject(Differential equations)
+## DBchapter(Laplace transforms)
+## DBsection(Basic transformations)
+## Institution(ASU)
+## Level(4)
+
+DOCUMENT();    # This should be the first executable line in the problem.
+
+loadMacros("PGstandard.pl", "MathObjects.pl", "PGML.pl", "PGcourse.pl");
+
+Context('Numeric')->variables->are('s' => 'Real');
+Context()->flags->set(limits => [ 0.5, 2 ]);
+
+$a    = random(2, 9);
+$twoa = 2 * $a;
+
+$ans1 = Compute("e^(-$a/s)*(s-$twoa)/(2*s^(5/2))");
+
+BEGIN_PGML
+Given that [`` \mathcal{L} \left\lbrace \frac{\cos\left(2\sqrt{[$a] t}\right)}{\sqrt{\pi t}} \right\rbrace = \frac{e^{-[$a]/s}}{\sqrt{s}} ``], 
+find the Laplace transform of 
+[``\sqrt{\frac{t}{\pi}}\cos\left(2\sqrt{[$a] t}\right)``].
+
+[``\mathcal{L}\left\lbrace\sqrt{\frac{t}{\pi}}\cos\left(2\sqrt{[$a] t}\right)\right\rbrace =``][_]{$ans1}{10}
+END_PGML
+
+ENDDOCUMENT();    # This should be the last executable line in the problem.
+

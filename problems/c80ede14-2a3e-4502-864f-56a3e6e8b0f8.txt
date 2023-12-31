@@ -1,0 +1,62 @@
+#DESCRIPTION
+##  Calculus: Equations of lines and planes
+##ENDDESCRIPTION
+
+
+## DBsubject(Geometry)
+## DBchapter(Vector geometry)
+## DBsection(Lines with planes)
+## Date(12/14/2011)
+## Institution(University of Minnesota)
+## Author(Justin Sukiennik)
+## Level(3)
+## MO(1)
+## TitleText1('Calculus: Concepts and Contexts')
+## AuthorText1('Stewart')
+## EditionText1('5')
+## Section1('12.5')
+## Problem1('34')
+## KEYWORDS('calculus', 'three-dimensional', 'vectors', 'linear equations', 'planes', 'lines')
+
+#####################################################################
+
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "parserVectorUtils.pl",
+  "parserImplicitPlane.pl",
+  "PGML.pl",
+  "PGcourse.pl"
+);
+########################################################################
+
+$showPartialCorrectAnswers = 1;
+
+TEXT(beginproblem);
+
+#####################################################################
+
+Context('Vector');
+
+$a = random(5,6,1);
+$b = random(2,4,1);
+$c = list_random(2,4,8);
+
+$a1 = Vector("<1,2-$a,2>");
+$b1 = Vector("<3,-$b,-$c>");
+
+$ab = $a1 x $b1;
+
+Context("ImplicitPlane");
+
+$ans = ImplicitPlane(Point(1,2,3),$ab);
+
+BEGIN_PGML
+Find a linear equation for the plane that passes through the point [` (1,2,3) `] and contains the line represented by the vector equation [` \mathbf{r}(t) = \langle 3t, [$a]-[$b] t, 1-[$c] t\rangle `].
+
+Equation: [_]{$ans}{30}
+END_PGML
+
+ENDDOCUMENT();        # This should be the last executable line in the problem.

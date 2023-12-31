@@ -1,0 +1,107 @@
+#Problem APEX 3.4.16-17
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('16 17')
+## Also handles problems 29-30.
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+
+Context('Numeric');
+Context()->noreduce('(-x)-y', '(-x)+y');
+
+$a2 = random(3, 6, 1) * random(-1, 1, 2);
+$a  = $a2 / 2;
+$b  = random(2, 5, 1) * random(-1, 1, 2);
+$c  = random(1, 5, 1) * random(-1, 1, 2);
+
+$f = Compute("$a*x^2 + $b*x + $c")->reduce();
+
+$df  = Compute("$a2*x + $b")->reduce();
+$ddf = Formula("$a2");
+
+Context('Point');
+$infl = List(None)->cmp(entry_type => 'a point', typeMatch => 'Value::Point');
+
+Context('Fraction');
+$crit = Fraction("-$b / $a2")->reduce();
+if ($a > 0) {
+    $max =
+        List(None)->cmp(entry_type => 'a number', typeMatch => 'Value::Real');
+    $min =
+        List($crit)->cmp(entry_type => 'a number', typeMatch => 'Value::Real');
+    Context("Interval");
+    $ans_cu = List(Interval("(-INF, INF)"))->cmp(entry_type => 'an interval');
+    $ans_cd = List(None)
+        ->cmp(entry_type => "an interval", typeMatch => 'Value::Interval');
+} else {
+    $max =
+        List($crit)->cmp(entry_type => 'a number', typeMatch => 'Value::Real');
+    $min =
+        List(None)->cmp(entry_type => 'a number', typeMatch => 'Value::Real');
+    Context("Interval");
+    $ans_cu = List(None)
+        ->cmp(entry_type => "an interval", typeMatch => 'Value::Interval');
+    $ans_cd = List(Interval("(-INF, INF)"))->cmp(entry_type => 'an interval');
+}
+
+BEGIN_PGML
+Let [`` f(x) = [$f] ``]
+
+a) Determine the intervals on which [`f`] is concave up and
+concave down.  Enter a list of intervals separated by commas.
+If there is no such interval, enter "None".  [@helpLink('interval')@]*
+    - [`f`] is concave up on: [_]{$ans_cu}{30}
+    - [`f`] is concave down on: [_]{$ans_cd}{30}
+
+b) Based on your answer to part (a), determine
+the inflection points of [`f`].
+
+    Each point should be entered as an *ordered pair*
+(that is, in the form [` (x, y) `]).  
+[_]{$infl}{25}
+(Separate multiple answers by commas.)
+
+c) Find the critical numbers of [`f`] and use the Second
+Derivative Test, when possible, to determine the relative
+extrema.  List only the [`x`]-coordinates.  
+    - Relative maxima at [`x=`][_]{$max}{20} (Separate multiple answers by commas.) 
+    - Relative minima at [`x=`][_]{$min}{20} (Separate multiple answers by commas.) 
+END_PGML
+
+$ineq   = ($a > 0) ? ">"       : "<";
+$ud     = ($a > 0) ? "up"      : "down";
+$maxmin = ($a > 0) ? "minimum" : "maximum";
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$df] `] and [`f''(x) = [$ddf] `].
+
+Since [` f''(x) [$ineq] 0 `] for all [`x`], [`f`] is always concave [$ud]
+on [` (-\infty, \infty) `], and there are no inflection points.
+
+Find critical numbers by setting [`f'(x) = 0`]
+
+[``
+  \begin{array}{rcl}
+    [$df] &=& 0 \\
+    x &=& [$crit] \\  
+  \end{array}
+``]
+
+Since [`f''([$crit]) [$ineq] 0`], there is a local [$maxmin] there.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

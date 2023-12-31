@@ -1,0 +1,98 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Related rates)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('4.2')
+## Problem1('12')
+## RESOURCES('APEX_4dot2_12_fig1.jpg')
+## COMMENT('Missing Alt Text');
+
+#Problem APEX 4.2.12
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+$h0   = random(25, 45, 5);
+$rate = random(2,  4,  1);
+
+$a1 = Compute("100 + $h0**2");
+$a2 = Compute("900 + $h0**2");
+
+$num1 = Compute("$rate * 10");
+$num2 = Compute("$rate * 30");
+
+$r1 = Compute("$num1/sqrt($a1)");
+$r2 = Compute("$num2/sqrt($a2)");
+
+$alttext = 'An image with a weight on the ground and a rope extending directly above '
+. 'to a pulley, then extending to a person.  On the vertical rope, an arrow indicates '
+. 'the weight is going up, on the descending side of the ropt, an arrow indicates '
+. 'the rope is being pulled down and an arrow indicates that the person is moving '
+. 'away from the weight.'; 
+
+BEGIN_PGML
+>> [! [$alttext] !]{'APEX_4dot2_12_fig1.jpg'}{300} <<
+
+A rope, attached to a weight, passes vertically up through a pulley
+in the ceiling and then straight back down to a worker who holds the rope
+in his hand.  The worker walks away at a constant rate [$rate] ft/s, keeping his hand at the same distance [$h0] feet below the ceiling.  How fast is the weight rising
+when the worker has walked:
+
+a. 10 feet? [__]{$r1} ft/s
+
+b. 30 feet? [__]{$r2} ft/s
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+When the worker has walked [`x`] feet his hand, the pulley, and the point 
+[$h0] feet directly beneath the pulley form a right
+triangle with height [$h0], base length [`x`],
+and hypotenuse [`z`].  Let [`y`] be the distance
+from the weight to the pulley.   The rate the weight rises 
+equals the rate [`-dy/dt`] at which [`y`]  
+decreases.  Also 
+[```\  y+z = \text{length of rope} \ ```]
+is constant (assuming the rope doesn't stretch and the worker doesn't let it slip through his hand) so 
+[```\frac{dy}{dt} + \frac{dz}{dt}=\frac{d(\text{constant})}{dt} = 0```]
+hence 
+[``` -\frac{dy}{dt} = \frac{dz}{dt} ```]
+is the answer that we seek.  
+
+The values [`z`] and [`x`] are related by
+the Pythagorean theorem
+[``` z^2 = x^2 + [$h0]^2.```]
+Differentiating, one obtains
+[``` 2z\frac{dz}{dt} = 2x\frac{dx}{dt} + 0. ```]
+The worker is walking away at the rate
+[``` \frac{dx}{dt} = [$rate]\ \text{ft}/\text{s} ```]
+so if [`x`] is known then one can compute 
+[`z`] and [`dz/dt`]:   
+ 
+When [`x = 10`],
+[`10^2 + [$h0]^2 = z^2`] and so [`z = \sqrt{[$a1]}`]. Thus 
+[```
+  \frac{dz}{dt} = \frac{[$num1]}{\sqrt{[$a1]}}
+  \approx [$r1]\ \text{ft}/\text{s}
+```]
+in this case.
+
+When [`x = 30`],
+[`30^2 + [$h0]^2 = z^2`] and so [`z = \sqrt{[$a2]}`]. Thus
+[```
+  \frac{dz}{dt} = \frac{[$num2]}{\sqrt{[$a2]}}
+  \approx [$r2]\ \text{ft}/\text{s}.
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

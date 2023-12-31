@@ -1,0 +1,51 @@
+#Problem APEX 6.7.27
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('27')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+Context('Numeric');
+
+$a = random(2, 15);
+$b = random(2, 15);
+
+$c = "\infty";
+
+$num = "\ln(x^{$a})";
+$den = "$b x";
+
+$dnum = "$a / x";
+$dden = "$b";
+
+$ans = Real(0);
+
+BEGIN_PGML
+Evaluate the limit, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule. 
+  
+[``  \lim_{x\to \infty} \frac{[$num]}{[$den]} = \;``] [_]{$ans}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[``` 
+\begin{aligned}
+  \lim_{x \to [$c]} \frac{[$num]}{[$den]}
+  & = \lim_{x \to [$c]} \frac{[$dnum]}{[$dden]} \\
+  & = \lim_{x \to [$c]} \frac{[$a]}{[$b] x} =0. 
+ \end{aligned}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

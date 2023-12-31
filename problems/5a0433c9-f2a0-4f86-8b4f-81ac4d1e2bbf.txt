@@ -1,0 +1,84 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('41 42')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context('Numeric');
+
+### (a) ###
+$a1 = random(2, 15);
+$b1 = random(2, 15);
+
+$f1 = Formula("($a1 x)^($b1 / x)");
+
+$ans1 = Real(1);
+
+### (b) ###
+$a2 = random(2, 15);
+$b2 = random(2, 15);
+
+$f2 = Formula("($a2 / x)^($b2 x)");
+
+$ans2 = 0;
+
+BEGIN_PGML
+Evaluate the limits, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule where appropriate.
+
+a) [`` \lim_{x\to \infty} [$f1] = \;``] [_]{$ans1}{10}
+
+b) [`` \lim_{x\to \infty} [$f2] =\; ``] [_]{$ans2}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+$num1 = Formula("$b1 ln ($a1 x)");
+$den1 = Formula('x');
+
+$dnum1 = $num1->D('x');
+$dden1 = $den1->D('x');
+
+BEGIN_PGML_SOLUTION
+
+a) First use the property [`f(x) = e^{\ln f(x)}`] and
+laws of logarithms to re-express the function as a fraction.
+
+
+    [```
+      [$f1] = e^{\ln [$f1]} = e^{\frac{[$b1]}{x} \ln([$a1] x)},
+    ```]
+
+    and
+
+    [```
+    \begin{aligned}
+      \lim_{x \to \infty} \frac{[$b1]}{x} \ln ([$a1] x) & =
+      \lim_{x \to \infty} \dfrac{[$num1]}{[$den1]} \\
+      & = \lim_{x \to \infty} \dfrac{[$dnum1]}{[$dden1]} \\
+      & = \lim_{x \to \infty} [$dnum1] = 0.
+        \end{aligned}
+    ```]
+
+    Therefore,
+
+    [```
+      \lim_{x \to \infty} [$f1] = e^{0} = 1.
+    ```]
+
+b) The form [`0^{\infty}`] is not an indeterminate
+form; it has the value 0.  In fact, [`[$f2] \to 0`] very quickly.
+[``
+  \lim_{x \to \infty} [$f2] = 0.
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

@@ -1,0 +1,71 @@
+#Problem APEX 6.7.45
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('45')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context('Numeric');
+
+$a = random(2, 5);
+$f = Formula("(1+x^($a))^(1/x)");
+
+$ans = Real(1);
+
+BEGIN_PGML
+Evaluate the limit, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule. 
+
+[``\lim_{x\to \infty} [$f] = ``] [_]{$ans}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+$num = Formula("ln(1+x^($a))");
+$den = Formula("x");
+
+$dnum = $num->D('x');
+$dden = $den->D('x');
+
+BEGIN_PGML_SOLUTION
+First use the property [`f(x) = e^{\ln f(x)}`] and
+laws of logarithms to re-express the function as
+a fraction.
+
+[``` 
+\begin{aligned}
+  [$f] & = e^{\ln [$f]} \\
+  & = e^{ \frac{1}{x} \ln(1 + x^{[$a]})}  \\
+  & = e^{\frac{\ln(1 + x^{[$a]})}{x}}.
+    \end{aligned}
+```]
+
+Find the limit of the exponent (using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule).
+
+[```
+\begin{aligned}
+  \lim_{x \to \infty} \frac{[$num]}{[$den]}
+  & = \lim_{x \to \infty} \frac{[$dnum]}{[$dden]} \\
+  & = \lim_{x \to \infty} [$dnum] = 0.
+  \end{aligned}
+```]
+
+Then plug this result back in to find the original limit.
+
+[```
+  = \lim_{x \to \infty} [$f]
+  = e^{\lim_{x \to \infty} \ln [$f]}
+  = e^0 = 1.
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

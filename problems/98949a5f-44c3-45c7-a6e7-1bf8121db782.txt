@@ -1,0 +1,123 @@
+#Problem APEX 3.4.27
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Concavity and points of inflection)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.4')
+## Problem1('27')
+## Also handles problem 40.
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',     'PGML.pl',
+    'PGchoicemacros.pl', 'extraAnswerEvaluators.pl',
+    'PGcourse.pl'
+);
+
+Context('Numeric');
+
+$n   = random(3, 6, 1);
+$n1  = $n - 1;
+$n2  = $n - 2;
+$nn1 = 2 * $n - 1;
+$nn2 = $n * $n1;
+
+$f   = Compute("x^($n)*ln(x)")->reduce();
+$df  = Compute("x^($n1) + $n*x^($n1)*ln(x)")->reduce();
+$ddf = Compute("$nn1*x^($n2) + $nn2 * x^($n2) * ln(x)")->reduce();
+
+$c1 = Compute("exp(-$nn1/$nn2)");
+$y1 = Compute("($c1)^($n) * ln($c1)");
+
+$max = List(None);
+$min = List("e^(-1/$n)");
+
+Context('Interval');
+$ans_cu = List("($c1, INF)")->cmp(entry_type => "an interval");
+$ans_cd = List("(0, $c1)")->cmp(entry_type => "an interval");
+
+Context('Point');
+$infl = List("($c1, $y1)")->cmp(entry_type => "a point");
+
+BEGIN_PGML
+*Note:* For any questions that asks you to enter all values, enter a list separated by commas. If there are no such values, enter “None”.
+
+Let [`` f(x) = [$f], \quad x > 0. ``]
+
+a) Determine the intervals on which [`f`] is concave up and
+concave down. [@helpLink('interval')@]*
+    - [`f`] is concave up on: [_]{$ans_cu}{30}
+    - [`f`] is concave down on: [_]{$ans_cd}{30}
+
+b) Based on your answer to part a, determine the
+inflection points of [`f`].
+Each point should be entered as an *ordered pair*
+(that is, in the form [` (x, y) `]).
+
+    The inflection points are [_]{$infl}{25}
+
+c) Find the critical numbers of [`f`] and use the Second
+Derivative Test, when possible, to determine the relative
+extrema.  List only the [`x`]-coordinates.
+    - Relative maxima at [`x=`] [_]{$max}{20}
+    - Relative minima at: [`x=`] [_]{$min}{20}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[` f'(x) = [$df] `] and [`f''(x) = [$ddf] `].
+
+Set [`f''(x) = 0`] and solve.
+
+[``
+  \begin{array}{rcl}
+    [$ddf] &=& 0 \\
+    [$nn2] x^{[$n2]} \ln x &=& -[$nn1] x^{[$n2]} \\
+    \ln x &=& -\dfrac{[$nn1]}{[$nn2]}\\
+    \\
+    x &=& e^{-[$nn1]/[$nn2]}
+  \end{array}
+``]
+
+Thus, concavity could change at [`x = e^{-[$nn1]/[$nn2]}`].
+By testing sample points in each interval, we find [`f'' > 0`]
+([`f`] is concave up)
+on [` (e^{-[$nn1]/[$nn2]}, \infty) `] and [`f'' < 0`]
+([`f`] is concave down)
+on [` (0, e^{-[$nn1]/[$nn2]}) `].
+
+Therefore, there is an inflection point at [`x = e^{-[$nn1]/[$nn2]}`].
+
+Plug this [`x`] value into the original function to find 
+the corresponding [`y`]-value:
+
+[``
+  f(e^{-[$nn1]/[$nn2]}) = [$y1]
+``]
+
+The inflection point occurs at [` (e^{-[$nn1]/[$nn2]}, [$y1]) `].
+
+Find critical numbers by setting [`f'(x) = 0`]
+
+[``
+  \begin{array}{rcl}
+    [$df] &=& 0 \\
+    [$n] x^{[$n1]}\ln x &=& -x^{[$n1]} \\  
+    \ln x &=& -\dfrac{1}{[$n]}\\
+    \\
+    x &=& e^{-1/[$n]}.
+  \end{array}
+``]
+
+Since [`f''(e^{-1/[$n]}) > 0`], there is a local minimum there.
+END_PGML_SOLUTION
+ENDDOCUMENT();
+

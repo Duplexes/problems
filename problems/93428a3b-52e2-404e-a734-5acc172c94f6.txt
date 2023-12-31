@@ -1,0 +1,78 @@
+#Problem APEX 3.2.16
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Mean value theorem)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.2')
+## Problem1('16')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',             'PGML.pl',
+    'parserRadioMultiAnswer.pl', 'PGcourse.pl'
+);
+
+$a  = random(2, 15, 1);
+$b  = random(1, 10, 1) * random(-1, 1, 2);
+$c  = random(5, 20, 1);
+$c1 = $c - 1;
+
+$p1 = 1;
+$p2 = $c;
+
+$f = Compute("$a*ln x + $b")->reduce();
+
+$crit = List("($c1)/ln($c)");
+$crit->{correct_ans_latex_string} = "\frac{$c1}{\ln($c)}";
+
+$RMA = RadioMultiAnswer(
+    [
+        [
+            'The Mean Value Theorem can be applied, and \(c=\) %s. '
+                . '(Enter all values separated by commas)',
+            $crit
+        ],
+        ["The Mean Value Theorem can not be applied."]
+    ],
+    0,
+    checkTypes => 0
+);
+
+BEGIN_PGML
+A function [`f(x)`] and interval [`[a, b]`] are given.
+Check if the Mean Value Theorem can be applied to [`f`] on [`[a, b]`].
+If so, find all values [`c`] in [`[a, b]`]
+guaranteed by the Mean Value Theorem
+
+[`` f(x) = [$f] \qquad \textrm{on} \; [[$p1], [$p2]] ``]
+
+[_]{$RMA}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[`f(x) = [$f]`] is continuous and differentiable on any interval within
+[` (0, \infty) `], so the Mean Value Theorem applies.
+
+[``
+  \begin{array}{rcl}
+    f'(c) &=& \dfrac{f(b) - f(a)}{b - a} \\
+    \\
+    \dfrac{[$a]}{c} &=& \dfrac{\left([$a] \ln [$c] + [$b]\right)
+    - \left( [$a] \ln 1 + [$b]\right)}{[$c] - 1}\\
+    \\
+    \dfrac{[$a]}{c} &=& \dfrac{[$a] \ln [$c]}{[$c1]} \\
+    \\
+    c &=& \dfrac{[$c1]}{\ln [$c]}.
+  \end{array}
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

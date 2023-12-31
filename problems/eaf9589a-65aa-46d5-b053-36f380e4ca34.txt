@@ -1,0 +1,100 @@
+#Problem APEX 5.4.53
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Fundamental theorem of calculus)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('53')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+Context('Numeric');
+
+## Set-up:
+$f = "\dfrac{1}{t}";
+
+## Part (a)
+$a1   = random(1, 25, 1);
+$ans1 = Formula("1/x");
+
+## Part (b)
+$b2   = random(1, 25, 1);
+$ans2 = Formula("-1/x");
+
+## Part (c)
+$a3   = random(1, 25, 1);
+$e    = random(3, 6,  1);
+$g    = Formula("x^{$e}");
+$ans3 = Formula("$e/x");
+
+## Part (d)
+$u    = "2 + \cos x";
+$v    = "x^2 + 1";
+$ans4 = Formula("2x/(x^2 + 1) + sin(x)/(2 + cos(x))");
+
+BEGIN_PGML
+
+a) If [``F(x) = \int_{[$a1]}^{x} [$f] \, dt ``],
+then [`` F'(x) = ``] [_]{$ans1}{25}
+
+
+b) If [``F(x) = \int_{x}^{[$b2]} [$f] \, dt ``],
+then [`` F'(x) = ``] [_]{$ans2}{25}
+
+
+c) If [`` F(x) = \int_{[$a3]}^{[$g]} [$f] \, dt ``],
+then [`` F'(x) = ``] [_]{$ans3}{25}
+
+
+d) If [`` F(x) = \int_{[$u]}^{[$v]} [$f] \, dt ``],
+then [`` F'(x) = ``] [_]{$ans4}{25}
+END_PGML
+
+$e1 = Compute("$e - 1");
+
+BEGIN_PGML_SOLUTION
+
+Use the first part of the Fundamental Theorem of Calculus:
+[```
+    \frac{d}{dx} \int_a^x f(t)\,dt = f(x).
+```]
+
+
+a) [``
+  \dfrac{d}{dx} \int_{[$a1]}^x [$f] \, dt = \frac{1}{x}.
+``]
+
+b) [``
+  \frac{d}{dx} \int_{x}^{[$b2]} [$f] \, dt =
+ -\frac{d}{dx} \int_{[$b2]}^x [$f] \, dt = -\frac{1}{x}
+``].
+
+c) [``
+  \frac{d}{dx} \int_{[$a3]}^{[$g]} [$f] \, dt
+  = \frac{1}{[$g]} \cdot ([$g])' 
+  = \frac{1}{[$g]} \cdot [$e] x^{[$e1]}
+  = \frac{[$e]}{x}
+``].
+
+d) Here the key is that 
+[```
+    \int_{[$u]}^{[$v]} [$f] \, dt
+    = \int_a^{[$v]} [$f] \, dt - \int_a^{[$u]} [$f]\,dt.
+```]
+Differentiating, 
+[```
+  \begin{aligned}
+      \frac{d}{dx} \int_{[$u]}^{[$v]} [$f] \, dt 
+      & = \frac{1}{[$v]} \cdot ([$v])' - \frac{1}{[$u]} \cdot ([$u])' 
+      \\
+      & = \frac{2x}{[$v]} - \frac{-\sin x}{[$u]}.
+   \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

@@ -1,0 +1,119 @@
+#Problem APEX 5.4.8-9
+
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Definite integrals (with trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('8 9')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+## Part (a) set-up
+$a = random(2, 15, 1) * random(-1, 1, 2);
+
+$a1 = Compute("pi/2");
+$b1 = Compute("pi");
+
+$f = "$a \cos x";
+
+$fI = Formula("$a sin(x)");
+
+$ans1a = $fI->eval(x => $b1);
+$ans1b = $fI->eval(x => $a1);
+$ans1  = Compute("$ans1a-$ans1b");
+
+## Part (b) set-up
+$b = random(2, 15, 1) * random(-1, 1, 2);
+
+$a2 = Compute("0");
+$b2 = Compute("pi/4");
+
+$g = "$b \sec^2 \theta";
+
+$gI    = Formula("$b tan(x)");
+$ans2a = $gI->eval(x => $b2);
+$ans2b = $gI->eval(x => $a2);
+$ans2  = Compute("$ans2a-$ans2b");
+
+## Part (c) set-up
+$c = random(2, 15, 1);
+
+$a3 = Compute("pi/6");
+$b3 = Compute("pi/3");
+
+$h = "$c \csc t \cot t";
+
+$hI    = Formula("-$c/sin(x)");
+$ans3a = $hI->eval(x => $b3);
+$ans3b = $hI->eval(x => $a3);
+$ans3  = Compute("$ans3a-$ans3b");
+
+BEGIN_PGML
+Evaluate the definite integrals
+
+a) [``\int_{\pi/2}^{\pi} [$f] \, dx = ``]
+[_]{$ans1}{15}
+
+
+b) [``\int_{0}^{\pi/4} [$g] \, d\theta = ``]
+[_]{$ans2}{15}
+
+
+c) [``\int_{\pi/6}^{\pi/3} [$h] \, dt = ``]
+[_]{$ans3}{15}
+END_PGML
+
+$c2 = Compute("$c * 2");
+
+BEGIN_PGML_SOLUTION
+Use the Fundamental Theorem of Calculus.
+
+a)  [```
+  \begin{aligned}
+    \int_{\pi/2}^{\pi} [$f] \, dx 
+    & = \left([$a] \sin x \right) \bigg|_{\pi/2}^{\pi}
+    \\
+    & = \left([$a] \sin \pi\right) 
+    - \left([$a] \sin (\pi/2)\right)
+    \\
+    & = ([$ans1a]) - ([$ans1b]) = [$ans1].
+    \end{aligned}
+```]
+
+b)  [```
+  \begin{aligned}
+    \int_{0}^{\pi/4} [$g] \, d\theta
+    & = \left( [$b]\tan \theta \right) \bigg|_{0}^{\pi/4}
+    \\
+    & = \left( [$b]\tan(\pi/4)\right) 
+    - \left( [$b]\tan 0\right)
+    \\
+    & = ([$ans2a]) - ([$ans2b]) = [$ans2].
+  \end{aligned}
+```]
+
+c)  [```
+  \begin{aligned}
+    \int_{\pi/6}^{\pi/3} [$h] \, dt 
+    & = \left(-[$c] \csc t \right) \bigg|_{\pi/6}^{\pi/3}
+    \\
+    & =  \left(\dfrac{-[$c]}{\sin (\pi/3)}\right) 
+    - \left(\dfrac{-[$c]}{\sin(\pi/6)} \right)
+    \\
+    & = -\frac{[$c2]}{\sqrt{3}} + [$c2]
+    \\
+    & \approx [$ans3].
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

@@ -1,0 +1,52 @@
+#Problem APEX 6.7.9
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('9')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+Context('Fraction')->variables->are(t => 'Real');
+
+do {
+    $a = non_zero_random(-10, 10);
+    $b = non_zero_random(1,   5);
+    $c = non_zero_random(-10, 10);
+} while (-$c == $b * $a);
+
+$num = Formula("t^2-($a)^2")->reduce;
+$den = Formula("$b t^2 -($a*$b+$c)t + (-$a*$c)")->reduce;
+
+$dnum = $num->D('t')->reduce;
+$dden = $den->D('t')->reduce;
+
+$ans = Fraction($dnum->eval(t => $a), $dden->eval(t => $a));
+
+BEGIN_PGML
+Evaluate the limit, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule.
+
+[`` \lim_{t\to [$a]} \frac{[$num]}{[$den]} = \; ``] [_]{$ans}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[``` 
+  \begin{aligned}
+  \lim_{t \to [$a]} \frac{[$num]}{[$den]}
+  & = \lim_{t \to [$a]} \frac{[$dnum]}{[$dden]} \\
+  & = [$ans]
+  \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

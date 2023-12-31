@@ -1,0 +1,66 @@
+#Problem APEX 2.4.16
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Product rule (with trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('16')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+Context("Numeric");
+Context()->variables->are(t => "Real");
+
+$a  = random(2, 5, 1);
+$a1 = $a + 1;
+$b  = random(1, 10, 1) * random(-1, 1, 2);
+
+$f  = Formula("t^(-$a)");
+$fp = $f->D('t')->reduce;
+
+# possible factors:
+@gFunctions = (
+    Formula("sec(t) + $b"), Formula("csc(t) + $b"),
+    Formula("tan(t) + $b"), Formula("cot(t) + $b")
+);
+
+# randomly pick one of the factors:
+$r  = random(0, 3, 1);
+$g  = $gFunctions[$r];
+$gp = $g->D('t')->reduce;
+
+$ans = Compute("($f)($gp) + ($fp)($g)");
+
+BEGIN_PGML
+Compute the derivative of the given function.
+
+[``
+  f(t) = \frac{1}{t^{[$a]}} \left( [$g] \right)
+``]
+
+[`f'(t) = `][_]{$ans}.
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Rewrite [`f(t)`]:
+[```
+  f(t) = \left([$f]\right)\left([$g]\right)
+```]
+
+Use the Product Rule.
+
+[``
+  f'(t) = ([$f])([$gp]) + ([$fp])([$g]).
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

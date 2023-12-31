@@ -1,0 +1,69 @@
+#Problem APEX 3.1.16
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Global extrema)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(GlobalExtremes_Quartic)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.1')
+## Problem1('16')
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+Context("Numeric");
+
+$a1    = random(3, 7, 1);
+$coef2 = Compute("2*$a1*$a1");
+$coef0 = random(1, 11, 1);
+$e1    = Compute("-$a1+1");
+$d1    = Compute("2*$a1+1");
+
+$c2 = Compute("2*$coef2");
+$c3 = Compute("$c2/4");
+$a2 = Compute("$a1**2");
+
+$y1 = Compute("$e1**4 - $coef2*$e1**2  + $coef0");
+$y2 = Compute("$coef0");
+$y3 = Compute("$a1**4 - $coef2*$a1**2  + $coef0");
+$y4 = Compute("$d1**4 - $coef2*$d1**2  + $coef0");
+
+BEGIN_PGML
+Find the extreme values of the function 
+[```
+    f(x) = x^4 - [$coef2] x^2 + [$coef0] 
+```]
+on the interval [` [ [$e1], [$d1] ] `].
+If an extreme value does not exist, enter *DNE*. 
+
+Absolute minimum value: [_]{$y3}{10}
+
+Absolute maximum value: [_]{$y4}{10}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Set the derivative [`f'(x) = 4x^3 - [$c2] x`] equal to zero to locate all critical numbers. Then [`4x(x^2-[$a2])=0`] or [`4x(x-[$a1])(x+[$a1])=0`].
+Thus there are critical numbers at [`x = -[$a1], 0, [$a1]`], but only
+[`0`] and [`[$a1]`] occur within the interval [`[[$e1], [$d1]]`].
+
+Find the value of [`f`] at each critical number and endpoint:
+[```
+  \begin{aligned}
+  f([$e1]) &= [$y1]\\
+  f(0) &= [$y2]\\
+  f([$a1]) &= [$y3]\\
+  f([$d1]) &= [$y4]
+  \end{aligned}
+```]
+The absolute minimum value is [`[$y3]`], and the absolute maximum value is 
+[`[$y4]`].
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

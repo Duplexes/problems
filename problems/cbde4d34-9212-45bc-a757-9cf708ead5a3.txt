@@ -1,0 +1,80 @@
+#Problem APEX 2.5.33
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives of logarithmic functions)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(4)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.5')
+## Problem1('33')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+'PGstandard.pl',
+'PGML.pl',
+'parserPopUp.pl',
+'PGcourse.pl');
+
+##############################################
+# Set-u[
+
+Context("Numeric");
+Context()->variables->add(k=>"Real",u=>"Real");
+
+$ans1 = Formula("ln(u)");
+$ans2 = Formula("kx");
+$ans3 = Formula("ln(k)");
+$ans = Formula("1/x");
+
+$op = PopUp(["?", "+", "-", "*", "/"], "+");
+
+BEGIN_PGML
+Let [`k`] be a constant. Compute [` \frac{d}{dx}[ \ln (kx) ]`] in two ways.
+
+a) Using the Chain Rule, first decompose [` y = \ln(kx) `]
+into an outside and inside function.
+ 
+    Outside function (in terms of [`u`]): [` y = `][_]{$ans1}{10}
+    
+    Inside function (in terms of [`x`]): [` u = `][_]{$ans2}{10}
+ 
+    Then find the derivative, [` \frac{d}{dx}[ \ln (kx) ] = `][_]{$ans}{15}
+(simplify your answer).
+
+b) Using a law of logarithms to simplify first:
+ 
+    [` \ln(kx) = `] [_]{$ans3}{5} [_]{$op} [`\ln x `]
+    (Fill in the blanks to make this a true statement.)
+ 
+    Now take the derivative of the simplified function: [``\frac{dy}{dx} = ``] [_]{$ans}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+**Solution:**
+
+a) The decomposition is [` y = \ln u`], and [`u = kx`].  By
+the chain rule,
+[```
+  \frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}
+  = \frac{1}{u} \cdot k
+  = \frac{1}{kx} \cdot k
+  = \frac{1}{x}.
+```]
+
+
+b) After simplifying [` \ln (kx) = \ln k + \ln x`], take the derivative
+(note, [` \ln k`] is simply a constant).
+[```
+  \frac{dy}{dx} = 0 + \frac{1}{x} = \frac{1}{x}.
+```]
+The answers to (a) and (b) should match.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    
+

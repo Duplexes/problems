@@ -1,0 +1,45 @@
+#Problem APEX 2.4.41
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Product rule (without trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('41')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+$a1 = random(2,9);
+$b1 = random(2,9)*random(-1,1,2);
+$c1 = non_zero_random(1,15);
+$a2 = random(2,9);
+$b2 = random(2,9)*random(-1,1,2);
+$c2 = non_zero_random(1,15);
+
+$f = "($a1 x^3 + $b1 x + $c1)($a2 x^4 + $b2 x^3 + $c2)";
+$r = random(8,12,1);
+
+$ans = Real("0");
+
+BEGIN_PGML
+Let [` f(x) = [$f] `].  Find the requested derivative.
+
+[` f^{([$r])}(x) = `][_]{$ans}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+[`f(x)`] is a polynomial of degree 7, which we may observe
+without multiplying the factors out.
+
+Therefore, for any [`n \geq 8`], we know that [`f^{(n)} = 0`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    
+

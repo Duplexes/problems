@@ -1,0 +1,137 @@
+#Problem APEX 2.4.42
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Conceptual understanding of derivatives)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.4')
+## Problem1('42')
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',    'PGML.pl',
+    'PGgraphmacros.pl', 'parserPopUp.pl',
+    'PGcourse.pl'
+);
+
+$m = random(1,  4, 0.5) * random(-1, 1, 2);
+$b = random(-3, 3);
+
+$w  = 400;    # graph size
+$tw = 500;    # graph size in TeX
+
+$graph = init_graph(
+    -10, -5, 10, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  10 ],
+    'grid'  => [ 20,  10 ],
+    'size'  => [ 500, 500 ]
+);
+
+$graph_a = init_graph(
+    -10, -5, 10, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  10 ],
+    'grid'  => [ 20,  10 ],
+    'size'  => [ 500, 500 ]
+);
+$graph_b = init_graph(
+    -10, -5, 10, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  10 ],
+    'grid'  => [ 20,  10 ],
+    'size'  => [ 500, 500 ]
+);
+$graph_c = init_graph(
+    -10, -5, 10, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  10 ],
+    'grid'  => [ 20,  10 ],
+    'size'  => [ 500, 500 ]
+);
+$graph_d = init_graph(
+    -10, -5, 10, 5,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  10 ],
+    'grid'  => [ 20,  10 ],
+    'size'  => [ 500, 500 ]
+);
+
+$p = FEQ("$m * x + $b for x in [-10,10] using color:blue weight:2");
+
+$p_a = FEQ("$m for x in [-10,10] using color:blue weight:2");
+$p_b = FEQ("-$m for x in [-10,10] using color:blue weight:2");
+$p_c = FEQ("-$m x + $b for x in [-10,10] using color:blue weight:2");
+$p_d = FEQ("$m x - $b for x in [-10,10] using color:blue weight:2");
+
+plot_functions($graph, $p);
+
+plot_functions($graph_a, $p_a);
+plot_functions($graph_b, $p_b);
+plot_functions($graph_c, $p_c);
+plot_functions($graph_d, $p_d);
+
+$altTextMain = "The plot of a line that passes through (0,$b) and (2, "
+    . (2 * $m + $b) . ").";
+
+@altText = (
+    "The plot of a horizontal line with y-intercept $m.",
+    "The plot of a horizontal line with y-intercept " . -$m . ".",
+    "The plot of a line that passes through (0,$b) and (-2, "
+        . (2 * $m + $b) . ").",
+    "The plot of a line that passes through (0, "
+        . (-$b)
+        . ") and (-2, "
+        . (-2 * $m - $b) . ")."
+);
+
+@graphs = ($graph_a, $graph_b, $graph_c, $graph_d);
+$r      = random(1, 4);
+if ($r == 1) {
+    @shuffle       = (0, 1, 2, 3);
+    $correctChoice = "A";
+} elsif ($r == 2) {
+    @shuffle       = (3, 0, 1, 2);
+    $correctChoice = "B";
+} elsif ($r == 3) {
+    @shuffle       = (2, 3, 0, 1);
+    $correctChoice = "C";
+} else {
+    @shuffle       = (1, 2, 3, 0);
+    $correctChoice = "D";
+}
+
+@graphs         = @graphs[@shuffle];
+@altText        = @altText[@shuffle];
+$multipleChoice = DropDown([ "A", "B", "C", "D" ], $correctChoice);
+
+$dir = ($m > 0) ? "positive" : "negative";
+
+BEGIN_PGML
+The graph of [` f(x)`] is shown below.
+
+>> [![$altTextMain]!]{$graph}{$w} <<
+
+Which of the following is the graph [` f'(x) `]? [__]{$multipleChoice}
+
+*A.* [![$altText[0]]!]{$graphs[0]}{$w/2}
+
+*B.* [![$altText[1]]!]{$graphs[1]}{$w/2}
+
+*C.* [![$altText[2]]!]{$graphs[2]}{$w/2}
+
+*D.* [![$altText[3]]!]{$graphs[3]}{$w/2}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The function [`f`] is linear with constant [$dir] slope. The only graph with these characteristics is graph [$correctChoice].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

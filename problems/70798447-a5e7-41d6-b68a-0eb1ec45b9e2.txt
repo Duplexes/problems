@@ -1,0 +1,37 @@
+## level(3)
+## DBsubject(Statistics)
+## DBchapter(Exploratory data analysis/descriptive statistics)
+## DBsection(Classifying data)
+## Date(08/18/2014)
+## Institution(University of BC)
+## Author(Andy Leung)
+## Level(2)
+
+DOCUMENT();
+
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserCheckboxList.pl', 'PGcourse.pl');
+
+Context('Numeric');
+
+$checks = CheckboxList(
+    [ [
+        "Smoking history (cigarettes per year)",
+        "Body mass index (\(kg/m^2\))",
+        "Dosage form - 1=tablet, 2=capsule, 3=liquid solution, 4=other",
+        "Age (in years) - \(<\)20, 20-30, 30-40, 40-50, 50-60, 60 or above",
+        "Assigned Sex - Female, Male, Intersex"
+    ] ],
+    [ 0, 1 ],
+    labels => "ABC"
+);
+
+#######
+BEGIN_PGML
+Which of the following selected variables, associated with clinical trials of a
+drug, are quantitative variables? *CHECK ALL THAT APPLY*
+
+[_]{$checks}
+
+END_PGML
+
+ENDDOCUMENT();

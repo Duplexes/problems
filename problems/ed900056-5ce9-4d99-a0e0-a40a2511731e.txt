@@ -1,0 +1,56 @@
+#Problem APEX 6.7.17
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('17')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+
+### (a) ###
+$a1 = random(2, 15, 1);
+$b1 = random(2, 15, 1);
+
+$num = Formula("$a1 e^x - $a1 x - $a1");
+$den = Formula("$b1 x^2");
+
+$dnum = $num->D('x');
+$dden = $den->D('x');
+
+$ddnum = $dnum->D('x');
+$ddden = $dden->D('x');
+
+$ans = ($ddnum / $ddden)->eval(x => 0);
+
+BEGIN_PGML
+Evaluate the limit, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule. 
+  
+[`` \lim_{x\to 0} \frac{[$num]}{[$den]} = ``] [_]{$ans}{10}
+
+[@ helpLink('limit') @]*
+END_PGML
+
+Context('Fraction');
+$frac = Fraction($ddnum->eval(x => 0), $ddden->eval(x => 0))->reduce;
+
+BEGIN_PGML_SOLUTION
+[``` 
+\begin{aligned}
+  \lim_{x \to 0} \frac{[$num]}{[$den]}
+ &  = \lim_{x \to 0} \frac{[$dnum]}{[$dden]} \\
+ &  = \lim_{x \to 0} \frac{[$ddnum]}{[$ddden]} \\
+ &  = \frac{[$a1]}{[@ 2*$b1 @]} = [$frac].
+ \end{aligned}
+```]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

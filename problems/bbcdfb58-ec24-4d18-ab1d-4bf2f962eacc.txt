@@ -1,0 +1,62 @@
+## DESCRIPTION
+## Linear Algebra
+## ENDDESCRIPTION
+
+## Tagged by tda2d
+
+## DBsubject(Linear algebra)
+## DBchapter(Euclidean spaces)
+## DBsection(Span)
+## Institution(TCNJ)
+## Level(3)
+## KEYWORDS('matrix' 'multiple choice')
+DOCUMENT();        # This should be the first executable line in the problem.
+
+loadMacros(
+  "PGstandard.pl",
+  "MathObjects.pl",
+  "PGML.pl",
+  "parserCheckboxList.pl",
+  "PGcourse.pl"
+);
+
+TEXT(beginproblem());
+$showPartialCorrectAnswers = 1;
+Context("Numeric");
+
+@yes = ( 'A vector  \( b \) is a linear combination of the columns of a matrix \( A \) if and only if the equation \( Ax = b \) has at least one solution. ', 
+    'The first entry in the product \( Ax \) is a sum of products of real numbers. ' , 
+    'If the columns of \( A \) span \( {\mathbb R}^m\), then the equation \( Ax = b \) is consistent for each \( b \) in \( {\mathbb R}^m\). ' ,
+    'If the equation \( Ax = b \) is inconsistent for some \( b \) in \( {\mathbb R}^m\), then \( A \) cannot have a pivot position in every row. ' ,
+    'Every matrix equation \( Ax = b \) corresponds to a vector equation with the same solution set. ' ,
+    'Any linear combination of vectors in \(\mathbb{R}^m\) can always be written in the form \( Ax \) for a suitable matrix \( A \) and vector \( x \). ' ,
+    'The solution set of a linear system whose augmented matrix is \( [ a_1a_2 \cdots a_n \vert b ] \) is the same as the solution set of \( Ax = b \), if \( A = [ a_1 a_2 \cdots a_n ] \). ' ,
+    'If the equation \( Ax = b \) is inconsistent, then \( b \) is not in the set spanned by the columns of \( A \). ' ,
+    'If the columns of \( A \) do not span \( {\mathbb R}^m\), then the equation \( Ax = b \) is inconsistent for some \( b \) in \( {\mathbb R}^m\). ' 
+);
+
+@no = ( 'The equation \( Ax = b \) is referred to as a vector equation. ' ,
+    'The equation \( Ax = b \) is consistent if the augmented matrix \( [ A \vert b ] \) has a pivot position in every row. ',
+    'If the augmented matrix \( [ A\vert  b ] \) has a pivot position in every row, then the equation \( Ax = b \) is inconsistent. ' 
+);
+
+# a random set of 4 "yes" items
+
+@items = random_subset(4,@yes);
+
+# add a random set of 2 "no" items
+
+push(@items, random_subset(2,@no));
+
+# randomize the final list of 6 items
+
+$questions = CheckboxList([ ~~@items ], [0,1,2,3]);
+
+BEGIN_PGML
+Let [`A`] be an [`m\times n`] matrix of real numbers, [`x \in \mathbb{R}^n`], [`b\in \mathbb{R}^m`].  Select the _true_ statements in the list below.
+
+[_]{$questions}
+END_PGML
+
+ENDDOCUMENT();       # This should be the last executable line in the problem.
+

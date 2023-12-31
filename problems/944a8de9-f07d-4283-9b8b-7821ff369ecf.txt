@@ -1,0 +1,61 @@
+#Problem APEX 5.4.56
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl',, 'PGcourse.pl');
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Fundamental theorem of calculus)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('56')
+
+Context("Numeric");
+
+$a = random(2, 10, 1) * random(-1, 1, 2);
+$f = "$a \sin t";
+
+$u = "\ln x";
+$v = "e^x";
+
+$ans = Formula("$a sin(e^x) e^x - $a sin(ln(x))/x");
+
+BEGIN_PGML
+
+If [`` F(x) = \int_{[$u]}^{[$v]} [$f] \, dt ``],
+then [`` F'(x) = ``] [_]{$ans}{25}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+Use the first part of the Fundamental Theorem of Calculus:
+[```
+    \frac{d}{dx} \int_a^x f(t)\,dt = f(x).
+```]
+Re-write the integral as 
+[```
+    \int_{[$u]}^{[$v]} [$f] \,dt 
+    = \int_a^{[$v]} [$f] \,dt
+    - \int_a^{[$u]} [$f] \,dt
+```]
+for any constant [`a`]. Now differentiate this using the chain rule:
+[```
+    \begin{aligned}
+      & \frac{d}{dx} \int_{[$u]}^{[$v]} [$f] \,dt \\
+      & = \frac{d}{dx} \int_a^{[$v]} [$f] \,dt
+           - \frac{d}{dx} \int_a^{[$u]} [$f] \,dt
+      \\
+      & = [$a]\sin([$v]) \cdot ([$v])' - [$a]\sin([$u]) \cdot ([$u])' \\
+      & = [$a] e^x \sin (e^x) - [$a] \frac{\sin(\ln x)}{x}.
+    \end{aligned}
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

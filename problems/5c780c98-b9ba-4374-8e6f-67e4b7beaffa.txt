@@ -1,0 +1,63 @@
+#Problem APEX 2.3.34
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'PGchoicemacros.pl', 'PGcourse.pl');
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives involving multiple rules (no product, quotient, or chain rule))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.3')
+## Problem1('34')
+
+$a = random(1,9,1)*random(-1,1,2);
+$a1 = $a + 1;
+
+Context()->variables->are('t'=>'Real');
+Context()->noreduce('(-x)-y');
+
+$ans1 = Compute("t + $a1")->reduce();
+$ans2 = Compute("-t + $a1")->reduce();
+
+BEGIN_PGML
+Find the equations of the tangent line and normal
+line to the graph of the function
+[` f(t) = e^t + [$a]`] at the point where [`t = 0`].
+
+a) Tangent line: [`y =`][_]{$ans1}{15}
+b) Normal line: [`y =`][_]{$ans2}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The [`y`]-value is: [`y = f(0) = e^0 + [$a] = 1 + [$a] = [$a1]`].
+
+a) The slope of the tangent is found using the derivative: 
+[`f'(t) = e^t`].  
+So [` m = f'(0) = e^0 = 1`].  
+Thus the equation of the tangent line is  
+[``
+  \begin{array}{rcl}
+    y - ([$a1]) &=& (1)(t - 0) = t  \\
+    y &=& t + [$a1] \\
+  \end{array}
+``]
+
+b) Recall, the slope of the normal line is the negative reciprocal
+of the slope of the tangent.  So for the normal line [`m = -1/1 = -1`].  
+Thus the equation of the normal line is  
+[``
+  \begin{array}{rcl}
+    y - ([$a1]) &=& (-1)(t - 0) = -t \\
+    y &=& -t + [$a1] \\
+  \end{array}
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();    

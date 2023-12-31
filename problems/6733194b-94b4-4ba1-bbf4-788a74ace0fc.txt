@@ -1,0 +1,93 @@
+#Problem APEX 5.4.25-27
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Integrals)
+## DBsection(Definite integrals (without trigonometric functions))
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('5.4')
+## Problem1('18 24')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl',, 'PGcourse.pl');
+
+Context("Numeric");
+## Part (a)
+$a1   = non_zero_random(-15, 15);
+$tmp1 = random(5, 25);
+$b1   = Compute("$a1 + $tmp1");
+
+$c    = random(1, 9) * random(-1, 1, 2);
+$f    = "$c";
+$fI   = Formula("$c x");
+$ans1 = $fI->eval(x => $b1) - $fI->eval(x => $a1);
+
+## Part (b)
+$a2   = random(1, 15) * random(-1, 1, 2);
+$tmp2 = random(5, 25);
+$b2   = Compute("$a2 + $tmp2");
+
+$g    = "\,";
+$gI   = Formula("x");
+$ans2 = $gI->eval(x => $b2) - $gI->eval(x => $a2);
+
+## Part (c)
+$a3   = random(1, 15) * random(-1, 1, 2);
+$tmp3 = random(5, 25);
+$b3   = Compute("$a3 + $tmp3");
+
+$h    = "0";
+$ans3 = Compute("0");
+
+BEGIN_PGML
+Evaluate the definite integrals
+
+a) [``\int_{[$a1]}^{[$b1]} [$f] \, dx = ``]
+[_]{$ans1}{15}
+
+
+b) [``\int_{[$a2]}^{[$b2]} [$g] \, dx = ``]
+[_]{$ans2}{15}
+
+
+c) [``\int_{[$a3]}^{[$b3]} [$h] \, dx = ``]
+[_]{$ans3}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+Use the Fundamental Theorem of Calculus.
+
+a) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a1]}^{[$b1]} [$f] \, dx
+    & = \left([$c] x  \right) \bigg|_{[$a1]}^{[$b1]}
+    \\
+    & = [$c]([$b1]) - [$c]([$a1])\\
+    & = [$ans1].
+  \end{aligned}
+```]
+
+b) [`\;`]
+[```
+  \begin{aligned}
+    \int_{[$a2]}^{[$b2]} [$g] \, dx
+    = \int_{[$a2]}^{[$b2]} 1 \, dx
+    & = x \bigg|_{[$a2]}^{[$b2]}\\
+    & = ([$b2]) - ([$a2])\\
+    & = [$ans2].
+  \end{aligned}
+```]
+
+c) [`\;`]
+[```
+    \int_{[$a3]}^{[$b3]} [$h] \, dx 
+    = 0 \bigg|_{[$a3]}^{[$b3]}
+    = [$ans3].
+```]
+END_PGML_SOLUTION
+ENDDOCUMENT();

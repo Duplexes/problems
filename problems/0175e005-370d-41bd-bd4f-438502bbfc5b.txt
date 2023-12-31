@@ -1,0 +1,55 @@
+## DBsubject(Calculus - single variable)
+## DBchapter(Limits and continuity)
+## DBsection(Continuity - concept of)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(2)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('1.5')
+## Problem1('18')
+
+#Problem APEX 1.5.18
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros('PGstandard.pl', 'PGML.pl', 'parserPopUp.pl', 'PGcourse.pl');
+
+Context("Numeric");
+
+$a = random(2, 5, 1) * random(-1, 1, 2);
+
+$ans1 = DropDown([ "continuous", "not continuous" ], "continuous");
+$ans2 = DropDown([ "continuous", "not continuous" ], "continuous");
+
+BEGIN_PGML
+Let
+[`` 
+   f(x) = \begin{cases}
+	1  & x = 0 \\
+	\frac{\sin x}{x}  &  x \neq 0 
+	\end{cases}
+``]
+
+Determine if [`f`] is continuous at the indicated values.
+
+ a)  At [`\ x = 0`]?  [__]{$ans1}
+
+ b)  At [`\ x = [$a]\pi`]? [__]{$ans2}
+
+END_PGML
+
+BEGIN_PGML_SOLUTION
+
+For [`x = 0`], check that the limit agrees with the function value.
+[``
+  \lim_{x \to 0} f(x) = \lim_{x \to 0} \frac{\sin x}{x} = 1 = f(0).
+``]
+
+The function is continuous at [`x = [$a]\pi`] because except at [`x=0`] it is the quotient of two continuous functions and the denominator is nonzero.
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

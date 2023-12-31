@@ -1,0 +1,171 @@
+#Problem APEX 3.3.6
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Increasing/decreasing functions and local extrema)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## MLT(graphs_incr_decr)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('3.3')
+## Problem1('6')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',    'PGML.pl',
+    'PGgraphmacros.pl', 'parserPopUp.pl',
+    'PGcourse.pl'
+);
+COMMENT("Flagged for lack of accessibility -- needs alt-text");
+############################################
+## Set-up
+
+$m = random(2, 5, 1) * random(-1, 1, 2);
+$b = random(1, 5, 1) * random(-1, 1, 2);
+
+$f = "$m x + $b";
+
+$df = "$m";
+
+Context("Interval");
+#Context()->constants->add(DNE => {});
+#Context()->flags->set(noneWord=>"DNE");
+
+if ($df > 0) {
+    $answers1 = Interval("(-Inf, Inf)");
+    $answers2 = Interval("{}");
+    $solution =
+        "Since [`f'(x) > 0`] on [`(-\infty, \infty)`], the function is increasing at all [`x`] values.";
+} else {
+    $answers1 = Interval("{}");
+    $answers2 = Interval("(-Inf, Inf)");
+    $solution =
+        "Since [`f'(x) < 0`] on [`(-\infty, \infty)`], the function is decreasing at all [`x`] values.";
+}
+
+########################################
+## Graphs
+
+$w  = 300;    # graph size
+$tw = 300;    # graph size in TeX
+
+$graph1 = init_graph(
+    -10, -10, 10, 10,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  20 ],
+    'grid'  => [ 20,  20 ],
+    'size'  => [ 300, 300 ]
+);
+$graph2 = init_graph(
+    -10, -10, 10, 10,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  20 ],
+    'grid'  => [ 20,  20 ],
+    'size'  => [ 300, 300 ]
+);
+$graph3 = init_graph(
+    -10, -10, 10, 10,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  20 ],
+    'grid'  => [ 20,  20 ],
+    'size'  => [ 300, 300 ]
+);
+$graph4 = init_graph(
+    -10, -10, 10, 10,
+    'axes'  => [ 0,   0 ],
+    'ticks' => [ 20,  20 ],
+    'grid'  => [ 20,  20 ],
+    'size'  => [ 300, 300 ]
+);
+
+plot_functions(
+    $graph1,
+    "$m for x in [-10,10] using color:blue weight:2",    #f
+    "$m*x + $b for x in [-10,10] using color:red weight:2"
+);                                                       #df
+$altText1 = "";
+plot_functions(
+    $graph2,
+    "$m*x + $b for x in [-10,10] using color:blue weight:2",    #f
+    "$m for x in [-10,10] using color:red weight:2"
+);                                                              #df
+$altText2 = "";
+plot_functions(
+    $graph3,
+    "$m*x + $b for x in [-10,10] using color:blue weight:2",    #f
+    "-$m for x in [-10,10] using color:red weight:2"
+);                                                              #df
+$altText3 = "";
+plot_functions(
+    $graph4,
+    "$m*x + $b for x in [-10,10] using color:blue weight:2",    #f
+    "-$m*x + $b for x in [-10,10] using color:red weight:2"
+);                                                              #df
+$altText4 = "";
+
+$r = random(1, 4, 1);
+if ($r == 1) {
+    @graphs = ($graph1, $graph2, $graph3, $graph4);
+    $ans    = DropDown([ "A", "B", "C", "D" ], "B");
+    @altText   = ($altText1, $altText2, $altText3, $altText4);
+} elsif ($r == 2) {
+    @graphs = ($graph4, $graph1, $graph2, $graph3);
+    $ans    = DropDown([ "A", "B", "C", "D" ], "C");
+    @altText   = ($altText4, $altText1, $altText2, $altText3);
+} elsif ($r == 3) {
+    @graphs = ($graph3, $graph4, $graph1, $graph2);
+    $ans    = DropDown([ "A", "B", "C", "D" ], "D");
+    @altText   = ($altText3, $altText4, $altText1, $altText2);
+} else {
+    @graphs = ($graph2, $graph3, $graph4, $graph1);
+    $ans    = DropDown([ "A", "B", "C", "D" ], "A");
+    @altText   = ($altText2, $altText3, $altText4, $altText1);
+}
+
+############################################
+# Main text
+
+BEGIN_PGML
+Let [``f(x) = [$f]``].
+
+    a) Find the derivative:
+    
+        [`f'(x) = `] [_]{$df}{20}
+
+    b) Identify the graph that displays [`f`] in blue and [`f'`] in red: [_]{$ans}
+
+        A. [![$altText[0]]!]{$graphs[0]}{$w*0.6}
+
+        B. [![$altText[1]]!]{$graphs[1]}{$w*0.6}
+
+        C. [![$altText[2]]!]{$graphs[2]}{$w*0.6}
+
+        D. [![$altText[3]]!]{$graphs[3]}{$w*0.6}
+
+
+    c) Using the graphs of [`f`] and [`f'`], indicate where [`f`] is
+increasing and decreasing. Give your answer in interval form. [@ helpLink('interval') @]*
+
+        [`f`] is increasing on [_]{$answers1}{20}
+        
+        [`f`] is decreasing on [_]{$answers2}{20}
+END_PGML
+
+############################################
+# Solution
+
+BEGIN_PGML_SOLUTION
+    a) [` f'(x) = [$df] `].  
+
+    b) The correct graph is: [$ans->correct_ans]
+    
+    c) [$solution]**
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
+

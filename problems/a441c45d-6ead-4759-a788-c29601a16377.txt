@@ -1,0 +1,71 @@
+#Problem APEX 6.7.14-15
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Applications of differentiation)
+## DBsection(Indeterminate forms and L'Hopital's rule)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## MO(1)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('6.7')
+## Problem1('14 15')
+
+DOCUMENT();
+loadMacros('PGstandard.pl', 'PGML.pl', 'contextFraction.pl', 'PGcourse.pl');
+Context('Fraction')->variables->are(a => 'Real', b => 'Real');
+
+### (a) ###
+$a1 = random(2, 15);
+$b1 = random(2, 15);
+
+$c1 = 0;
+
+$num1 = "\sin($a1 x)";
+$den1 = "\sin($b1 x)";
+
+$dnum1 = "$a1 \cos($a1 x)";
+$dden1 = "$b1 \cos($b1 x)";
+
+$ans1 = Fraction($a1, $b1);
+
+### (b) ###
+
+$c2 = 0;
+
+$num2 = "\sin(a x)";
+$den2 = "\sin(b x)";
+
+$dnum2 = "a \cos(a x)";
+$dden2 = "b \cos(b x)";
+
+$ans2 = Fraction('a', 'b');
+
+BEGIN_PGML
+Evaluate the limits, using L'H[@ MODES(HTML=>'&ocirc;',TeX=>'\^o') @]*pital's Rule.
+
+a) [``  \lim_{x\to [$c1]} \frac{[$num1]}{[$den1]} = \;``] [_]{$ans1}{10}
+
+b) [`` \lim_{x\to [$c2]} \frac{[$num2]}{[$den2]} = \;``] [_]{$ans2}{10} 
+(assuming [` b \neq 0`])
+
+[@ helpLink('limit') @]*
+END_PGML
+
+BEGIN_PGML_SOLUTION
+a) [``
+  \lim_{x \to [$c1]} \frac{[$num1]}{[$den1]}
+  = \lim_{x \to [$c1]} \frac{[$dnum1]}{[$dden1]}
+  = \dfrac{[$a1]}{[$b1]}.
+``]
+
+b) [``
+  \lim_{x \to [$c2]} \frac{[$num2]}{[$den2]}
+  = \lim_{x \to [$c2]} \frac{[$dnum2]}{[$dden2]}
+  = \dfrac{a}{b}.
+``]
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

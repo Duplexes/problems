@@ -1,0 +1,296 @@
+## DESCRIPTION
+## Given a bar graph with two colors of bars, find the mean of two groups of data.
+## ENDDESCRIPTION
+
+## DBCCSS('6.SP')
+## DBsubject(Statistics)
+## DBchapter(Exploratory data analysis/descriptive statistics)
+## DBsection(Summary statistics)
+## Institution(PCC)
+## Author(Carl Yao)Peter Staab)
+## Level(2)
+## MO(1)
+## KEYWORDS('mean','application','bar graph', 'DEI')
+
+## Updated by Peter Staab, Fitchburg State University (2023.07.22)
+
+DOCUMENT();
+
+loadMacros(
+    'PGstandard.pl',  'MathObjects.pl',
+    'PGML.pl',        'PGtikz.pl',
+    'parserPopUp.pl', 'PCCmacros.pl'
+);
+
+sub sortSB {
+    my $ref_array = shift;
+    my $num       = @$ref_array;
+    for my $i (0 .. $num - 2) {
+        for my $j ($i + 1 .. $num - 1) {
+            if (${$ref_array}[$i] > ${$ref_array}[$j]) {
+                (${$ref_array}[$i], ${$ref_array}[$j]) =
+                    (${$ref_array}[$j], ${$ref_array}[$i]);
+            }
+        }
+    }
+}
+
+Context('LimitedNumeric');
+
+$numBars  = 4;
+$maxLimit = 30;
+
+@terms = ('Fall', 'Winter', 'Spring', 'Summer');
+@numA  = ();
+@numB  = ();
+
+do {
+
+    $totalA = 0;
+    $totalB = 0;
+
+    for my $i (0 .. $numBars - 1) {
+        $numA[$i] = int($maxLimit / 2) +
+            random(-1, 1, 2) * random(1, int($maxLimit / 3), 1);
+        $numB[$i] = $maxLimit - $numA[$i];
+
+        $totalA = $totalA + $numA[$i];
+        $totalB = $totalB + $numB[$i];
+    }
+
+    $meanA = $totalA / $numBars;
+    $meanB = $totalB / $numBars;
+
+    @numASorted = @numA;
+    sortSB(~~@numASorted);
+    @numBSorted = @numB;
+    sortSB(~~@numBSorted);
+
+    $orderedA = "";
+    $orderedB = "";
+    for my $i (0 .. $numBars - 1) {
+        $orderedA = $orderedA . "$numASorted[$i], ";
+        $orderedB = $orderedB . "$numBSorted[$i], ";
+    }
+    chop($orderedA);
+    chop($orderedA);
+    chop($orderedB);
+    chop($orderedB);
+
+    $medianA = ($numASorted[ int($numBars / 2) - 1 ] +
+            $numASorted[ int($numBars / 2) ]) / 2;
+    $medianB = ($numBSorted[ int($numBars / 2) - 1 ] +
+            $numBSorted[ int($numBars / 2) ]) / 2;
+
+} until ((($meanA > $meanB) && ($medianA < $medianB))
+        || (($meanA < $meanB) && ($medianA > $medianB)));
+
+$popup = DropDown([ 'mean', 'median' ], 'mean');
+
+$alttext =
+    'This graph is a double bar graph that compares commuter students '
+    . '(in purple with crosshatching) with residential students (in pink) in a '
+    . 'certain class. The terms (Fall, Winter, Spring, Summer) are on the '
+    . 'horizontal axis and the number of students are on the vertical axis. ';
+for my $i (0 .. $#terms) {
+    $alttext .= "In $terms[$i] Term, this class had $numA[$i] commuter "
+        . "students and $numB[$i] residential students.";
+}
+
+$graph_image = createTikZImage();
+$graph_image->tikzLibraries('arrows.meta');
+$graph_image->tikzOptions(
+    'xscale=1, yscale=0.5, every node/.style={scale=1.5}');
+
+$graph_image->BEGIN_TIKZ
+\filldraw[
+    draw=LightBlue,
+    fill=white,
+    rounded corners=10pt,
+    thick,use as bounding box
+] (-2,-2) rectangle (25,40);
+\draw[->,thick] (0,0) -- (0,34) node [above right] {Number of students};
+\draw[->,thick] (0,0) -- (22,0) node [above right] {terms};
+
+\foreach \y in {2,4,...,30} \draw[thin, gray] (20,\y) -- (0,\y) node[left]{\(\y\)};
+
+\filldraw[thick, fill=blue!20] (1,0) rectangle(3,$numA[0]);
+\begin{scope}
+    \clip(1,0) rectangle (3,$numA[0]);
+    \foreach \y in {-4,-3,...,$numA[0]} \draw (1,\y)--(3,{\y+4});
+\end{scope}
+
+\filldraw[thick, fill=red!20] (3,0) rectangle(5,$numB[0]);
+\draw (3,0) node[below] {Fall};
+
+\filldraw[thick, fill=blue!20] (6,0) rectangle(8,$numA[1]);
+\begin{scope}
+    \clip(6,0) rectangle (8,$numA[1]);
+    \foreach \y in {-4,-3,...,$numA[1]} \draw (6,\y)--(8,{\y+4});
+\end{scope}
+
+\filldraw[thick, fill=red!20] (8,0) rectangle(10,$numB[1]);
+\draw (8,0) node[below] {Winter};
+
+\filldraw[thick, fill=blue!20] (11,0) rectangle(13,$numA[2]);
+\begin{scope}
+    \clip(11,0) rectangle (13,$numA[2]);
+    \foreach \y in {-4,-3,...,$numA[2]} \draw (11,\y)--(13,{\y+4});
+\end{scope}
+
+\filldraw[thick, fill=red!20] (13,0) rectangle(15,$numB[2]);
+\draw (13,0) node[below] {Spring};
+
+\filldraw[thick, fill=blue!20] (16,0) rectangle(18,$numA[3]);
+\begin{scope}
+    \clip(16,0) rectangle (18,$numA[3]);
+    \foreach \y in {-4,-3,...,$numA[3]} \draw (16,\y)--(18,{\y+4});
+\end{scope}
+
+\filldraw[thick, fill=red!20] (18,0) rectangle(20,$numB[3]);
+\draw (18,0) node[below] {Summer};
+
+\filldraw[thick, fill=blue!20] (5,32) rectangle (6,34);
+\begin{scope}
+    \clip(5,32) rectangle (6,34);
+    \foreach \y in {30,31,...,34} \draw (5,\y)--(6,{\y+2});
+\end{scope}
+
+\draw (6,33) node [right] {Commuter Students};
+
+\filldraw[thick, fill=red!20] (15,32) rectangle (16,34);
+\draw (16,33) node [right] {Residential Students};
+
+END_TIKZ
+
+BEGIN_PGML
+
+This bar graph compares commuter and residential student enrollment in a
+certain class at a college in a certain school year.
+
+>>[! [$alttext] !]{$graph_image}{600} <<
+
+
+Answer the following questions.
+
+*Question 1:* In these [`4`] terms, the mean number of commuter students in
+this class was [__________]{$meanA}.
+
+*Question 2:* In these [`4`] terms, the mean number of residential students
+in this class was [__________]{$meanB}.
+
+*Question 3:* In these [`4`] terms, the median of commuter students in this
+class was [__________]{$medianA}.
+
+*Question 4:* In these [`4`] terms, the median of residential students in
+this class was [__________]{$medianB}.
+
+*Question 5:* If you want to know, in all [`4`] terms, there are more commuter
+or residential students, should you compare the mean or median?
+
+[_]{$popup}
+
+END_PGML
+
+$midM1 = $numASorted[ $numBars / 2 - 1 ];
+$midM2 = $numASorted[ $numBars / 2 ];
+$outputM =
+    "There are two numbers in the middle: `$midM1` and `$midM2`."
+    . "The median is the mean of these two numbers: "
+    . "`\frac{$midM1+$midM2}{2}=$medianA`.";
+
+$midF1 = $numBSorted[ $numBars / 2 - 1 ];
+$midF2 = $numBSorted[ $numBars / 2 ];
+$outputF =
+    "There are two numbers in the middle: `$midF1` and `$midF2`. "
+    . "The median is the mean of these two numbers: "
+    . "`\frac{$midF1+$midF2}{2}=$medianB`.";
+
+$output1 =
+    ($meanA > $meanB)
+    ? 'The mean of commuter students is bigger than that of residential students, '
+    . 'so more commuter students attended this class in all four terms. Notice '
+    . 'that the median of residential students is actually bigger than that of '
+    . 'commuter students.'
+    : 'The mean of residential students is bigger than that of commuter students, '
+    . 'so more residential students attended this class in all four terms. '
+    . 'Notice that the median of commuter students is actually bigger than '
+    . 'that of residential students.';
+
+BEGIN_PGML_SOLUTION
+
+####Question 1
+
+To find the mean number of commuter students in this class, we first
+add up the number of commuter students in all [`4`] terms:
+
+    [`` [@$numA[0]@] + [@$numA[1]@] + [@$numA[2]@] + [@$numA[3]@] = [$totalA] ``]
+
+Now we can find the mean by dividing the sum by the number of terms ([`4`]):
+
+    [`` \text{mean} = \frac{[$totalA]}{4} = [$meanA] ``]
+
+*Solution:* In these [`4`] terms, the mean number of commuter students
+in this class was [`[$meanA]`].
+
+----
+
+####Question 2
+
+To find the mean number of residential students in this class, we first
+add up the number of residential students in all [`4`] terms:
+
+    [`` [@$numB[0]@] + [@$numB[1]@] + [@$numB[2]@] + [@$numB[3]@] = [$totalB] ``]
+
+Now we can find the mean by dividing the sum by the number of terms ([`4`]):
+
+    [`` \text{mean} = \frac{[$totalB]}{4} = [$meanB] ``]
+
+*Solution:* In these [`4`] terms, the mean number of residential
+students in this class was [`[$meanB]`].
+
+----
+
+####Question 3
+
+To find the median number of commuter students, we first need to order the
+number of commuter students in all [`4`] terms:
+
+    [$orderedA]
+
+*Solution:* In these [`4`] terms, the median of commuter students in this
+class was [`[$medianA]`].
+
+----
+
+####Question 4
+
+To find the median number of residential students, we first need to order
+the number of residential students in all [`4`] terms:
+
+    [$orderedB]
+
+[$outputF]
+
+*Solution:* In these [`4`] terms, the median of residential students in this
+class was [`[$medianB]`].
+
+----
+
+####Question 5
+
+To compare the total number of commuter and residential students in all
+[`4`] terms, we should compare the mean. The median is not accurate because
+some numbers were not considered; as a comparison, each number is used
+when the mean is calculated.
+
+[$output1]
+
+Don't think that the median is not useful. When there are outliers (very
+big or small numbers compared to most numbers in the group), the median
+is better than mean. That's why in newspapers, you will more than likely
+see 'the median house price' than 'the mean house price,' etc.
+
+END_PGML_SOLUTION
+
+ENDDOCUMENT();

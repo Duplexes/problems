@@ -1,0 +1,58 @@
+#Problem APEX 2.3.36
+
+## DBsubject(Calculus - single variable)
+## DBchapter(Differentiation)
+## DBsection(Derivatives of trigonometric functions)
+## Institution(Valdosta State University)
+## Author(S. V. Ault)
+## Level(3)
+## TitleText1('APEX Calculus')
+## AuthorText1('Hartman')
+## EditionText1('3.0')
+## Section1('2.3')
+## Problem1('36')
+
+DOCUMENT();
+
+# Load whatever macros you need for the problem
+loadMacros(
+    'PGstandard.pl',     'PGML.pl',
+    'PGchoicemacros.pl', 'parserImplicitPlane.pl',
+    'PGcourse.pl'
+);
+
+$a = random(2, 8, 1) * random(-1, 1, 2);
+
+Context()->variables->are('x' => 'Real', 'y' => 'Real');
+$tanline    = ImplicitPlane("y=$a");
+$normalline = ImplicitPlane("x=pi/2");
+
+BEGIN_PGML
+Find the equations of the tangent line and normal
+line to the graph [`y=f(x)`] of the function
+[` f(x) = [$a] \sin x`] at the point where [`x = \pi/2`]. [@ helpLink("equation") @]*
+
+
+a) Tangent line: [_]{$tanline}{15}
+b) Normal line: [_]{$normalline}{15}
+END_PGML
+
+BEGIN_PGML_SOLUTION
+The [`y`]-value is: [`y = f(\pi/2) = [$a] \sin(\pi/2) = [$a]`].
+
+a) The slope of the tangent is found using the derivative:
+[`f'(x) = [$a] \cos x`].  So
+[` m = f'(\pi/2) = [$a] \cos(\pi/2) = 0`].  
+Thus the equation of the tangent line is  
+[``
+  \begin{array}{rcl}
+    y - ([$a]) &=& (0)(x - \pi/2)  \\
+    y &=& [$a] \\
+  \end{array}
+``]
+
+b) Since the tangent is horizontal, the normal line must be
+vertical, so the equation is [`x = \pi/2`].
+END_PGML_SOLUTION
+
+ENDDOCUMENT();
